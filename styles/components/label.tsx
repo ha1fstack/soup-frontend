@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 
-const ButtonVariant = {
+const LabelVariant = {
   primary: css`
     color: white;
     border: 0px;
@@ -19,18 +19,28 @@ const ButtonVariant = {
 };
 
 const SizeVariant = {
+  smaller: css`
+    min-height: 22px;
+    padding: 0px 6px;
+    font-size: 11px;
+    border-radius: 4px;
+  `,
   small: css`
-    height: 18px;
+    min-height: 28px;
     padding: 0px 8px;
     font-size: 12px;
+    border-radius: 6px;
   `,
 };
 
-export const Button = styled.button<{
-  variant?: keyof typeof ButtonVariant;
+export const Label = styled.div<{
+  variant?: keyof typeof LabelVariant;
   size?: keyof typeof SizeVariant;
 }>`
-  cursor: pointer;
+  padding: 0px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   ${({ size }) =>
     size
       ? SizeVariant[size]
@@ -42,12 +52,9 @@ export const Button = styled.button<{
 
   ${({ variant }) =>
     variant
-      ? ButtonVariant[variant]
+      ? LabelVariant[variant]
       : css`
           border: 1px solid #e0e3e7;
           background-color: #fafbfb;
         `}
-  &:hover {
-    filter: brightness(0.98);
-  }
 `;

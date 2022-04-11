@@ -1,4 +1,5 @@
 import type { NextPage } from "next";
+import Image from "next/image";
 import { Button } from "styles/components/button";
 import { DividingSection, SectionHeader } from "styles/layout";
 
@@ -79,23 +80,26 @@ const Sample = () => (
           css={{
             height: "24px",
             width: "24px",
-            backgroundColor: "#E0E3E7",
           }}
-        />
+        >
+          <Image src="/stacks/ts.png" alt="me" width="24px" height="24px" />
+        </div>
         <div
           css={{
             height: "24px",
             width: "24px",
-            backgroundColor: "#E0E3E7",
           }}
-        />
+        >
+          <Image src="/stacks/node.png" alt="me" width="24px" height="24px" />
+        </div>
         <div
           css={{
             height: "24px",
             width: "24px",
-            backgroundColor: "#E0E3E7",
           }}
-        />
+        >
+          <Image src="/stacks/react.png" alt="me" width="24px" height="24px" />
+        </div>
       </div>
       <div>웹 개발</div>
     </div>
