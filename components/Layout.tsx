@@ -1,15 +1,18 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
+import { Button } from "../styles/components/button";
 
 const PageContainer = styled.div`
   min-height: 100vh;
 `;
 
 const HeaderContainer = styled.div`
+  background-color: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(4px);
   box-sizing: border-box;
   padding: 0px 24px;
   position: fixed;
-  height: 68px;
+  height: 69px;
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -34,6 +37,7 @@ const BodyContainer = styled.div`
 `;
 
 const SideBarContainer = styled.div`
+  box-sizing: border-box;
   position: fixed;
   top: 69px;
   min-width: 279px;
@@ -47,37 +51,42 @@ const SideBarContainer = styled.div`
 const SideBarElement = styled.ul<{
   selected?: boolean;
 }>`
-  padding: 12px 12px;
+  cursor: pointer;
+  padding: 10px 12px;
   border-radius: 8px;
+  margin-bottom: 4px;
+  font-weight: 500;
   ${(props) =>
-    props.selected &&
-    css`
-      background-color: #ffeeda;
-    `};
+    props.selected
+      ? css`
+          background-color: #ffeeda;
+        `
+      : css`
+          color: #3e5060;
+        `};
 `;
 
-const Logo = styled.span`
+const Logo = styled.a`
+  cursor: pointer;
   font-weight: bold;
   font-size: 20px;
   color: #ff8a05;
 `;
 
-const Button = styled.button`
-  height: 36px;
-  padding: 0px 16px;
-  border: 1px solid #e0e3e7;
-  border-radius: 8px;
-  background-color: #fafbfb;
-`;
-
 const ChildrenContainer = styled.div`
+  overflow: auto;
+  margin-top: 69px;
+  margin-bottom: 120px;
   margin-left: 280px;
+  padding: 24px;
   width: 100%;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   align-items: center;
   & > * {
-    max-width: 1024px;
+    max-width: 1280px;
+    width: 100%;
   }
 `;
 
@@ -86,12 +95,14 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     <PageContainer>
       <header>
         <HeaderContainer>
-          <Logo>Soup</Logo>
+          <Logo>SouP</Logo>
           <HeaderMenuContainer>
             <Button>검색</Button>
             <Button>쪽지</Button>
             <Button>알림</Button>
-            <Button>로그인</Button>
+            <Button variant="primary" css={{ fontWeight: "bold" }}>
+              로그인
+            </Button>
           </HeaderMenuContainer>
         </HeaderContainer>
       </header>
