@@ -1,5 +1,7 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
+import { useMatch } from "hooks/useMatch";
+import Link, { LinkProps } from "next/link";
 import { Button } from "../styles/components/button";
 
 const PageContainer = styled.div`
@@ -36,8 +38,8 @@ const BodyContainer = styled.div`
   flex-direction: row;
 `;
 
-const SideBarContainer = styled.div`
-  box-sizing: border-box;
+const SideBarContainer = styled.ul`
+  list-style-type: none;
   position: fixed;
   top: 69px;
   min-width: 279px;
@@ -48,9 +50,11 @@ const SideBarContainer = styled.div`
   padding: 16px;
 `;
 
-const SideBarElement = styled.ul<{
+interface ISideBarProps {
   selected?: boolean;
-}>`
+}
+const SideBarLink = styled.a<ISideBarProps>`
+  display: block;
   cursor: pointer;
   padding: 10px 12px;
   border-radius: 8px;
@@ -66,12 +70,32 @@ const SideBarElement = styled.ul<{
         `};
 `;
 
-const Logo = styled.a`
+const SideBarElement = ({
+  children,
+  selected,
+  ...props
+}: ISideBarProps & React.PropsWithChildren<LinkProps>) => {
+  const match = useMatch(props.href);
+  return (
+    <li>
+      <Link {...props}>
+        <SideBarLink selected={match}>{children}</SideBarLink>
+      </Link>
+    </li>
+  );
+};
+
+const LogoLink = styled.a`
   cursor: pointer;
   font-weight: bold;
   font-size: 20px;
   color: #ff8a05;
 `;
+const Logo = ({ children, ...props }: React.PropsWithChildren<LinkProps>) => (
+  <Link {...props}>
+    <LogoLink>{children}</LogoLink>
+  </Link>
+);
 
 const ChildrenContainer = styled.div`
   overflow: auto;
@@ -95,7 +119,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     <PageContainer>
       <header>
         <HeaderContainer>
-          <Logo>SouP</Logo>
+          <Logo href="/">SouP</Logo>
           <HeaderMenuContainer>
             <Button>검색</Button>
             <Button>쪽지</Button>
@@ -108,9 +132,12 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       </header>
       <BodyContainer>
         <SideBarContainer>
-          <SideBarElement selected>프로젝트/스터디</SideBarElement>
-          <SideBarElement>라운지</SideBarElement>
-          <SideBarElement>프로필</SideBarElement>
+          <SideBarElement href="/" selected>
+            홈
+          </SideBarElement>
+          <SideBarElement href="/project">프로젝트/스터디</SideBarElement>
+          <SideBarElement href="">라운지</SideBarElement>
+          <SideBarElement href="">프로필</SideBarElement>
         </SideBarContainer>
         <ChildrenContainer>
           <div>{children}</div>
