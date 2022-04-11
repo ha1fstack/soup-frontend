@@ -21,6 +21,7 @@ const HeaderContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   border-bottom: solid 1px #eceff1;
+  z-index: 9999;
 `;
 const HeaderMenuContainer = styled.div`
   display: flex;

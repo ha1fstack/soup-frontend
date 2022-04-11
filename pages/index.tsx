@@ -7,6 +7,7 @@ const Sample = () => (
   <div
     css={{
       flex: "20%",
+      minWidth: "240px",
       border: "1px solid #ECEFF1",
       background: "#fafbfb",
       borderRadius: "8px",

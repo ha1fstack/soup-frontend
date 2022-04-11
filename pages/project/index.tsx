@@ -26,7 +26,7 @@ const Sample = ({ image }: { image?: boolean }) => (
           height: "100%",
           display: "flex",
           flexDirection: "row",
-          padding: "10px 10px 8px 10px",
+          padding: "10px 12px 8px 12px",
           justifyContent: "space-between",
         }}
       >
@@ -41,6 +41,8 @@ const Sample = ({ image }: { image?: boolean }) => (
             justifyContent: "space-between",
             overflow: "hidden",
             lineHeight: "1.2em",
+            paddingBottom: "6px",
+            borderBottom: "1px solid #E0E3E7",
           }}
         >
           <div
@@ -73,7 +75,7 @@ const Sample = ({ image }: { image?: boolean }) => (
           <div
             css={{
               boxSizing: "border-box",
-              marginLeft: "12px",
+              marginLeft: "16px",
               borderRadius: "4px",
               overflow: "hidden",
               position: "relative",
@@ -97,10 +99,9 @@ const Sample = ({ image }: { image?: boolean }) => (
         css={{
           display: "flex",
           flexDirection: "row",
-          margin: "0px 12px",
-          padding: "8px 0px",
+          margin: "8px",
+          marginTop: 0,
           justifyContent: "space-between",
-          borderTop: "1px solid #E0E3E7",
           alignItems: "center",
         }}
       >
@@ -182,6 +183,7 @@ const Sample = ({ image }: { image?: boolean }) => (
               cursor: "pointer",
               fontSize: "16px",
               marginLeft: "4px",
+              marginRight: "4px",
               "& > *": { verticalAlign: "-2px" },
             }}
           >
