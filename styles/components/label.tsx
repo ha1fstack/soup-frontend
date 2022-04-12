@@ -37,6 +37,7 @@ export const Label = styled.div<{
   variant?: keyof typeof LabelVariant;
   size?: keyof typeof SizeVariant;
 }>`
+  line-height: normal;
   padding: 0px 16px;
   display: flex;
   align-items: center;

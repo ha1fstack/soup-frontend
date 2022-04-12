@@ -19,10 +19,17 @@ const ButtonVariant = {
 };
 
 const SizeVariant = {
+  smaller: css`
+    min-height: 22px;
+    padding: 0px 6px;
+    font-size: 11px;
+    border-radius: 4px;
+  `,
   small: css`
-    height: 18px;
+    min-height: 28px;
     padding: 0px 8px;
     font-size: 12px;
+    border-radius: 6px;
   `,
 };
 
@@ -30,17 +37,20 @@ export const Button = styled.button<{
   variant?: keyof typeof ButtonVariant;
   size?: keyof typeof SizeVariant;
 }>`
+  line-height: normal;
   color: inherit;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-weight: 500;
   ${({ size }) =>
     size
       ? SizeVariant[size]
       : css`
           height: 36px;
-          padding: 0px 16px;
+          padding: 0px 12px;
+          font-size: 14px;
           border-radius: 8px;
         `}
 

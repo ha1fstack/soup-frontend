@@ -1,22 +1,24 @@
+import styled from "@emotion/styled";
 import type { NextPage } from "next";
 import Image from "next/image";
+import { MdOutlineOpenInNew } from "react-icons/md";
 import { Button } from "styles/components/button";
 import { DividingSection, SectionHeader } from "styles/layout";
 
-const Sample = () => (
-  <div
-    css={{
-      flex: "20%",
-      minWidth: "240px",
-      border: "1px solid #ECEFF1",
-      background: "#fafbfb",
-      borderRadius: "8px",
-      display: "flex",
-      flexDirection: "column",
-      height: "180px",
-      overflow: "hidden",
-    }}
-  >
+const ArticleContainer = styled.div({
+  flex: "20%",
+  minWidth: "240px",
+  border: "1px solid #ECEFF1",
+  background: "#fafbfb",
+  borderRadius: "8px",
+  display: "flex",
+  flexDirection: "column",
+  height: "180px",
+  overflow: "hidden",
+});
+
+const Article = () => (
+  <ArticleContainer>
     <div
       css={{
         flexWrap: "nowrap",
@@ -73,183 +75,96 @@ const Sample = () => (
           display: "flex",
           flexDirection: "row",
           "& > *+*": {
-            marginLeft: "8px",
+            marginLeft: "12px",
           },
         }}
       >
         <div
           css={{
-            height: "24px",
-            width: "24px",
+            height: "20px",
+            width: "20px",
           }}
         >
-          <Image src="/stacks/ts.png" alt="me" width="24px" height="24px" />
+          <Image src="/stacks/ts.png" alt="me" width="20px" height="20px" />
         </div>
         <div
           css={{
-            height: "24px",
-            width: "24px",
+            height: "20px",
+            width: "20px",
           }}
         >
-          <Image src="/stacks/node.png" alt="me" width="24px" height="24px" />
+          <Image src="/stacks/node.png" alt="me" width="20px" height="20px" />
         </div>
         <div
           css={{
-            height: "24px",
-            width: "24px",
+            height: "20px",
+            width: "20px",
           }}
         >
-          <Image src="/stacks/react.png" alt="me" width="24px" height="24px" />
+          <Image src="/stacks/react.png" alt="me" width="20px" height="20px" />
         </div>
       </div>
-      <div>웹 개발</div>
+      <div css={{ fontWeight: "500", fontSize: "14px" }}>웹 개발</div>
     </div>
-  </div>
+  </ArticleContainer>
 );
+
+const ArticleList = ({ source, data }: { source: string; data?: any }) => {
+  return (
+    <div
+      css={{
+        marginTop: "36px",
+        marginBottom: "48px",
+      }}
+    >
+      <div
+        css={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "18px",
+        }}
+      >
+        <div
+          css={{
+            fontSize: "20px",
+            fontWeight: "bold",
+          }}
+        >
+          {source}
+        </div>
+        <Button
+          variant="primary-outlined"
+          css={{ height: "32px", padding: "0px 10px" }}
+        >
+          <MdOutlineOpenInNew css={{ marginRight: "8px" }} />
+          더보기
+        </Button>
+      </div>
+      <div
+        css={{
+          display: "flex",
+          flexWrap: "wrap",
+          margin: "-12px",
+          "& > *": {
+            margin: "12px",
+          },
+        }}
+      >
+        <Article /> <Article /> <Article /> <Article />
+      </div>
+    </div>
+  );
+};
 
 const Home: NextPage = () => {
   return (
     <div>
-      <div
-        css={{
-          marginTop: "36px",
-          marginBottom: "48px",
-        }}
-      >
-        <div
-          css={{
-            fontSize: "20px",
-            fontWeight: "bold",
-            marginBottom: "18px",
-          }}
-        >
-          인프런
-        </div>
-        <div
-          css={{
-            display: "flex",
-            flexWrap: "wrap",
-            margin: "-12px",
-            "& > *": {
-              margin: "12px",
-            },
-          }}
-        >
-          <Sample /> <Sample /> <Sample /> <Sample />
-        </div>
-      </div>
-      <div
-        css={{
-          marginTop: "36px",
-          marginBottom: "48px",
-        }}
-      >
-        <div
-          css={{
-            fontSize: "20px",
-            fontWeight: "bold",
-            marginBottom: "18px",
-          }}
-        >
-          인프런
-        </div>
-        <div
-          css={{
-            display: "flex",
-            flexWrap: "wrap",
-            margin: "-12px",
-            "& > *": {
-              margin: "12px",
-            },
-          }}
-        >
-          <Sample /> <Sample /> <Sample /> <Sample />
-        </div>
-      </div>
-      <div
-        css={{
-          marginTop: "36px",
-          marginBottom: "48px",
-        }}
-      >
-        <div
-          css={{
-            fontSize: "20px",
-            fontWeight: "bold",
-            marginBottom: "18px",
-          }}
-        >
-          인프런
-        </div>
-        <div
-          css={{
-            display: "flex",
-            flexWrap: "wrap",
-            margin: "-12px",
-            "& > *": {
-              margin: "12px",
-            },
-          }}
-        >
-          <Sample /> <Sample /> <Sample /> <Sample />
-        </div>
-      </div>
-      <div
-        css={{
-          marginTop: "36px",
-          marginBottom: "48px",
-        }}
-      >
-        <div
-          css={{
-            fontSize: "20px",
-            fontWeight: "bold",
-            marginBottom: "18px",
-          }}
-        >
-          인프런
-        </div>
-        <div
-          css={{
-            display: "flex",
-            flexWrap: "wrap",
-            margin: "-12px",
-            "& > *": {
-              margin: "12px",
-            },
-          }}
-        >
-          <Sample /> <Sample /> <Sample /> <Sample />
-        </div>
-      </div>
-      <div
-        css={{
-          marginTop: "36px",
-          marginBottom: "48px",
-        }}
-      >
-        <div
-          css={{
-            fontSize: "20px",
-            fontWeight: "bold",
-            marginBottom: "18px",
-          }}
-        >
-          인프런
-        </div>
-        <div
-          css={{
-            display: "flex",
-            flexWrap: "wrap",
-            margin: "-12px",
-            "& > *": {
-              margin: "12px",
-            },
-          }}
-        >
-          <Sample /> <Sample /> <Sample /> <Sample />
-        </div>
-      </div>
+      <ArticleList source="SouP" />
+      <ArticleList source="Okky" />
+      <ArticleList source="인프런" />
+      <ArticleList source="캠퍼스픽" />
+      <ArticleList source="HOLA" />
     </div>
   );
 };
