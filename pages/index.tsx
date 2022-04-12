@@ -2,8 +2,8 @@ import styled from "@emotion/styled";
 import type { NextPage } from "next";
 import Image from "next/image";
 import { MdOutlineArrowForward, MdOutlineOpenInNew } from "react-icons/md";
-import { Box, Flex } from "styles/components/box";
-import { Button } from "styles/components/button";
+import { Box, Flex } from "styles/components/Box";
+import { Button } from "styles/components/Button";
 import { DividingSection, SectionHeader } from "styles/layout";
 
 const ArticleContainer = styled.div({
@@ -154,6 +154,7 @@ const ArticleList = ({ source, data }: { source: string; data?: any }) => {
 const Lander = () => {
   return (
     <Box
+      column
       variant="primary"
       css={{
         backgroundImage: "url('/banner_background.png')",
@@ -161,33 +162,56 @@ const Lander = () => {
         backgroundRepeat: "no-repeat",
         backgroundPosition: "right",
         backgroundBlendMode: "multiply",
-        justifyContent: "space-between",
-        alignItems: "end",
         color: "#ff8a05",
-        height: "180px",
+        minHeight: "240px",
+        overflow: "hidden",
+        maxWidth: "720px",
+        padding: "14px",
+        justifyContent: "space-between",
       }}
     >
+      <p css={{ fontSize: "28px", fontWeight: 700 }}>SouP</p>
       <Flex
-        column
         css={{
-          alignSelf: "stretch",
-          justifyContent: "space-between",
           lineHeight: "normal",
+          justifyContent: "space-between",
+          flexWrap: "wrap",
+          alignItems: "flex-end",
         }}
       >
-        <p css={{ fontSize: "28px", fontWeight: 700 }}>SouP</p>
-        <div>
-          <p css={{ fontSize: "20px", fontWeight: 500 }}>안녕하세요</p>
-        </div>
+        <p
+          css={{
+            textShadow:
+              "2px 2px 2px  rgba(255, 238, 218, 0.5), -2px -2px 2px  rgba(255, 238, 218, 0.5), 2px -2px 2px  rgba(255, 238, 218, 0.5), -2px 2px 2px  rgba(255, 238, 218, 0.5);",
+            fontSize: "20px",
+            fontWeight: 500,
+            flex: "9999 2 auto",
+            zIndex: "1",
+          }}
+        >
+          Lorem ipsum dolor <br /> sit amet, consectetur adipiscing elit.
+        </p>
+        <Button
+          variant="primary"
+          css={{
+            fontSize: "24px",
+            height: "48px",
+            boxShadow: "0px 0px 40px 20px rgba(255, 238, 218, 0.5)",
+            marginTop: "12px",
+            flex: "1 0 auto",
+          }}
+        >
+          <span
+            css={{
+              fontSize: "16px",
+              padding: "4px",
+            }}
+          >
+            시작하기 &nbsp;
+          </span>
+          <MdOutlineArrowForward />
+        </Button>
       </Flex>
-      <Button
-        freeform
-        variant="primary"
-        css={{ fontSize: "24px", height: "48px" }}
-      >
-        <span css={{ fontSize: "16px", padding: "4px" }}>시작하기 &nbsp;</span>
-        <MdOutlineArrowForward />
-      </Button>
     </Box>
   );
 };

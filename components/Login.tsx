@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
-import { Flex } from "styles/components/box";
-import { Button } from "styles/components/button";
+import { Flex } from "styles/components/Box";
+import { Button } from "styles/components/Button";
 import Dimmer from "./Dimmer";
 
 const Logo = styled.span`

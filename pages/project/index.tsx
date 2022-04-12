@@ -1,9 +1,9 @@
 import type { NextPage } from "next";
 import Image from "next/image";
-import { Button } from "styles/components/button";
+import { Button } from "styles/components/Button";
 import styles from "../styles/Home.module.css";
 import { DividingSection, SectionHeader } from "styles/layout";
-import { Label } from "styles/components/label";
+import { Label } from "styles/components/Label";
 import { MdOutlineFavoriteBorder } from "react-icons/md";
 
 const Sample = ({ image }: { image?: boolean }) => (

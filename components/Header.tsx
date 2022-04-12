@@ -3,7 +3,6 @@ import {
   MdOutlineNotifications,
   MdOutlineMail,
 } from "react-icons/md";
-import { Button } from "styles/components/button";
 import styled from "@emotion/styled";
 import Link, { LinkProps } from "next/link";
 import { useToggle } from "hooks/useToggle";
@@ -11,7 +10,8 @@ import Login from "./Login";
 import { css } from "@emotion/react";
 import { useOuterClick } from "hooks/useOuterClick";
 import React, { useRef } from "react";
-import { Box } from "styles/components/box";
+import { Box } from "styles/components/Box";
+import { Button } from "styles/components/Button";
 
 const HeaderContainer = styled.div`
   background-color: rgba(255, 255, 255, 0.5);
@@ -62,7 +62,6 @@ const HeaderIconStyle = css({
 const SearchButton = styled(Button)({
   justifyContent: "space-between",
   width: "200px",
-  padding: "0px 10px",
 });
 
 const Popup = React.forwardRef<HTMLDivElement>((_, ref) => (
@@ -113,6 +112,7 @@ const Header = () => {
             </SearchButton>
             <div css={{ position: "relative" }}>
               <Button
+                icon
                 onClick={() => toggleNotificationPopup()}
                 css={{ width: "36px" }}
               >
@@ -122,6 +122,7 @@ const Header = () => {
             </div>
             <div css={{ position: "relative" }}>
               <Button
+                icon
                 onClick={() => toggleMessagePopup()}
                 css={{ width: "36px" }}
               >

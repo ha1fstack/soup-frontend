@@ -46,6 +46,9 @@ const SideBarLink = styled.a<ISideBarProps>`
         `
       : css`
           color: #3e5060;
+          :hover {
+            background-color: #fff8f1;
+          }
         `};
 `;
 

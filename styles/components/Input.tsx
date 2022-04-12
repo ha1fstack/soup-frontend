@@ -1,7 +1,8 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
+import TextareaAutosize from "react-textarea-autosize";
 
-const ButtonVariant = {
+const LabelVariant = {
   primary: css`
     color: white;
     border: 0px;
@@ -33,44 +34,61 @@ const SizeVariant = {
   `,
 };
 
-export const Button = styled.button<{
-  variant?: keyof typeof ButtonVariant;
+export const Input = styled.input<{
+  variant?: keyof typeof LabelVariant;
   size?: keyof typeof SizeVariant;
-  icon?: boolean;
 }>`
   line-height: normal;
-  color: inherit;
-  cursor: pointer;
+  padding: 0px 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 500;
-  ${({ icon }) =>
-    icon ||
-    css`
-      padding: 0;
-      svg {
-        margin-left: -0.1em;
-        margin-right: 0.3em;
-      }
-    `}
+  :focus {
+    outline: 2px solid #ffeeda;
+  }
   ${({ size }) =>
     size
       ? SizeVariant[size]
       : css`
           height: 36px;
-          padding: 0px 12px;
-          font-size: 14px;
+          padding: 0px 16px;
           border-radius: 8px;
         `}
+
   ${({ variant }) =>
     variant
-      ? ButtonVariant[variant]
+      ? LabelVariant[variant]
       : css`
           border: 1px solid #e0e3e7;
-          background-color: #fafbfb;
+          background-color: #ffffff;
         `}
-  &:hover {
-    filter: brightness(0.98);
+`;
+
+export const TextArea = styled(TextareaAutosize)<{
+  variant?: keyof typeof LabelVariant;
+  size?: keyof typeof SizeVariant;
+}>`
+  resize: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  :focus {
+    outline: 2px solid #ffeeda;
   }
+  ${({ size }) =>
+    size
+      ? SizeVariant[size]
+      : css`
+          height: 36px;
+          padding: 8px 16px;
+          border-radius: 8px;
+        `}
+
+  ${({ variant }) =>
+    variant
+      ? LabelVariant[variant]
+      : css`
+          border: 1px solid #e0e3e7;
+          background-color: #ffffff;
+        `}
 `;
