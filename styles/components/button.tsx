@@ -30,7 +30,11 @@ export const Button = styled.button<{
   variant?: keyof typeof ButtonVariant;
   size?: keyof typeof SizeVariant;
 }>`
+  color: inherit;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   ${({ size }) =>
     size
       ? SizeVariant[size]

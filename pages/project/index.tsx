@@ -47,7 +47,7 @@ const Sample = ({ image }: { image?: boolean }) => (
         >
           <div
             css={{
-              fontWeight: "bold",
+              fontWeight: "500",
               fontSize: "16px",
               overflow: "hidden",
               display: "-webkit-box",
@@ -205,7 +205,7 @@ const Home: NextPage = () => {
         </SectionHeader.Description>
       </SectionHeader>
       <DividingSection>
-        <div css={{ "& > *+*": { marginLeft: "12px" } }}>
+        <div css={{ display: "flex", "& > *+*": { marginLeft: "8px" } }}>
           <Button variant="primary-outlined">+ 태그 추가</Button>
           <Button variant="white">Typescript</Button>
           <Button variant="white">Vue</Button>
