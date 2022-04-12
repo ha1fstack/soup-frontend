@@ -36,6 +36,7 @@ const SizeVariant = {
 export const Button = styled.button<{
   variant?: keyof typeof ButtonVariant;
   size?: keyof typeof SizeVariant;
+  freeform?: boolean;
 }>`
   line-height: normal;
   color: inherit;
@@ -61,6 +62,13 @@ export const Button = styled.button<{
           border: 1px solid #e0e3e7;
           background-color: #fafbfb;
         `}
+
+  ${({ freeform }) =>
+    freeform &&
+    css`
+      height: auto;
+      padding: auto;
+    `}
   &:hover {
     filter: brightness(0.98);
   }

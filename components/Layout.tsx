@@ -68,7 +68,7 @@ const ChildrenContainer = styled.div`
   margin-top: 69px;
   margin-bottom: 120px;
   margin-left: 280px;
-  padding: 0px 24px;
+  padding: 36px 24px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -89,9 +89,12 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           <SideBarElement href="/" selected>
             홈
           </SideBarElement>
-          <SideBarElement href="/project">프로젝트/스터디</SideBarElement>
+          <SideBarElement href="/project">프로젝트/스터디 찾기</SideBarElement>
           <SideBarElement href="">라운지</SideBarElement>
-          <SideBarElement href="">프로필</SideBarElement>
+          <br />
+          <SideBarElement href="/profile">내 프로필</SideBarElement>
+          <SideBarElement href="">새소식</SideBarElement>
+          <SideBarElement href="">쪽지</SideBarElement>
         </SideBarContainer>
         <ChildrenContainer>
           <div>{children}</div>

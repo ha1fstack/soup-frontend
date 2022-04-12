@@ -1,7 +1,8 @@
 import styled from "@emotion/styled";
 import type { NextPage } from "next";
 import Image from "next/image";
-import { MdOutlineOpenInNew } from "react-icons/md";
+import { MdOutlineArrowForward, MdOutlineOpenInNew } from "react-icons/md";
+import { Box, Flex } from "styles/components/box";
 import { Button } from "styles/components/button";
 import { DividingSection, SectionHeader } from "styles/layout";
 
@@ -133,13 +134,6 @@ const ArticleList = ({ source, data }: { source: string; data?: any }) => {
         >
           {source}
         </div>
-        <Button
-          variant="primary-outlined"
-          css={{ height: "32px", padding: "0px 10px" }}
-        >
-          <MdOutlineOpenInNew css={{ marginRight: "8px" }} />
-          더보기
-        </Button>
       </div>
       <div
         css={{
@@ -157,9 +151,51 @@ const ArticleList = ({ source, data }: { source: string; data?: any }) => {
   );
 };
 
+const Lander = () => {
+  return (
+    <Box
+      variant="primary"
+      css={{
+        backgroundImage: "url('/banner_background.png')",
+        backgroundSize: "contain",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "right",
+        backgroundBlendMode: "multiply",
+        justifyContent: "space-between",
+        alignItems: "end",
+        color: "#ff8a05",
+        height: "180px",
+      }}
+    >
+      <Flex
+        column
+        css={{
+          alignSelf: "stretch",
+          justifyContent: "space-between",
+          lineHeight: "normal",
+        }}
+      >
+        <p css={{ fontSize: "28px", fontWeight: 700 }}>SouP</p>
+        <div>
+          <p css={{ fontSize: "20px", fontWeight: 500 }}>안녕하세요</p>
+        </div>
+      </Flex>
+      <Button
+        freeform
+        variant="primary"
+        css={{ fontSize: "24px", height: "48px" }}
+      >
+        <span css={{ fontSize: "16px", padding: "4px" }}>시작하기 &nbsp;</span>
+        <MdOutlineArrowForward />
+      </Button>
+    </Box>
+  );
+};
+
 const Home: NextPage = () => {
   return (
     <div>
+      <Lander />
       <ArticleList source="SouP" />
       <ArticleList source="Okky" />
       <ArticleList source="인프런" />

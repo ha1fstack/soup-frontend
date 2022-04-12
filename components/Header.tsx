@@ -3,12 +3,15 @@ import {
   MdOutlineNotifications,
   MdOutlineMail,
 } from "react-icons/md";
-import { Label } from "styles/components/label";
 import { Button } from "styles/components/button";
 import styled from "@emotion/styled";
 import Link, { LinkProps } from "next/link";
 import { useToggle } from "hooks/useToggle";
 import Login from "./Login";
+import { css } from "@emotion/react";
+import { useOuterClick } from "hooks/useOuterClick";
+import React, { useRef } from "react";
+import { Box } from "styles/components/box";
 
 const HeaderContainer = styled.div`
   background-color: rgba(255, 255, 255, 0.5);
@@ -34,6 +37,9 @@ const HeaderMenuContainer = styled.div`
   & > :not(:last-child) {
     margin-right: 12px;
   }
+  svg {
+    font-size: 18px;
+  }
 `;
 
 const LogoLink = styled.a`
@@ -48,47 +54,81 @@ const Logo = ({ children, ...props }: React.PropsWithChildren<LinkProps>) => (
   </Link>
 );
 
+const HeaderIconStyle = css({
+  color: "#3e5060",
+  margin: "-9px",
+});
+
+const SearchButton = styled(Button)({
+  justifyContent: "space-between",
+  width: "200px",
+  padding: "0px 10px",
+});
+
+const Popup = React.forwardRef<HTMLDivElement>((_, ref) => (
+  <Box
+    column
+    ref={ref}
+    css={{
+      position: "absolute",
+      top: "44px",
+      width: "300px",
+      right: 0,
+      boxShadow: "0px 0px 10px rgba(0,0,0,0.1)",
+      hr: {
+        margin: "8px 0px",
+      },
+    }}
+  >
+    알림
+    <hr css={{ color: "#dfe2e6" }} />
+    어쩌구
+    <hr css={{ color: "#dfe2e6" }} />
+    어쩌구
+    <hr css={{ color: "#dfe2e6" }} />
+    어쩌구
+  </Box>
+));
+Popup.displayName = "Popup";
+
 const Header = () => {
   const [login, toggleLogin] = useToggle();
+  const [notificationPopup, toggleNotificationPopup] = useToggle();
+  const [messgePopup, toggleMessagePopup] = useToggle();
+
+  const notificationRef = useOuterClick<HTMLDivElement>(
+    toggleNotificationPopup
+  );
+  const messageRef = useOuterClick<HTMLDivElement>(toggleMessagePopup);
+
   return (
     <>
-      {" "}
       <header>
         <HeaderContainer>
           <Logo href="/">SouP</Logo>
           <HeaderMenuContainer>
-            <Button
-              css={{
-                justifyContent: "space-between",
-                width: "200px",
-                padding: "0px 10px",
-              }}
-            >
-              <MdOutlineSearch
-                css={{
-                  fontSize: "18px",
-                }}
-              />
+            <SearchButton>
+              <MdOutlineSearch />
               프로젝트 찾아보기
-            </Button>
-            <Button css={{ width: "36px" }}>
-              <MdOutlineNotifications
-                css={{
-                  color: "#3e5060",
-                  fontSize: "18px",
-                  margin: "-9px",
-                }}
-              />
-            </Button>
-            <Button css={{ width: "36px" }}>
-              <MdOutlineMail
-                css={{
-                  color: "#3e5060",
-                  fontSize: "18px",
-                  margin: "-9px",
-                }}
-              />
-            </Button>
+            </SearchButton>
+            <div css={{ position: "relative" }}>
+              <Button
+                onClick={() => toggleNotificationPopup()}
+                css={{ width: "36px" }}
+              >
+                <MdOutlineNotifications css={HeaderIconStyle} />
+              </Button>
+              {notificationPopup && <Popup ref={notificationRef} />}
+            </div>
+            <div css={{ position: "relative" }}>
+              <Button
+                onClick={() => toggleMessagePopup()}
+                css={{ width: "36px" }}
+              >
+                <MdOutlineMail css={HeaderIconStyle} />
+              </Button>
+              {messgePopup && <Popup ref={messageRef} />}
+            </div>
             <Button
               onClick={() => toggleLogin()}
               variant="primary"

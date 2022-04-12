@@ -4,7 +4,6 @@ export const SectionHeader = Object.assign(
   styled.div`
     display: flex;
     flex-direction: column;
-    margin-top: 36px;
     margin-bottom: 24px;
   `,
   {
@@ -16,7 +15,6 @@ export const SectionHeader = Object.assign(
     Description: styled.div`
       display: flex;
       flex-direction: column;
-      margin-top: 8px;
       font-size: 12px;
     `,
   }

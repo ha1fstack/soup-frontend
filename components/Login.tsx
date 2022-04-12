@@ -1,4 +1,6 @@
 import styled from "@emotion/styled";
+import { Flex } from "styles/components/box";
+import { Button } from "styles/components/button";
 import Dimmer from "./Dimmer";
 
 const Logo = styled.span`
@@ -22,18 +24,32 @@ const Login = ({ toggle }: { toggle: () => void }) => {
         <div
           onClick={(e) => e.stopPropagation()}
           css={{
-            width: "480px",
-            height: "300px",
+            height: "240px",
             backgroundColor: "white",
             borderRadius: "8px",
-            padding: "24px 16px",
+            padding: "24px 36px",
             boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.1)",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
+            justifyContent: "space-between",
           }}
         >
           <Logo>SouP</Logo>
+          <Flex
+            css={{
+              justifyContent: "space-between",
+              "& > *+*": {
+                marginLeft: "24px",
+              },
+            }}
+          >
+            <Button css={{ width: "72px", height: "72px" }}>Google</Button>
+            <Button css={{ width: "72px", height: "72px" }}>Github</Button>
+            <Button css={{ width: "72px", height: "72px" }}>Kakao</Button>
+            <Button css={{ width: "72px", height: "72px" }}>NAVER</Button>
+          </Flex>
+          로 로그인 / 회원가입
         </div>
       </div>
     </Dimmer>

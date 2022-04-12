@@ -16,11 +16,11 @@ const Sample = ({ image }: { image?: boolean }) => (
       borderRadius: "8px",
       display: "flex",
       flexDirection: "row",
-      height: "150px",
+      height: "170px",
       overflow: "hidden",
     }}
   >
-    <div css={{ display: "flex", flexDirection: "column" }}>
+    <div css={{ display: "flex", flexDirection: "column", width: "100%" }}>
       <div
         css={{
           height: "100%",
@@ -32,6 +32,7 @@ const Sample = ({ image }: { image?: boolean }) => (
       >
         <div
           css={{
+            width: "100%",
             flexWrap: "nowrap",
             boxSizing: "border-box",
             height: "100%",
@@ -45,18 +46,35 @@ const Sample = ({ image }: { image?: boolean }) => (
             borderBottom: "1px solid #E0E3E7",
           }}
         >
-          <div
-            css={{
-              fontWeight: "500",
-              fontSize: "16px",
-              overflow: "hidden",
-              display: "-webkit-box",
-              WebkitBoxOrient: "vertical",
-              WebkitLineClamp: 2,
-            }}
-          >
-            사이드 프로젝트 같이 하실 UI/UX 디자이너 분을 구합니다!
+          <div>
+            <div
+              css={{
+                fontWeight: "500",
+                fontSize: "16px",
+                overflow: "hidden",
+                display: "-webkit-box",
+                WebkitBoxOrient: "vertical",
+                WebkitLineClamp: 2,
+                marginBottom: "8px",
+              }}
+            >
+              사이드 프로젝트 같이 하실 UI/UX 디자이너 분을 구합니다!
+            </div>
+            <div
+              css={{
+                overflow: "hidden",
+                fontSize: "13px",
+                display: "-webkit-box",
+                WebkitBoxOrient: "vertical",
+                WebkitLineClamp: 2,
+              }}
+            >
+              타입스크립트, 까다롭기만한데 굳이 왜 써야할까?에 대한 가벼운
+              이야기를 다룹니다. 본 게시물은 프론트엔드와 백엔드 개발자 모두가
+              이해할 수 있는 수준으로 작성되었습니다 :)
+            </div>
           </div>
+
           <div
             css={{
               overflow: "hidden",
@@ -66,9 +84,7 @@ const Sample = ({ image }: { image?: boolean }) => (
               WebkitLineClamp: 2,
             }}
           >
-            타입스크립트, 까다롭기만한데 굳이 왜 써야할까?에 대한 가벼운
-            이야기를 다룹니다. 본 게시물은 프론트엔드와 백엔드 개발자 모두가
-            이해할 수 있는 수준으로 작성되었습니다 :)
+            by <strong>홍길동</strong> · 1시간 전 · 댓글 3개
           </div>
         </div>
         {image ? (
@@ -103,6 +119,7 @@ const Sample = ({ image }: { image?: boolean }) => (
           marginTop: 0,
           justifyContent: "space-between",
           alignItems: "center",
+          lineHeight: "normal",
         }}
       >
         <div
@@ -170,21 +187,18 @@ const Sample = ({ image }: { image?: boolean }) => (
         </div>
         <div
           css={{
+            cursor: "pointer",
             display: "flex",
+            color: "#616b77",
             alignItems: "center",
-            "& > *+*": {
-              marginLeft: "8px",
-            },
           }}
         >
           <span css={{ fontSize: "13px" }}>6</span>
           <div
             css={{
-              cursor: "pointer",
-              fontSize: "16px",
+              fontSize: "17px",
               marginLeft: "4px",
               marginRight: "4px",
-              "& > *": { verticalAlign: "-2px" },
             }}
           >
             <MdOutlineFavoriteBorder />
@@ -195,7 +209,7 @@ const Sample = ({ image }: { image?: boolean }) => (
   </div>
 );
 
-const Home: NextPage = () => {
+const Project: NextPage = () => {
   return (
     <div>
       <SectionHeader>
@@ -233,4 +247,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default Project;
