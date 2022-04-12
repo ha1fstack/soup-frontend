@@ -163,7 +163,7 @@ const Lander = () => {
         backgroundPosition: "right",
         backgroundBlendMode: "multiply",
         color: "#ff8a05",
-        minHeight: "240px",
+        minHeight: "180px",
         overflow: "hidden",
         maxWidth: "720px",
         padding: "14px",
