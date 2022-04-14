@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
+import { Dimmer } from "components";
 import { Flex } from "styles/components/Box";
 import { Button } from "styles/components/Button";
-import Dimmer from "./Dimmer";
 
 const Logo = styled.span`
   cursor: pointer;
@@ -10,7 +10,7 @@ const Logo = styled.span`
   color: #ff8a05;
 `;
 
-const Login = ({ toggle }: { toggle: () => void }) => {
+export const Login = ({ toggle }: { toggle: () => void }) => {
   return (
     <Dimmer onClick={() => toggle()}>
       <div
@@ -55,5 +55,3 @@ const Login = ({ toggle }: { toggle: () => void }) => {
     </Dimmer>
   );
 };
-
-export default Login;

@@ -6,13 +6,25 @@ const BoxVariant = {
     border: 1px solid #ff8a05;
     background: #ffeeda;
   `,
+  white: css`
+    border: 1px solid #eceff1;
+    background: #fff;
+  `,
   transparent: css``,
 };
 
 export const Flex = styled.div<{
   column?: boolean;
+  inline?: boolean;
 }>`
-  display: flex;
+  ${({ inline }) =>
+    inline
+      ? css`
+          display: inline-flex;
+        `
+      : css`
+          display: flex;
+        `}
   ${({ column }) =>
     column &&
     css`

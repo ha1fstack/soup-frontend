@@ -1,6 +1,6 @@
 import React from "react";
 
-const Dimmer = (props?: React.HTMLProps<HTMLDivElement>) => {
+export const Dimmer = (props?: React.HTMLProps<HTMLDivElement>) => {
   return (
     <div
       css={{
@@ -15,5 +15,3 @@ const Dimmer = (props?: React.HTMLProps<HTMLDivElement>) => {
     />
   );
 };
-
-export default Dimmer;

@@ -11,17 +11,20 @@
   "dependencies": {
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
+    "@tiptap/extension-image": "^2.0.0-beta.27",
+    "@tiptap/react": "^2.0.0-beta.108",
+    "@tiptap/starter-kit": "^2.0.0-beta.183",
     "next": "12.1.4",
     "polished": "^4.2.2",
-    "react": "18.0.0",
-    "react-dom": "18.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
     "react-icons": "^4.3.1",
     "react-textarea-autosize": "^8.3.3"
   },
   "devDependencies": {
     "@types/node": "17.0.23",
-    "@types/react": "18.0.1",
-    "@types/react-dom": "18.0.0",
+    "@types/react": "^18.0.1",
+    "@types/react-dom": "^18.0.0",
     "eslint": "8.13.0",
     "eslint-config-next": "12.1.4",
     "typescript": "4.6.3"

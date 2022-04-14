@@ -81,7 +81,6 @@ const InfoEdit = ({ toggleIsEdit }: { toggleIsEdit: () => void }) => {
           }}
         >
           <Button variant="white">프로필 사진 변경</Button>
-          <Button variant="white">비밀번호 변경</Button>
         </Flex>
         <div
           css={{
@@ -91,16 +90,16 @@ const InfoEdit = ({ toggleIsEdit }: { toggleIsEdit: () => void }) => {
           }}
         >
           <div>
+            <label>자기소개</label>
+            <TextArea minRows={5} maxRows={5}></TextArea>
+          </div>
+          <div>
             <label>닉네임</label>
             <Input placeholder="닉네임"></Input>
           </div>
           <div>
             <label>이메일</label>
             <Input placeholder="이메일"></Input>
-          </div>
-          <div>
-            <label>자기소개</label>
-            <TextArea minRows={5} maxRows={5}></TextArea>
           </div>
         </div>
       </Flex>

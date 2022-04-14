@@ -6,12 +6,12 @@ import {
 import styled from "@emotion/styled";
 import Link, { LinkProps } from "next/link";
 import { useToggle } from "hooks/useToggle";
-import Login from "./Login";
 import { css } from "@emotion/react";
 import { useOuterClick } from "hooks/useOuterClick";
 import React, { useRef } from "react";
 import { Box } from "styles/components/Box";
 import { Button } from "styles/components/Button";
+import { Login } from "components";
 
 const HeaderContainer = styled.div`
   background-color: rgba(255, 255, 255, 0.5);
@@ -90,7 +90,7 @@ const Popup = React.forwardRef<HTMLDivElement>((_, ref) => (
 ));
 Popup.displayName = "Popup";
 
-const Header = () => {
+export const Header = () => {
   const [login, toggleLogin] = useToggle();
   const [notificationPopup, toggleNotificationPopup] = useToggle();
   const [messgePopup, toggleMessagePopup] = useToggle();
@@ -144,5 +144,3 @@ const Header = () => {
     </>
   );
 };
-
-export default Header;

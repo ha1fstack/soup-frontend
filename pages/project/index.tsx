@@ -213,7 +213,7 @@ const Project: NextPage = () => {
   return (
     <div>
       <SectionHeader>
-        <SectionHeader.Title>프로젝트/스터디</SectionHeader.Title>
+        <SectionHeader.Title>프로젝트/스터디 찾기</SectionHeader.Title>
         <SectionHeader.Description>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         </SectionHeader.Description>

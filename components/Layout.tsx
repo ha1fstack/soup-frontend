@@ -2,7 +2,7 @@ import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { useMatch } from "hooks/useMatch";
 import Link, { LinkProps } from "next/link";
-import Header from "./Header";
+import { Header } from "components";
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -83,7 +83,7 @@ const ChildrenContainer = styled.div`
   }
 `;
 
-const Layout = ({ children }: { children: React.ReactNode }) => {
+export const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <PageContainer>
       <Header />
@@ -92,6 +92,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           <SideBarElement href="/" selected>
             홈
           </SideBarElement>
+          <SideBarElement href="/write">새 모집 만들기</SideBarElement>
           <SideBarElement href="/project">프로젝트/스터디 찾기</SideBarElement>
           <SideBarElement href="">라운지</SideBarElement>
           <br />
@@ -106,5 +107,3 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     </PageContainer>
   );
 };
-
-export default Layout;
