@@ -16,6 +16,10 @@ const ButtonVariant = {
     border: 1px solid #e0e3e7;
     background-color: white;
   `,
+  transparent: css`
+    border: 0px;
+    background-color: transparent;
+  `,
 };
 
 const SizeVariant = {

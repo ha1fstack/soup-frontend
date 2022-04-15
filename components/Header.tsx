@@ -2,6 +2,7 @@ import {
   MdOutlineSearch,
   MdOutlineNotifications,
   MdOutlineMail,
+  MdOutlineMenu,
 } from "react-icons/md";
 import styled from "@emotion/styled";
 import Link, { LinkProps } from "next/link";
@@ -9,15 +10,19 @@ import { useToggle } from "hooks/useToggle";
 import { css } from "@emotion/react";
 import { useOuterClick } from "hooks/useOuterClick";
 import React, { useRef } from "react";
-import { Box } from "styles/components/Box";
+import { Box, Flex } from "styles/components/Box";
 import { Button } from "styles/components/Button";
 import { Login } from "components";
+import { Media } from "./Media";
 
 const HeaderContainer = styled.div`
   background-color: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(4px);
   box-sizing: border-box;
   padding: 0px 24px;
+  ${({ theme }) => theme.breakpoints.at("sm")} {
+    padding: 0px 12px;
+  }
   position: fixed;
   height: 69px;
   width: 100%;
@@ -26,7 +31,7 @@ const HeaderContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   border-bottom: solid 1px #eceff1;
-  z-index: 9999;
+  z-index: 999;
 `;
 
 const HeaderMenuContainer = styled.div`
@@ -45,7 +50,7 @@ const HeaderMenuContainer = styled.div`
 const LogoLink = styled.a`
   cursor: pointer;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 24px;
   color: #ff8a05;
 `;
 const Logo = ({ children, ...props }: React.PropsWithChildren<LinkProps>) => (
@@ -90,46 +95,80 @@ const Popup = React.forwardRef<HTMLDivElement>((_, ref) => (
 ));
 Popup.displayName = "Popup";
 
-export const Header = () => {
+export const Header = ({ toggleSideBar }: { toggleSideBar?: () => void }) => {
   const [login, toggleLogin] = useToggle();
   const [notificationPopup, toggleNotificationPopup] = useToggle();
-  const [messgePopup, toggleMessagePopup] = useToggle();
+  const [messagePopup, toggleMessagePopup] = useToggle();
 
-  const notificationRef = useOuterClick<HTMLDivElement>(
-    toggleNotificationPopup
+  const notificationRef = useOuterClick<HTMLDivElement>(() =>
+    toggleNotificationPopup()
   );
-  const messageRef = useOuterClick<HTMLDivElement>(toggleMessagePopup);
+  const messageRef = useOuterClick<HTMLDivElement>(() => toggleMessagePopup());
 
   return (
     <>
       <header>
-        <HeaderContainer>
-          <Logo href="/">SouP</Logo>
+        <HeaderContainer
+          css={false && { position: "initial", padding: "0px 12px" }}
+        >
+          <Flex css={{ alignItems: "center", gap: "12px", color: "#fa8705" }}>
+            <Media css={{ display: "flex", gap: "12px" }} at="sm">
+              <Button
+                onClick={toggleSideBar}
+                variant="transparent"
+                icon
+                css={{
+                  marginLeft: "4px",
+                  fontSize: "24px",
+                  padding: 0,
+                }}
+              >
+                <MdOutlineMenu />
+              </Button>
+              <div
+                css={{
+                  width: "1px",
+                  height: "36px",
+                  backgroundColor: "#eceff1",
+                }}
+              />
+            </Media>
+            <Logo href="/">SouP</Logo>
+          </Flex>
           <HeaderMenuContainer>
-            <SearchButton>
-              <MdOutlineSearch />
-              프로젝트 찾아보기
-            </SearchButton>
-            <div css={{ position: "relative" }}>
-              <Button
-                icon
-                onClick={() => toggleNotificationPopup()}
-                css={{ width: "36px" }}
-              >
-                <MdOutlineNotifications css={HeaderIconStyle} />
-              </Button>
-              {notificationPopup && <Popup ref={notificationRef} />}
-            </div>
-            <div css={{ position: "relative" }}>
-              <Button
-                icon
-                onClick={() => toggleMessagePopup()}
-                css={{ width: "36px" }}
-              >
-                <MdOutlineMail css={HeaderIconStyle} />
-              </Button>
-              {messgePopup && <Popup ref={messageRef} />}
-            </div>
+            <Media css={{ display: "flex", gap: "12px" }} greaterThan="sm">
+              <SearchButton>
+                <MdOutlineSearch />
+                프로젝트 찾아보기
+              </SearchButton>
+              <div css={{ position: "relative" }}>
+                <Button
+                  icon
+                  onClick={
+                    notificationPopup
+                      ? undefined
+                      : () => toggleNotificationPopup()
+                  }
+                  css={{ width: "36px" }}
+                >
+                  <MdOutlineNotifications css={HeaderIconStyle} />
+                </Button>
+                {notificationPopup && <Popup ref={notificationRef} />}
+              </div>
+              <div css={{ position: "relative" }}>
+                <Button
+                  icon
+                  onClick={
+                    messagePopup ? undefined : () => toggleMessagePopup()
+                  }
+                  css={{ width: "36px" }}
+                >
+                  <MdOutlineMail css={HeaderIconStyle} />
+                </Button>
+                {messagePopup && <Popup ref={messageRef} />}
+              </div>
+            </Media>
+
             <Button
               onClick={() => toggleLogin()}
               variant="primary"

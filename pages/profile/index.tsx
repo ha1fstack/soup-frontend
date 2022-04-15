@@ -111,7 +111,12 @@ const Info = () => {
   const [isEdit, toggleIsEdit] = useToggle();
 
   return (
-    <Box column>
+    <Box
+      css={{
+        flex: "1 0 400px",
+      }}
+      column
+    >
       {isEdit ? (
         <InfoEdit toggleIsEdit={toggleIsEdit} />
       ) : (
@@ -212,24 +217,22 @@ const Profile = () => {
       </SectionHeader>
       <Flex
         css={{
+          flexWrap: "wrap",
           justifyContent: "space-between",
           width: "100%",
           alignItems: "flex-start",
           "& > *": {
             flex: 1,
           },
-          "& > *+*": {
-            marginLeft: "12px",
-          },
+          gap: "24px",
         }}
       >
         <Info />
         <Flex
           column
           css={{
-            "& > *+*": {
-              marginTop: "12px",
-            },
+            flex: "1 0 400px",
+            gap: "24px",
           }}
         >
           <Box column>

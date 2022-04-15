@@ -2,7 +2,12 @@ import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { useMatch } from "hooks/useMatch";
 import Link, { LinkProps } from "next/link";
-import { Header } from "components";
+import { Dimmer, Header } from "components";
+import { useToggle } from "hooks/useToggle";
+import React, { useEffect, useRef } from "react";
+import { Media } from "./Media";
+import Portal from "./Portal";
+import { useRouter } from "next/router";
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -15,6 +20,8 @@ const BodyContainer = styled.div`
 `;
 
 const SideBarContainer = styled.ul`
+  z-index: 9999;
+  background-color: #fff;
   margin: 0;
   line-height: normal;
   list-style-type: none;
@@ -26,6 +33,9 @@ const SideBarContainer = styled.ul`
   align-items: center;
   border-right: solid 1px #eceff1;
   padding: 16px;
+  ${({ theme }) => theme.breakpoints.at("sm")} {
+    top: 0;
+  }
 `;
 
 interface ISideBarProps {
@@ -66,6 +76,7 @@ const SideBarElement = ({
     </li>
   );
 };
+
 const ChildrenContainer = styled.div`
   overflow: auto;
   margin-top: 69px;
@@ -81,29 +92,90 @@ const ChildrenContainer = styled.div`
     max-width: 1280px;
     width: 100%;
   }
+  ${({ theme }) => theme.breakpoints.at("sm")} {
+    margin-left: 0px;
+  }
 `;
 
-export const Layout = ({ children }: { children: React.ReactNode }) => {
+const HeaderIconStyle = css({
+  color: "#3e5060",
+  margin: "-9px",
+});
+
+const SideBar = ({
+  ...props
+}: React.ComponentProps<typeof SideBarContainer>) => {
   return (
-    <PageContainer>
-      <Header />
-      <BodyContainer>
-        <SideBarContainer>
-          <SideBarElement href="/" selected>
-            홈
-          </SideBarElement>
-          <SideBarElement href="/write">새 모집 만들기</SideBarElement>
-          <SideBarElement href="/project">프로젝트/스터디 찾기</SideBarElement>
-          <SideBarElement href="">라운지</SideBarElement>
-          <br />
-          <SideBarElement href="/profile">내 프로필</SideBarElement>
-          <SideBarElement href="">새소식</SideBarElement>
-          <SideBarElement href="">쪽지</SideBarElement>
-        </SideBarContainer>
-        <ChildrenContainer>
-          <div>{children}</div>
-        </ChildrenContainer>
-      </BodyContainer>
-    </PageContainer>
+    <>
+      <SideBarContainer {...props}>
+        <SideBarElement href="/" selected>
+          홈
+        </SideBarElement>
+        <SideBarElement href="/write">새 모집 만들기</SideBarElement>
+        <SideBarElement href="/project">프로젝트/스터디 찾기</SideBarElement>
+        <SideBarElement href="">라운지</SideBarElement>
+        <br />
+        <SideBarElement href="/profile">내 프로필</SideBarElement>
+        <SideBarElement href="">새소식</SideBarElement>
+        <SideBarElement href="">쪽지</SideBarElement>
+      </SideBarContainer>
+    </>
+  );
+};
+
+const MobileSideBar = ({
+  show,
+  toggle,
+  ...props
+}: { show: boolean; toggle: (set?: boolean) => void } & React.ComponentProps<
+  typeof SideBarContainer
+>) => {
+  const router = useRouter();
+
+  const initial = useRef(true);
+  useEffect(() => {
+    if (initial.current) initial.current = false;
+    else if (router.pathname) toggle(false);
+  }, [router.pathname, toggle]);
+
+  if (!show) return null;
+  return (
+    <Portal at="#portal">
+      <SideBarContainer css={{ position: "fixed" }} {...props}>
+        <SideBarElement href="/" selected>
+          홈
+        </SideBarElement>
+        <SideBarElement href="/write">새 모집 만들기</SideBarElement>
+        <SideBarElement href="/project">프로젝트/스터디 찾기</SideBarElement>
+        <SideBarElement href="">라운지</SideBarElement>
+        <br />
+        <SideBarElement href="/profile">내 프로필</SideBarElement>
+        <SideBarElement href="">새소식</SideBarElement>
+        <SideBarElement href="">쪽지</SideBarElement>
+      </SideBarContainer>
+      <Dimmer onClick={() => toggle()} css={{ zIndex: 9998 }} />
+    </Portal>
+  );
+};
+
+export const Layout = ({ children }: { children: React.ReactNode }) => {
+  const [showSidebar, toggleShowSideBar] = useToggle();
+  return (
+    <>
+      <PageContainer>
+        <Header toggleSideBar={toggleShowSideBar} />
+        <Media at="sm">
+          <MobileSideBar show={showSidebar} toggle={toggleShowSideBar} />
+        </Media>
+        <Media greaterThan="sm">
+          <SideBar />
+        </Media>
+        <BodyContainer>
+          <ChildrenContainer>
+            <div>{children}</div>
+          </ChildrenContainer>
+        </BodyContainer>
+      </PageContainer>
+    </>
   );
 };

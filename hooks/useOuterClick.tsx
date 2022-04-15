@@ -14,11 +14,11 @@ export const useOuterClick = <T extends HTMLElement>(
 
       handler(event); // Call the handler only if the click is outside of the element passed.
     };
-    document.addEventListener("mousedown", listener);
-    document.addEventListener("touchstart", listener);
+    document.addEventListener("mouseup", listener);
+    document.addEventListener("touchend", listener);
     return () => {
-      document.removeEventListener("mousedown", listener);
-      document.removeEventListener("touchstart", listener);
+      document.removeEventListener("mouseup", listener);
+      document.removeEventListener("touchend", listener);
     };
   });
 

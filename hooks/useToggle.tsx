@@ -1,10 +1,13 @@
 import { LinkProps } from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
-export function useToggle(initial = false): [boolean, () => void] {
+export function useToggle(initial = false): [boolean, (set?: boolean) => void] {
   const [state, setState] = useState(initial);
 
-  const toggle = () => setState((state) => !state);
+  const toggle = useCallback(
+    (set?: boolean) => setTimeout(() => setState((state) => set || !state), 0),
+    []
+  );
   return [state, toggle];
 }
