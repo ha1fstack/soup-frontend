@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { Flex } from "./components/Box";
 
 export const SectionHeader = Object.assign(
   styled.div`
@@ -20,7 +21,7 @@ export const SectionHeader = Object.assign(
   }
 );
 
-export const DividingSection = styled.div`
+export const DividingSection = styled(Flex)`
   padding-left: 100vw;
   margin-left: -100vw;
   padding-right: 100vw;

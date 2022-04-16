@@ -39,6 +39,7 @@ const SideBarContainer = styled.ul`
 `;
 
 interface ISideBarProps {
+  exact?: boolean;
   selected?: boolean;
 }
 const SideBarLink = styled.a<ISideBarProps>`
@@ -65,9 +66,10 @@ const SideBarLink = styled.a<ISideBarProps>`
 const SideBarElement = ({
   children,
   selected,
+  exact,
   ...props
 }: ISideBarProps & React.PropsWithChildren<LinkProps>) => {
-  const match = useMatch(props.href);
+  const match = useMatch(props.href, exact);
   return (
     <li>
       <Link {...props}>
@@ -112,7 +114,9 @@ const SideBar = ({
           홈
         </SideBarElement>
         <SideBarElement href="/write">새 모집 만들기</SideBarElement>
-        <SideBarElement href="/project">프로젝트/스터디 찾기</SideBarElement>
+        <SideBarElement href="/project" exact={false}>
+          프로젝트/스터디 찾기
+        </SideBarElement>
         <SideBarElement href="">라운지</SideBarElement>
         <br />
         <SideBarElement href="/profile">내 프로필</SideBarElement>
