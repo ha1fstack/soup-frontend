@@ -4,7 +4,11 @@ import { Editor } from "components";
 
 const Write = () => {
   return (
-    <div>
+    <div
+      css={{
+        maxWidth: "960px",
+      }}
+    >
       <SectionHeader>
         <SectionHeader.Title>새 모집 만들기</SectionHeader.Title>
         <SectionHeader.Description>

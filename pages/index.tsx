@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import { MdOutlineArrowForward } from "react-icons/md";
 import { useTheme } from "@emotion/react";
+import styled from "@emotion/styled";
 
 const Article = () => {
   const router = useRouter();
@@ -17,8 +18,8 @@ const Article = () => {
       column
       css={{
         padding: 0,
-        flex: "20%",
-        minWidth: "240px",
+        flex: "1 0 300px",
+        minWidth: "300px",
         height: "180px",
         cursor: "pointer",
       }}
@@ -120,7 +121,20 @@ const Article = () => {
   );
 };
 
-const ArticleList = ({ source, data }: { source: string; data?: any }) => {
+const Spacer = styled.div`
+  content: "";
+  flex: 1 0 300px;
+  visibility: hidden;
+  margin: 0;
+`;
+
+const ArticleList = ({
+  source,
+  data,
+}: {
+  source: string;
+  data?: Record<string, any>[];
+}) => {
   return (
     <div
       css={{
@@ -149,13 +163,13 @@ const ArticleList = ({ source, data }: { source: string; data?: any }) => {
         css={{
           display: "flex",
           flexWrap: "wrap",
-          margin: "-12px",
-          "& > *": {
-            margin: "12px",
-          },
+          gap: "12px",
         }}
       >
         <Article /> <Article /> <Article /> <Article />
+        <Spacer />
+        <Spacer />
+        <Spacer />
       </div>
     </div>
   );
@@ -231,7 +245,7 @@ const Home: NextPage = () => {
   return (
     <div>
       <Lander />
-      <ArticleList source="SouP" />
+      {/*<ArticleList data={data?.slice(20, 24)} source="SouP" />*/}
       <ArticleList source="Okky" />
       <ArticleList source="인프런" />
       <ArticleList source="캠퍼스픽" />

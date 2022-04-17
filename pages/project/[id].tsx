@@ -53,12 +53,15 @@ const Page = () => {
           </Flex>
         </Flex>
       </DividingSection>
-      <Viewer
-        css={{
-          marginTop: "24px",
-          marginBottom: "96px",
-        }}
-      />
+      <Flex>
+        <Viewer
+          css={{
+            maxWidth: "960px",
+            marginTop: "24px",
+            marginBottom: "96px",
+          }}
+        />
+      </Flex>
       <Box column>
         <div css={{ height: "240px" }}></div>
       </Box>
