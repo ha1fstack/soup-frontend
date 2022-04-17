@@ -1,18 +1,17 @@
+import { css, useTheme } from "@emotion/react";
+import styled from "@emotion/styled";
+import { Button, Box, Flex } from "common/components";
+import { useOuterClick } from "hooks/useOuterClick";
+import { useToggle } from "hooks/useToggle";
+import Link, { LinkProps } from "next/link";
+import React from "react";
 import {
+  MdOutlineMenu,
   MdOutlineSearch,
   MdOutlineNotifications,
   MdOutlineMail,
-  MdOutlineMenu,
 } from "react-icons/md";
-import styled from "@emotion/styled";
-import Link, { LinkProps } from "next/link";
-import { useToggle } from "hooks/useToggle";
-import { css } from "@emotion/react";
-import { useOuterClick } from "hooks/useOuterClick";
-import React, { useRef } from "react";
-import { Box, Flex } from "styles/components/Box";
-import { Button } from "styles/components/Button";
-import { Login } from "components";
+import { Login } from "./Login";
 import { Media } from "./Media";
 
 const HeaderContainer = styled.div`
@@ -51,7 +50,7 @@ const LogoLink = styled.a`
   cursor: pointer;
   font-weight: bold;
   font-size: 24px;
-  color: #ff8a05;
+  color: ${({ theme }) => theme.color.primary};
 `;
 const Logo = ({ children, ...props }: React.PropsWithChildren<LinkProps>) => (
   <Link {...props}>
@@ -96,6 +95,8 @@ const Popup = React.forwardRef<HTMLDivElement>((_, ref) => (
 Popup.displayName = "Popup";
 
 export const Header = ({ toggleSideBar }: { toggleSideBar?: () => void }) => {
+  const theme = useTheme();
+
   const [login, toggleLogin] = useToggle();
   const [notificationPopup, toggleNotificationPopup] = useToggle();
   const [messagePopup, toggleMessagePopup] = useToggle();
@@ -111,7 +112,13 @@ export const Header = ({ toggleSideBar }: { toggleSideBar?: () => void }) => {
         <HeaderContainer
           css={false && { position: "initial", padding: "0px 12px" }}
         >
-          <Flex css={{ alignItems: "center", gap: "12px", color: "#fa8705" }}>
+          <Flex
+            css={{
+              alignItems: "center",
+              gap: "12px",
+              color: theme.color.primary,
+            }}
+          >
             <Media css={{ display: "flex", gap: "12px" }} at="sm">
               <Button
                 onClick={toggleSideBar}

@@ -1,16 +1,18 @@
+import { useTheme } from "@emotion/react";
 import styled from "@emotion/styled";
+import { Flex, Button } from "common/components";
 import { Dimmer } from "components";
-import { Flex } from "styles/components/Box";
-import { Button } from "styles/components/Button";
 
 const Logo = styled.span`
   cursor: pointer;
   font-weight: bold;
   font-size: 28px;
-  color: #ff8a05;
+  color: ${({ theme }) => theme.color.primary};
 `;
 
 export const Login = ({ toggle }: { toggle: () => void }) => {
+  const theme = useTheme();
+
   return (
     <Dimmer onClick={() => toggle()}>
       <div
@@ -25,7 +27,7 @@ export const Login = ({ toggle }: { toggle: () => void }) => {
           onClick={(e) => e.stopPropagation()}
           css={{
             height: "240px",
-            backgroundColor: "white",
+            backgroundColor: theme.color.positive,
             borderRadius: "8px",
             padding: "24px 36px",
             boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.1)",

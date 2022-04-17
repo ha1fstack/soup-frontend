@@ -1,11 +1,7 @@
-import { Editor } from "components/Editor";
-import { Viewer } from "components/Viewer";
-import React from "react";
-import { Box, Flex } from "styles/components/Box";
-import { Button } from "styles/components/Button";
-import { Input } from "styles/components/Input";
-import { DividingSection, SectionHeader } from "styles/layout";
 import Image from "next/image";
+import { Flex, Box } from "common/components";
+import { SectionHeader, DividingSection } from "common/components/Section";
+import { Viewer } from "components";
 
 const Page = () => {
   return (

@@ -1,25 +1,9 @@
-import styled from "@emotion/styled";
-import type { NextPage } from "next";
-import Image from "next/image";
+import { Box, Flex, Button } from "common/components";
+import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { MouseEventHandler } from "react";
-import { MdOutlineArrowForward, MdOutlineOpenInNew } from "react-icons/md";
-import { Box, Flex } from "styles/components/Box";
-import { Button } from "styles/components/Button";
-import { DividingSection, SectionHeader } from "styles/layout";
-
-const ArticleContainer = styled.div({
-  flex: "20%",
-  minWidth: "240px",
-  border: "1px solid #ECEFF1",
-  background: "#fafbfb",
-  borderRadius: "8px",
-  display: "flex",
-  flexDirection: "column",
-  height: "180px",
-  overflow: "hidden",
-  cursor: "pointer",
-});
+import Image from "next/image";
+import { MdOutlineArrowForward } from "react-icons/md";
+import { useTheme } from "@emotion/react";
 
 const Article = () => {
   const router = useRouter();
@@ -29,7 +13,17 @@ const Article = () => {
   };
 
   return (
-    <ArticleContainer onClick={handleClick}>
+    <Box
+      column
+      css={{
+        padding: 0,
+        flex: "20%",
+        minWidth: "240px",
+        height: "180px",
+        cursor: "pointer",
+      }}
+      onClick={handleClick}
+    >
       <div
         css={{
           flexWrap: "nowrap",
@@ -122,7 +116,7 @@ const Article = () => {
         </div>
         <div css={{ fontWeight: "500", fontSize: "14px" }}>웹 개발</div>
       </div>
-    </ArticleContainer>
+    </Box>
   );
 };
 
@@ -168,6 +162,7 @@ const ArticleList = ({ source, data }: { source: string; data?: any }) => {
 };
 
 const Lander = () => {
+  const theme = useTheme();
   return (
     <Box
       column
@@ -178,7 +173,7 @@ const Lander = () => {
         backgroundRepeat: "no-repeat",
         backgroundPosition: "right",
         backgroundBlendMode: "multiply",
-        color: "#ff8a05",
+        color: theme.color.primary,
         minHeight: "180px",
         overflow: "hidden",
         maxWidth: "720px",

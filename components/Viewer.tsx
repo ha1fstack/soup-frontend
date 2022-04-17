@@ -1,14 +1,6 @@
-import { css } from "@emotion/react";
-import styled from "@emotion/styled";
-import {
-  useEditor,
-  EditorContent,
-  Editor as TipTapEditor,
-} from "@tiptap/react";
+import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import React from "react";
 import Image from "@tiptap/extension-image";
-import { Box, Flex } from "styles/components/Box";
 import { Youtube } from "tiptap/youtube";
 
 export const Viewer = (props: React.HTMLProps<HTMLDivElement>) => {

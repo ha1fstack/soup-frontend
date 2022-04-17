@@ -1,17 +1,17 @@
-import { css } from "@emotion/react";
+import { css, Theme } from "@emotion/react";
 import styled from "@emotion/styled";
 
-const BoxVariant = {
+const BoxVariant = (theme: Theme) => ({
   primary: css`
-    border: 1px solid #ff8a05;
+    border: 1px solid ${theme.color.primary};
     background: #ffeeda;
   `,
   white: css`
     border: 1px solid #eceff1;
-    background: #fff;
+    background: ${theme.color.positive};
   `,
   transparent: css``,
-};
+});
 
 export const Flex = styled.div<{
   column?: boolean;
@@ -32,23 +32,40 @@ export const Flex = styled.div<{
     `}
 `;
 
+const fullspanStyle = css`
+  padding-left: 10vw;
+  margin-left: -10vw;
+  padding-right: 10vw;
+  margin-right: -10vw;
+  border-left: 0px;
+  border-right: 0px;
+`;
+
 export const Box = styled.div<{
-  variant?: keyof typeof BoxVariant;
+  variant?: keyof ReturnType<typeof BoxVariant>;
   column?: boolean;
+  responsive?: boolean;
+  fullspan?: boolean;
 }>`
   border-radius: 8px;
   display: flex;
   padding: 12px;
+  ${({ fullspan }) => fullspan && fullspanStyle}
   ${({ column }) =>
     column &&
     css`
       flex-direction: column;
     `}
-  ${({ variant }) =>
+  ${({ responsive, theme }) =>
+    responsive &&
+    css({
+      [theme.breakpoints.at("sm")]: fullspanStyle,
+    })}
+  ${({ variant, theme }) =>
     variant
-      ? BoxVariant[variant]
+      ? BoxVariant(theme)[variant]
       : css`
           border: 1px solid #eceff1;
-          background: #fafbfb;
+          background-color: #fafbfb;
         `}
 `;

@@ -1,9 +1,6 @@
-import { Editor } from "components/Editor";
-import React from "react";
-import { Box, Flex } from "styles/components/Box";
-import { Button } from "styles/components/Button";
-import { Input } from "styles/components/Input";
-import { SectionHeader } from "styles/layout";
+import { Box, Flex, Input, Button } from "common/components";
+import { SectionHeader } from "common/components/Section";
+import { Editor } from "components";
 
 const Write = () => {
   return (
@@ -15,11 +12,13 @@ const Write = () => {
         </SectionHeader.Description>
       </SectionHeader>
       <Box
+        responsive
         column
         css={{
           "& > *+*": {
             marginTop: "12px",
           },
+          marginBottom: "24px",
         }}
       >
         <Flex
@@ -32,10 +31,10 @@ const Write = () => {
             css={{ maxWidth: "480px", flex: "1 0 auto" }}
             placeholder="제목"
           />
-          <Button variant="primary">작성하기</Button>
+          <Button variant="primary">작성</Button>
         </Flex>
-        <Editor />
       </Box>
+      <Editor />
     </div>
   );
 };

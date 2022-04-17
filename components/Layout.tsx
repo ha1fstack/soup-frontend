@@ -1,19 +1,17 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { useMatch } from "hooks/useMatch";
-import Link, { LinkProps } from "next/link";
-import { Dimmer, Header } from "components";
 import { useToggle } from "hooks/useToggle";
-import React, { useEffect, useRef } from "react";
-import { Media } from "./Media";
-import Portal from "./Portal";
+import Link, { LinkProps } from "next/link";
 import { useRouter } from "next/router";
+import { useRef, useEffect } from "react";
+import { Dimmer, Header, Media, Portal } from "components";
 
 const PageContainer = styled.div`
   min-height: 100vh;
 `;
 const BodyContainer = styled.div`
-  background-color: white;
+  background-color: ${({ theme }) => theme.color.positive};
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -21,7 +19,7 @@ const BodyContainer = styled.div`
 
 const SideBarContainer = styled.ul`
   z-index: 9999;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.color.positive};
   margin: 0;
   line-height: normal;
   list-style-type: none;
@@ -96,13 +94,9 @@ const ChildrenContainer = styled.div`
   }
   ${({ theme }) => theme.breakpoints.at("sm")} {
     margin-left: 0px;
+    padding: 24px 18px;
   }
 `;
-
-const HeaderIconStyle = css({
-  color: "#3e5060",
-  margin: "-9px",
-});
 
 const SideBar = ({
   ...props

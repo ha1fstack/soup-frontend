@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Flex } from "./components/Box";
+import { Flex } from "common/components";
 
 export const SectionHeader = Object.assign(
   styled.div`

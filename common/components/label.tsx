@@ -1,24 +1,28 @@
-import { css } from "@emotion/react";
+import { css, Theme } from "@emotion/react";
 import styled from "@emotion/styled";
 
-const LabelVariant = {
+export const LabelVariant = (theme: Theme) => ({
   primary: css`
-    color: white;
+    color: ${theme.color.positive};
     border: 0px;
-    background-color: #ff8a05;
+    background-color: ${theme.color.primary};
   `,
   "primary-outlined": css`
-    color: #ff8a05;
-    border: 1px solid #ff8a05;
-    background-color: white;
+    color: ${theme.color.primary};
+    border: 1px solid ${theme.color.primary};
+    background-color: ${theme.color.positive};
   `,
   white: css`
     border: 1px solid #e0e3e7;
-    background-color: white;
+    background-color: ${theme.color.positive};
   `,
-};
+  transparent: css`
+    border: 0px;
+    background-color: transparent;
+  `,
+});
 
-const SizeVariant = {
+const SizeVariant = () => ({
   smaller: css`
     min-height: 22px;
     padding: 0px 6px;
@@ -31,11 +35,11 @@ const SizeVariant = {
     font-size: 12px;
     border-radius: 6px;
   `,
-};
+});
 
 export const Label = styled.div<{
-  variant?: keyof typeof LabelVariant;
-  size?: keyof typeof SizeVariant;
+  variant?: keyof ReturnType<typeof LabelVariant>;
+  size?: keyof ReturnType<typeof SizeVariant>;
 }>`
   line-height: normal;
   padding: 0px 16px;
@@ -44,16 +48,16 @@ export const Label = styled.div<{
   justify-content: center;
   ${({ size }) =>
     size
-      ? SizeVariant[size]
+      ? SizeVariant()[size]
       : css`
           height: 36px;
           padding: 0px 16px;
           border-radius: 8px;
         `}
 
-  ${({ variant }) =>
+  ${({ variant, theme }) =>
     variant
-      ? LabelVariant[variant]
+      ? LabelVariant(theme)[variant]
       : css`
           border: 1px solid #e0e3e7;
           background-color: #fafbfb;

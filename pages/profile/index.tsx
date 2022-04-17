@@ -1,10 +1,8 @@
-import { Box, Flex } from "styles/components/Box";
-import { SectionHeader } from "styles/layout";
 import Image from "next/image";
-import { Button } from "styles/components/Button";
-import { MdOutlineEdit } from "react-icons/md";
+import { Flex, Button, TextArea, Input, Box } from "common/components";
+import { SectionHeader } from "common/components/Section";
 import { useToggle } from "hooks/useToggle";
-import { Input, TextArea } from "styles/components/Input";
+import { MdOutlineEdit } from "react-icons/md";
 
 const DetailsRow = ({
   item,
@@ -115,6 +113,7 @@ const Info = () => {
       css={{
         flex: "1 0 400px",
       }}
+      responsive
       column
     >
       {isEdit ? (
@@ -235,11 +234,11 @@ const Profile = () => {
             gap: "24px",
           }}
         >
-          <Box column>
+          <Box responsive column>
             <p css={{ fontWeight: 600 }}>선호 스택</p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit.
           </Box>
-          <Box column>
+          <Box responsive column>
             <p css={{ fontWeight: 600 }}>스킬</p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit.
           </Box>

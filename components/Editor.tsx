@@ -6,9 +6,8 @@ import {
   Editor as TipTapEditor,
 } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import React from "react";
 import Image from "@tiptap/extension-image";
-import { Box, Flex } from "styles/components/Box";
+import { Flex, Box } from "common/components";
 import {
   MdOutlineCode,
   MdOutlineFormatBold,
@@ -369,6 +368,7 @@ export const Editor = () => {
   return (
     <>
       <Box
+        responsive
         variant="white"
         column
         css={{
@@ -407,6 +407,10 @@ export const Editor = () => {
               marginBlockEnd: "18px",
               borderRadius: "8px",
               backgroundColor: "#f0f0f0",
+              width: "100%",
+              maxWidth: "560px",
+              height: "50vw",
+              maxHeight: "315px",
             },
           },
         }}
