@@ -4,8 +4,23 @@ import { NextPage } from "next";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { MdOutlineFavoriteBorder } from "react-icons/md";
+import { dehydrate, QueryClient, useQuery } from "react-query";
+import { http } from "common/services";
 
-const Sample = ({ image }: { image?: boolean }) => {
+interface Post {
+  id: number;
+  postId: number;
+  postName: string;
+  content: string;
+  userName: string;
+  stack: string;
+  link: string;
+  talk: string;
+  ipDate: string;
+  source: "SOUP" | "INFLEARN" | "OKKY" | "CAMPICK" | "HOLA";
+}
+
+const Post = ({ image, post }: { image?: boolean; post: Post }) => {
   const router = useRouter();
   const handleArticleClick = (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -65,7 +80,7 @@ const Sample = ({ image }: { image?: boolean }) => {
                 marginBottom: "8px",
               }}
             >
-              사이드 프로젝트 같이 하실 UI/UX 디자이너 분을 구합니다!
+              {post.postName}
             </div>
             <div
               css={{
@@ -76,9 +91,7 @@ const Sample = ({ image }: { image?: boolean }) => {
                 WebkitLineClamp: 2,
               }}
             >
-              타입스크립트, 까다롭기만한데 굳이 왜 써야할까?에 대한 가벼운
-              이야기를 다룹니다. 본 게시물은 프론트엔드와 백엔드 개발자 모두가
-              이해할 수 있는 수준으로 작성되었습니다 :)
+              {post.content}
             </div>
           </div>
 
@@ -91,7 +104,7 @@ const Sample = ({ image }: { image?: boolean }) => {
               WebkitLineClamp: 2,
             }}
           >
-            by <b>홍길동</b> · 1시간 전 · 댓글 3개
+            by <b>{post.userName}</b> · 1시간 전 · 댓글 3개
           </div>
         </div>
         {image ? (
@@ -137,7 +150,7 @@ const Sample = ({ image }: { image?: boolean }) => {
           }}
         >
           <Label variant="white" size="small">
-            인프런
+            {post.source}
           </Label>
           <Label variant="white" size="small">
             웹 개발
@@ -217,6 +230,8 @@ const Sample = ({ image }: { image?: boolean }) => {
 };
 
 const Project: NextPage = () => {
+  const { data } = useQuery("projects", getProjects);
+
   return (
     <div>
       <SectionHeader>
@@ -241,14 +256,28 @@ const Project: NextPage = () => {
           gap: "12px",
         }}
       >
-        <Sample /> <Sample image /> <Sample /> <Sample /> <Sample image />
-        <Sample /> <Sample image /> <Sample /> <Sample /> <Sample />
-        <Sample image /> <Sample /> <Sample /> <Sample /> <Sample /> <Sample />
-        <Sample image /> <Sample /> <Sample /> <Sample image /> <Sample />
-        <Sample /> <Sample /> <Sample />
+        {data?.map((post, i) => (
+          <Post post={post} key={i} />
+        ))}
       </Flex>
     </div>
   );
 };
 
+const getProjects = async () => {
+  const res = await http.get<Post[]>("/projects");
+  return res.data;
+};
+
+export async function getStaticProps() {
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery("projects", getProjects);
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
+}
 export default Project;

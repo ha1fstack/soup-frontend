@@ -15,11 +15,13 @@
     "@tiptap/extension-image": "^2.0.0-beta.27",
     "@tiptap/react": "^2.0.0-beta.108",
     "@tiptap/starter-kit": "^2.0.0-beta.183",
+    "axios": "^0.26.1",
     "next": "12.1.4",
     "polished": "^4.2.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-icons": "^4.3.1",
+    "react-query": "^3.34.20",
     "react-textarea-autosize": "^8.3.3"
   },
   "devDependencies": {

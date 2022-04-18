@@ -4,9 +4,11 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import { MdOutlineArrowForward } from "react-icons/md";
 import { useTheme } from "@emotion/react";
+import { dehydrate, QueryClient, useQuery } from "react-query";
 import styled from "@emotion/styled";
+import { http } from "common/services";
 
-const Article = () => {
+const Article = ({ title, content }: { title: string; content: string }) => {
   const router = useRouter();
   const handleClick = (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -49,7 +51,7 @@ const Article = () => {
             WebkitLineClamp: 2,
           }}
         >
-          사이드 프로젝트 같이 하실 UI/UX 디자이너 분을 구합니다!
+          {title}
         </div>
         <div
           css={{
@@ -60,9 +62,7 @@ const Article = () => {
             WebkitLineClamp: 2,
           }}
         >
-          타입스크립트, 까다롭기만한데 굳이 왜 써야할까?에 대한 가벼운 이야기를
-          다룹니다. 본 게시물은 프론트엔드와 백엔드 개발자 모두가 이해할 수 있는
-          수준으로 작성되었습니다 :)
+          {content}
         </div>
       </div>
       <div
@@ -166,7 +166,9 @@ const ArticleList = ({
           gap: "12px",
         }}
       >
-        <Article /> <Article /> <Article /> <Article />
+        {data?.map((item, i) => (
+          <Article key={i} title={item.postName} content={item.content} />
+        ))}
         <Spacer />
         <Spacer />
         <Spacer />
@@ -242,16 +244,39 @@ const Lander = () => {
 };
 
 const Home: NextPage = () => {
+  const { data } = useQuery("front-projects", getFrontProjects);
   return (
     <div>
       <Lander />
       {/*<ArticleList data={data?.slice(20, 24)} source="SouP" />*/}
-      <ArticleList source="Okky" />
-      <ArticleList source="인프런" />
-      <ArticleList source="캠퍼스픽" />
-      <ArticleList source="HOLA" />
+      <ArticleList data={data?.okky.slice(0, 8)} source="Okky" />
+      <ArticleList data={data?.inflearn.slice(0, 8)} source="인프런" />
+      <ArticleList data={data?.campick.slice(0, 8)} source="캠퍼스픽" />
+      <ArticleList data={data?.hola.slice(0, 8)} source="HOLA" />
     </div>
   );
 };
+
+const getFrontProjects = async () => {
+  const res = await http.get<{
+    okky: any[];
+    inflearn: any[];
+    campick: any[];
+    hola: any[];
+  }>("/front-projects");
+  return res.data;
+};
+
+export async function getStaticProps() {
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery("front-projects", getFrontProjects);
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
+}
 
 export default Home;
