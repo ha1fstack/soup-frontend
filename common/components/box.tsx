@@ -33,6 +33,7 @@ export const Flex = styled.div<{
 `;
 
 const fullspanStyle = css`
+  box-sizing: content-box;
   padding-left: 10vw;
   margin-left: -10vw;
   padding-right: 10vw;
