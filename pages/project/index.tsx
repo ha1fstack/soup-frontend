@@ -1,12 +1,39 @@
 import { Box, Label, Button, Flex } from "common/components";
 import { SectionHeader, DividingSection } from "common/components/Section";
-import { NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { MdOutlineFavoriteBorder } from "react-icons/md";
-import { dehydrate, QueryClient, useQuery } from "react-query";
+import {
+  dehydrate,
+  QueryClient,
+  useInfiniteQuery,
+  useQuery,
+} from "react-query";
 import { http } from "common/services";
+import { Pagination } from "common/components/Pagination";
+import { AppContext } from "next/app";
 
+interface Pageable<T> {
+  content: T;
+  pageable: {
+    sort: { empty: true; sorted: false; unsorted: true };
+    offset: number;
+    pageNumber: number;
+    pageSize: number;
+    unpaged: boolean;
+    paged: boolean;
+  };
+  last: boolean;
+  totalPages: number;
+  totalElements: number;
+  size: number;
+  number: number;
+  sort: { empty: boolean; sorted: boolean; unsorted: boolean };
+  first: boolean;
+  numberOfElements: number;
+  empty: boolean;
+}
 interface Post {
   id: number;
   postId: number;
@@ -230,7 +257,26 @@ const Post = ({ image, post }: { image?: boolean; post: Post }) => {
 };
 
 const Project: NextPage = () => {
-  const { data } = useQuery("projects", getProjects);
+  const router = useRouter();
+  const currentPage = parseInt(router.query.page as string) || 1;
+  const { data } = useQuery("projects", () => fetchProjects(currentPage));
+
+  console.log(data);
+
+  const ProjectPagination = () => (
+    <Pagination
+      css={{ justifyContent: "center", margin: "12px 0px" }}
+      onClick={(i) => {
+        router.push({
+          query: {
+            page: String(i),
+          },
+        });
+      }}
+      current={currentPage}
+      end={data?.totalPages || 0}
+    />
+  );
 
   return (
     <div>
@@ -248,36 +294,42 @@ const Project: NextPage = () => {
           <Button variant="white">Python</Button>
         </div>
       </DividingSection>
+      <ProjectPagination />
       <Flex
         css={{
           flexWrap: "wrap",
-          margin: "-12px",
-          marginTop: "24px",
+          margin: "12px 0px",
           gap: "12px",
         }}
       >
-        {data?.map((post, i) => (
+        {data?.content.map((post, i) => (
           <Post post={post} key={i} />
         ))}
       </Flex>
+      <ProjectPagination />
     </div>
   );
 };
 
-const getProjects = async () => {
-  const res = await http.get<Post[]>("/projects");
+const fetchProjects = async (page = 1) => {
+  console.log(`/projects?page=${page}`);
+  const res = await http.get<Pageable<Post[]>>(`/projects?page=${page}`);
   return res.data;
 };
 
-export async function getStaticProps() {
+export const getServerSideProps: GetServerSideProps = async (context) => {
   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery("projects", getProjects);
+  console.log(context.query.page);
+
+  await queryClient.prefetchQuery("projects", () =>
+    fetchProjects(parseInt(context.query.page as string) || 1)
+  );
 
   return {
     props: {
       dehydratedState: dehydrate(queryClient),
     },
   };
-}
+};
 export default Project;

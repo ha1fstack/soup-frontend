@@ -245,24 +245,25 @@ const Lander = () => {
 
 const Home: NextPage = () => {
   const { data } = useQuery("front-projects", getFrontProjects);
+
   return (
     <div>
       <Lander />
       {/*<ArticleList data={data?.slice(20, 24)} source="SouP" />*/}
-      <ArticleList data={data?.okky.slice(0, 8)} source="Okky" />
-      <ArticleList data={data?.inflearn.slice(0, 8)} source="인프런" />
-      <ArticleList data={data?.campick.slice(0, 8)} source="캠퍼스픽" />
-      <ArticleList data={data?.hola.slice(0, 8)} source="HOLA" />
+      <ArticleList data={data?.OKKY.slice(0, 8)} source="Okky" />
+      <ArticleList data={data?.INFLEARN.slice(0, 8)} source="인프런" />
+      <ArticleList data={data?.CAMPICK.slice(0, 8)} source="캠퍼스픽" />
+      <ArticleList data={data?.HOLA.slice(0, 8)} source="HOLA" />
     </div>
   );
 };
 
 const getFrontProjects = async () => {
   const res = await http.get<{
-    okky: any[];
-    inflearn: any[];
-    campick: any[];
-    hola: any[];
+    OKKY: any[];
+    INFLEARN: any[];
+    CAMPICK: any[];
+    HOLA: any[];
   }>("/front-projects");
   return res.data;
 };
