@@ -1,5 +1,5 @@
 import { Box, Flex, Button } from "common/components";
-import { NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { MdOutlineArrowForward } from "react-icons/md";
@@ -72,7 +72,7 @@ const Article = ({ title, content }: { title: string; content: string }) => {
           margin: "0px 12px",
           padding: "12px 0px",
           justifyContent: "space-between",
-          borderTop: "1px solid #E0E3E7",
+          borderTop: "1px solid #dadce0",
           alignItems: "center",
         }}
       >
@@ -244,7 +244,7 @@ const Lander = () => {
 };
 
 const Home: NextPage = () => {
-  const { data } = useQuery("front-projects", getFrontProjects);
+  const { data } = useQuery("front-projects", fetchFrontProjects);
 
   return (
     <div>
@@ -258,7 +258,7 @@ const Home: NextPage = () => {
   );
 };
 
-const getFrontProjects = async () => {
+const fetchFrontProjects = async () => {
   const res = await http.get<{
     OKKY: any[];
     INFLEARN: any[];
@@ -268,16 +268,16 @@ const getFrontProjects = async () => {
   return res.data;
 };
 
-export async function getStaticProps() {
+export const getServerSideProps: GetServerSideProps = async () => {
   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery("front-projects", getFrontProjects);
+  await queryClient.prefetchQuery("front-projects", fetchFrontProjects);
 
   return {
     props: {
       dehydratedState: dehydrate(queryClient),
     },
   };
-}
+};
 
 export default Home;
