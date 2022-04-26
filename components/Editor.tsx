@@ -36,7 +36,7 @@ const ButtonElem = styled.button<{
   :disabled {
     color: #ccc;
   }
-  // border: 1px solid #e0e3e7;
+  // border: 1px solid #dadce0;
   ${({ active }) =>
     active &&
     css`
@@ -48,7 +48,7 @@ const ButtonGroup = styled(Flex)`
   font-size: 14px;
   border-radius: 4px;
   // padding: 4px;
-  // border: 1px solid #e0e3e7;
+  // border: 1px solid #dadce0;
 `;
 
 const Button = ({
@@ -87,7 +87,6 @@ const MenuBar = ({ editor }: { editor: TipTapEditor | null }) => {
       /(?:.+)(?:\.be\/|v=)([a-zA-Z0-9|_|-]+?)(?:&|$)(?:t=)?(\d+m\ds|\d+)?/;
     const [_, v, time] = url?.match(regex) || [null, null];
     if (!v) return;
-    console.log(v);
 
     if (url) {
       editor
@@ -369,7 +368,6 @@ export const Editor = () => {
     <>
       <Box
         responsive
-        variant="white"
         column
         css={{
           ".ProseMirror": {
@@ -397,7 +395,7 @@ export const Editor = () => {
             pre: {
               padding: "8px",
               backgroundColor: "#fafbfb",
-              outline: "1px solid #e0e3e7",
+              outline: "1px solid #dadce0",
               marginBlockStart: "12px",
               marginBlockEnd: "12px",
               borderRadius: "4px",
@@ -416,7 +414,7 @@ export const Editor = () => {
         }}
       >
         <MenuBar editor={editor} />
-        <hr css={{ margin: "12px 0px", color: "#e0e3e7" }} />
+        <hr css={{ margin: "12px 0px", color: "#dadce0" }} />
         <EditorContent editor={editor} />
       </Box>
       {/*<div css={{ whiteSpace: "break-spaces" }}>

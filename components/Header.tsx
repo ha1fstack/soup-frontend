@@ -16,7 +16,7 @@ import { Media } from "./Media";
 
 const HeaderContainer = styled.div`
   background-color: rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(4px);
+  backdrop-filter: brightness(103%) blur(4px);
   box-sizing: border-box;
   padding: 0px 24px;
   ${({ theme }) => theme.breakpoints.at("sm")} {
@@ -29,7 +29,7 @@ const HeaderContainer = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  border-bottom: solid 1px #eceff1;
+  border-bottom: solid 1px #dadce0;
   z-index: 999;
 `;
 
@@ -136,7 +136,7 @@ export const Header = ({ toggleSideBar }: { toggleSideBar?: () => void }) => {
                 css={{
                   width: "1px",
                   height: "36px",
-                  backgroundColor: "#eceff1",
+                  backgroundColor: "#dadce0",
                 }}
               />
             </Media>

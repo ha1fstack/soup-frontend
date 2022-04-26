@@ -142,7 +142,7 @@ export const Viewer = (props: React.HTMLProps<HTMLDivElement>) => {
           pre: {
             padding: "8px",
             backgroundColor: "#fafbfb",
-            outline: "1px solid #e0e3e7",
+            outline: "1px solid #dadce0",
             marginBlockStart: "12px",
             marginBlockEnd: "12px",
             borderRadius: "4px",

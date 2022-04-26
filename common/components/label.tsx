@@ -13,7 +13,7 @@ export const LabelVariant = (theme: Theme) => ({
     background-color: ${theme.color.positive};
   `,
   white: css`
-    border: 1px solid #e0e3e7;
+    border: 1px solid #dadce0;
     background-color: ${theme.color.positive};
   `,
   transparent: css`
@@ -59,7 +59,7 @@ export const Label = styled.div<{
     variant
       ? LabelVariant(theme)[variant]
       : css`
-          border: 1px solid #e0e3e7;
+          border: 1px solid #dadce0;
           background-color: #fafbfb;
         `}
 `;

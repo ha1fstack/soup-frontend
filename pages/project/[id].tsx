@@ -36,7 +36,7 @@ const Page = () => {
               height: "44px",
               width: "44px",
               borderRadius: "99999px",
-              border: "1px solid #eceff1",
+              border: "1px solid #dadce0",
               overflow: "hidden",
             }}
           >

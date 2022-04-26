@@ -22,7 +22,8 @@ const Item = styled.button<{
   ${({ current }) =>
     current &&
     css`
-      background-color: #f0f0f0;
+      background-color: #ffffff;
+      border: 1px solid #dadce0;
     `}
   display: flex;
   align-items: center;

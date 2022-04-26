@@ -93,7 +93,7 @@ const Post = ({ image, post }: { image?: boolean; post: Post }) => {
             overflow: "hidden",
             lineHeight: "1.2em",
             paddingBottom: "6px",
-            borderBottom: "1px solid #E0E3E7",
+            borderBottom: "1px solid #dadce0",
           }}
         >
           <div
@@ -149,7 +149,7 @@ const Post = ({ image, post }: { image?: boolean; post: Post }) => {
               overflow: "hidden",
               position: "relative",
               flex: "0 0 auto",
-              background: "#ECEFF1",
+              background: "#dadce0",
               width: "120px",
             }}
           >

@@ -6,9 +6,9 @@ const BoxVariant = (theme: Theme) => ({
     border: 1px solid ${theme.color.primary};
     background: #ffeeda;
   `,
-  white: css`
-    border: 1px solid #eceff1;
-    background: ${theme.color.positive};
+  background: css`
+    border: 1px solid #dadce0;
+    background: ${theme.color.background};
   `,
   transparent: css``,
 });
@@ -66,7 +66,7 @@ export const Box = styled.div<{
     variant
       ? BoxVariant(theme)[variant]
       : css`
-          border: 1px solid #eceff1;
-          background-color: #fafbfb;
+          border: 1px solid #dadce0;
+          background-color: ${theme.color.positive};
         `}
 `;

@@ -43,7 +43,7 @@ export const Input = styled.input<{
     variant
       ? LabelVariant(theme)[variant]
       : css`
-          border: 1px solid #e0e3e7;
+          border: 1px solid #dadce0;
           background-color: ${theme.color.positive};
         `}
 `;
@@ -72,7 +72,7 @@ export const TextArea = styled(TextareaAutosize)<{
     variant
       ? LabelVariant[variant]
       : css`
-          border: 1px solid #e0e3e7;
+          border: 1px solid #dadce0;
           background-color: ${theme.color.positive};
         `}
 `;

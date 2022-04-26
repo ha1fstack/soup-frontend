@@ -6,35 +6,59 @@ import Link, { LinkProps } from "next/link";
 import { useRouter } from "next/router";
 import { useRef, useEffect } from "react";
 import { Dimmer, Header, Media, Portal } from "components";
+import { Flex } from "common/components";
+import { NextComponentType } from "next";
+import { http } from "common/services";
+import { useQuery, QueryClient, dehydrate } from "react-query";
 
 const PageContainer = styled.div`
   min-height: 100vh;
 `;
 const BodyContainer = styled.div`
-  background-color: ${({ theme }) => theme.color.positive};
+  background-color: ${({ theme }) => theme.color.background};
+  min-height: 100vh;
   width: 100%;
   display: flex;
   flex-direction: row;
 `;
 
-const SideBarContainer = styled.ul`
+const SideBarContainerWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
   z-index: 9999;
   background-color: ${({ theme }) => theme.color.positive};
-  margin: 0;
-  line-height: normal;
-  list-style-type: none;
   position: fixed;
   top: 69px;
   min-width: 279px;
-  height: 100vh;
+  height: calc(100vh - 69px);
   justify-content: space-between;
-  align-items: center;
-  border-right: solid 1px #eceff1;
+  border-right: solid 1px #dadce0;
   padding: 16px;
+  ${({ theme }) => theme.breakpoints.at("sm")} {
+    top: 0;
+    height: 100vh;
+  }
+`;
+
+const SideBarContentWrapper = styled.ul`
+  margin: 0;
+  line-height: normal;
+  list-style-type: none;
   ${({ theme }) => theme.breakpoints.at("sm")} {
     top: 0;
   }
 `;
+
+const SideBarContainer: NextComponentType = ({ children }) => {
+  return (
+    <SideBarContainerWrapper>
+      <SideBarContentWrapper>{children}</SideBarContentWrapper>
+      <div css={{ fontSize: "14px", color: "#3e506099" }}>
+        개인정보처리방침 <br /> © 2022 SouP
+      </div>
+    </SideBarContainerWrapper>
+  );
+};
 
 interface ISideBarProps {
   exact?: boolean;
@@ -98,24 +122,32 @@ const ChildrenContainer = styled.div`
   }
 `;
 
+const SideBarNavigation = () => {
+  return (
+    <>
+      <SideBarElement href="/" selected>
+        홈
+      </SideBarElement>
+      <SideBarElement href="/write">새 모집 만들기</SideBarElement>
+      <SideBarElement href="/project" exact={false}>
+        프로젝트/스터디 찾기
+      </SideBarElement>
+      <SideBarElement href="/lounge">라운지</SideBarElement>
+      <br />
+      <SideBarElement href="/profile">내 프로필</SideBarElement>
+      <SideBarElement href="">새소식</SideBarElement>
+      <SideBarElement href="">쪽지</SideBarElement>
+    </>
+  );
+};
+
 const SideBar = ({
   ...props
 }: React.ComponentProps<typeof SideBarContainer>) => {
   return (
     <>
       <SideBarContainer {...props}>
-        <SideBarElement href="/" selected>
-          홈
-        </SideBarElement>
-        <SideBarElement href="/write">새 모집 만들기</SideBarElement>
-        <SideBarElement href="/project" exact={false}>
-          프로젝트/스터디 찾기
-        </SideBarElement>
-        <SideBarElement href="">라운지</SideBarElement>
-        <br />
-        <SideBarElement href="/profile">내 프로필</SideBarElement>
-        <SideBarElement href="">새소식</SideBarElement>
-        <SideBarElement href="">쪽지</SideBarElement>
+        <SideBarNavigation />
       </SideBarContainer>
     </>
   );
@@ -139,17 +171,8 @@ const MobileSideBar = ({
   if (!show) return null;
   return (
     <Portal at="#portal">
-      <SideBarContainer css={{ position: "fixed" }} {...props}>
-        <SideBarElement href="/" selected>
-          홈
-        </SideBarElement>
-        <SideBarElement href="/write">새 모집 만들기</SideBarElement>
-        <SideBarElement href="/project">프로젝트/스터디 찾기</SideBarElement>
-        <SideBarElement href="">라운지</SideBarElement>
-        <br />
-        <SideBarElement href="/profile">내 프로필</SideBarElement>
-        <SideBarElement href="">새소식</SideBarElement>
-        <SideBarElement href="">쪽지</SideBarElement>
+      <SideBarContainer {...props}>
+        <SideBarNavigation />
       </SideBarContainer>
       <Dimmer onClick={() => toggle()} css={{ zIndex: 9998 }} />
     </Portal>

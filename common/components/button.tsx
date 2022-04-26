@@ -51,7 +51,7 @@ export const Button = styled.button<{
     variant
       ? LabelVariant(theme)[variant]
       : css`
-          border: 1px solid #e0e3e7;
+          border: 1px solid #dadce0;
           background-color: #fafbfb;
         `}
   &:hover {
