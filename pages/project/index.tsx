@@ -13,6 +13,8 @@ import {
 import { http } from "common/services";
 import { Pagination } from "common/components/Pagination";
 import { AppContext } from "next/app";
+import { timeDiffString } from "utils";
+import { useMemo } from "react";
 
 interface Pageable<T> {
   content: T;
@@ -35,15 +37,17 @@ interface Pageable<T> {
   empty: boolean;
 }
 interface Post {
+  content: string;
+  date: string;
+  end: boolean;
   id: number;
+  link: string;
   postId: number;
   postName: string;
-  content: string;
-  userName: string;
   stack: string;
-  link: string;
   talk: string;
-  ipDate: string;
+  userName: string;
+  views: number;
   source: "SOUP" | "INFLEARN" | "OKKY" | "CAMPICK" | "HOLA";
 }
 
@@ -53,6 +57,8 @@ const Post = ({ image, post }: { image?: boolean; post: Post }) => {
     e.preventDefault();
     router.push("/project/1");
   };
+
+  const timeString = useMemo(() => timeDiffString(post.date), [post]);
 
   return (
     <Box
@@ -131,7 +137,7 @@ const Post = ({ image, post }: { image?: boolean; post: Post }) => {
               WebkitLineClamp: 2,
             }}
           >
-            by <b>{post.userName}</b> · 1시간 전 · 댓글 3개
+            by <b>{post.userName}</b> · {timeString} · 댓글 3개
           </div>
         </div>
         {image ? (
