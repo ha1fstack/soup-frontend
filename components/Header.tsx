@@ -1,6 +1,7 @@
 import { css, useTheme } from "@emotion/react";
 import styled from "@emotion/styled";
 import { Button, Box, Flex } from "common/components";
+import useAuth from "hooks/useAuth";
 import { useOuterClick } from "hooks/useOuterClick";
 import { useToggle } from "hooks/useToggle";
 import Link, { LinkProps } from "next/link";
@@ -11,8 +12,10 @@ import {
   MdOutlineNotifications,
   MdOutlineMail,
 } from "react-icons/md";
+import { useQueryClient } from "react-query";
 import { Login } from "./Login";
 import { Media } from "./Media";
+import Image from "next/image";
 
 const HeaderContainer = styled.div`
   background-color: rgba(255, 255, 255, 0.5);
@@ -36,6 +39,7 @@ const HeaderContainer = styled.div`
 const HeaderMenuContainer = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
   font-size: 14px;
   color: #3e5060;
   & > :not(:last-child) {
@@ -105,6 +109,8 @@ export const Header = ({ toggleSideBar }: { toggleSideBar?: () => void }) => {
     toggleNotificationPopup()
   );
   const messageRef = useOuterClick<HTMLDivElement>(() => toggleMessagePopup());
+
+  const auth = useAuth();
 
   return (
     <>
@@ -176,13 +182,50 @@ export const Header = ({ toggleSideBar }: { toggleSideBar?: () => void }) => {
               </div>
             </Media>
 
-            <Button
-              onClick={() => toggleLogin()}
-              variant="primary"
-              css={{ fontWeight: "bold" }}
-            >
-              로그인
-            </Button>
+            {auth.success ? (
+              <>
+                <div
+                  css={{
+                    height: "32px",
+                    width: "1px",
+                    backgroundColor: "#dadce0",
+                    marginLeft: "4px",
+                  }}
+                />
+                <Flex
+                  inline
+                  css={{
+                    alignItems: "center",
+                    gap: "8px",
+                  }}
+                >
+                  <span>Gildong Hong</span>
+                  <span
+                    css={{
+                      width: "32px",
+                      height: "32px",
+                      borderRadius: "99999px",
+                      overflow: "hidden",
+                    }}
+                  >
+                    <Image
+                      src={auth?.profileImage!}
+                      height="32px"
+                      width="32px"
+                      alt="profile-image"
+                    />
+                  </span>
+                </Flex>
+              </>
+            ) : (
+              <Button
+                onClick={() => toggleLogin()}
+                variant="primary"
+                css={{ fontWeight: "bold" }}
+              >
+                로그인
+              </Button>
+            )}
           </HeaderMenuContainer>
         </HeaderContainer>
       </header>

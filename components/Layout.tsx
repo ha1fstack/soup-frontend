@@ -10,6 +10,7 @@ import { Flex } from "common/components";
 import { NextComponentType } from "next";
 import { http } from "common/services";
 import { useQuery, QueryClient, dehydrate } from "react-query";
+import useAuth from "hooks/useAuth";
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -181,6 +182,9 @@ const MobileSideBar = ({
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
   const [showSidebar, toggleShowSideBar] = useToggle();
+
+  const auth = useAuth();
+
   return (
     <>
       <PageContainer>
@@ -193,10 +197,20 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
         </Media>
         <BodyContainer>
           <ChildrenContainer>
+            {JSON.stringify(auth)}
             <div>{children}</div>
           </ChildrenContainer>
         </BodyContainer>
       </PageContainer>
     </>
   );
+};
+
+const fetchAuth = async () => {
+  const res = await http.get<{
+    success: boolean;
+    profileImage?: string;
+    nickname?: string;
+  }>("/auth");
+  return res.data;
 };

@@ -57,4 +57,7 @@ export const Button = styled.button<{
   &:hover {
     filter: brightness(0.98);
   }
+  &:disabled {
+    filter: opacity(0.5);
+  }
 `;

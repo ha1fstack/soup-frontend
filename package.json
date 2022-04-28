@@ -20,6 +20,7 @@
     "polished": "^4.2.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-hook-form": "^7.30.0",
     "react-icons": "^4.3.1",
     "react-query": "^3.34.20",
     "react-textarea-autosize": "^8.3.3",

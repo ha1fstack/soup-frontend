@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["i.imgur.com"],
+    domains: ["i.imgur.com", "lh3.googleusercontent.com"],
   },
   async rewrites() {
     return [

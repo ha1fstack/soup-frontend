@@ -5,6 +5,7 @@ const BoxVariant = (theme: Theme) => ({
   primary: css`
     border: 1px solid ${theme.color.primary};
     background: #ffeeda;
+    color: ${theme.color.primary};
   `,
   background: css`
     border: 1px solid #dadce0;

@@ -417,9 +417,9 @@ export const Editor = () => {
         <hr css={{ margin: "12px 0px", color: "#dadce0" }} />
         <EditorContent editor={editor} />
       </Box>
-      {/*<div css={{ whiteSpace: "break-spaces" }}>
+      <div css={{ whiteSpace: "break-spaces" }}>
         {JSON.stringify(editor?.getJSON())}
-      </div>*/}
+      </div>
     </>
   );
 };
