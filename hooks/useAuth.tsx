@@ -3,8 +3,9 @@ import { useQuery } from "react-query";
 
 interface IAuthData {
   success: boolean;
+  user_id?: number;
   profileImage?: string;
-  nickname?: string;
+  username?: string;
 }
 
 export const fetchAuth = async (cookie?: any) => {

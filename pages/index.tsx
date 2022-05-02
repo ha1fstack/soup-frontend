@@ -7,6 +7,7 @@ import { useTheme } from "@emotion/react";
 import { dehydrate, QueryClient, useQuery } from "react-query";
 import styled from "@emotion/styled";
 import { http } from "common/services";
+import { ellipsis } from "polished";
 
 const Article = ({ title, content }: { title: string; content: string }) => {
   const router = useRouter();
@@ -243,12 +244,147 @@ const Lander = () => {
   );
 };
 
+const HotItem = ({ title, content }: any) => {
+  return (
+    <Flex
+      column
+      css={{
+        gap: "16px",
+        flex: "0 1 320px",
+        overflow: "hidden",
+      }}
+    >
+      <Image
+        alt="hot1"
+        src="https://i.imgur.com/tvzwhsF.png"
+        width={320}
+        height={180}
+      />
+      <Flex column css={{ gap: "8px" }}>
+        <p
+          css={{
+            fontSize: "16px",
+            fontWeight: "bold",
+            ...ellipsis(undefined, 2),
+          }}
+        >
+          {title}
+        </p>
+        <p css={{ fontSize: "14px", ...ellipsis(undefined, 3) }}>{content}</p>
+      </Flex>
+    </Flex>
+  );
+};
+
+const NewItem = ({ title, content }: any) => {
+  return (
+    <Flex css={{ gap: "12px" }}>
+      <span css={{ flex: "0 0 auto" }}>
+        <Image
+          alt="hot1"
+          src="https://i.imgur.com/tvzwhsF.png"
+          width={100}
+          height={75}
+        />
+      </span>
+      <Flex column css={{ gap: "4px" }}>
+        <p css={{ fontSize: "16px", fontWeight: "bold" }}>{title}</p>
+        <p
+          css={{
+            fontSize: "14px",
+            ...ellipsis(undefined, 2),
+          }}
+        >
+          {content}
+        </p>
+      </Flex>
+    </Flex>
+  );
+};
+
 const Home: NextPage = () => {
   const { data } = useQuery("front-projects", fetchFrontProjects);
 
   return (
     <div>
-      <Lander />
+      <div
+        css={{
+          margin: "-36px -50vw 0 -50vw",
+          padding: "36px 50vw 36px 50vw",
+          backgroundColor: "white",
+          borderBottom: "1px solid #dadce0",
+        }}
+      >
+        <Flex
+          css={{
+            flexWrap: "wrap",
+            gap: "72px",
+          }}
+        >
+          <Flex
+            column
+            css={{
+              flex: "3 1 0",
+              gap: "24px",
+              minWidth: "480px",
+              marginBottom: "-36px",
+              img: {
+                borderRadius: "8px",
+              },
+            }}
+          >
+            <p css={{ fontSize: "20px", fontWeight: "bold" }}>
+              Hot 스터디/프로젝트 🔥
+            </p>
+            <Flex css={{ gap: "36px" }}>
+              <HotItem
+                title="자바 ORM 표준 JPA 프로그래밍 - 기본편 스터디 모집합니다"
+                content="스터디 주제 : 김영한님 자바 ORM 표준 JPA 프로그래밍 - 기본편 스터디 목표 : 완강 예상 스터디 일정(횟수) : 일주일에 한  번 디스코드 모임 (일요일 오전 10시~) 예상 커리..."
+              />
+              <HotItem
+                title="프론트엔드 인터뷰 스터디 2명 모집"
+                content="거리두기 해제로 인한 오프라인 스터디원을 충원합니다 현재 5명에 스터디원으로 이루어져 있고 현재 리액트는 스테이트 활용 컴포넌트활용까지 구현했으며 스터디 진행 방..."
+              />
+            </Flex>
+          </Flex>
+          <Flex
+            column
+            css={{
+              flex: "2 1 0",
+              gap: "24px",
+              img: {
+                borderRadius: "6px",
+              },
+              minWidth: "480px",
+              maxWidth: "676px",
+            }}
+          >
+            <p
+              css={{
+                fontSize: "20px",
+                fontWeight: "bold",
+              }}
+            >
+              New 스터디/프로젝트 ✨
+            </p>
+            <Flex column css={{ gap: "16px" }}>
+              <NewItem
+                title="WebGl 스터디 인원을 모집합니다"
+                content="Webgl 스터디 인원을 모집하고 잇습니다 ^^ 매주 토요일마다 정기모임 스터디가 잇으며 , 서로 열정을 가지고 공부하고 있습니다 [개발 스터..."
+              />
+              <NewItem
+                title="Swift iOS app 개발 / 사이드 프로젝트 / 팀 구축"
+                content="안녕하세요. 저는 프로그래밍쪽 전공을 졸업하고 , si 회사에서 근무 중인 개발자입니다. 최근 ios 개발에 대한 도전 / 이직을 위하여, 맹목적..."
+              />
+              <NewItem
+                title="토이프로젝트 Application 기획자 모집 합니다 ^^"
+                content="UI/UX 앱 디자이너 분 구합니다!! - 앱 주제: 토이프로젝트 or Side Project 공고 Application 토이 프로젝트와 Side Project 공고를 올..."
+              />
+            </Flex>
+          </Flex>
+        </Flex>
+      </div>
+      {/* <Lander /> */}
       {/*<ArticleList data={data?.slice(20, 24)} source="SouP" />*/}
       <ArticleList data={data?.OKKY.slice(0, 8)} source="Okky" />
       <ArticleList data={data?.INFLEARN.slice(0, 8)} source="인프런" />

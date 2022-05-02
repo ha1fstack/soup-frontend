@@ -29,9 +29,9 @@ const SideBarContainerWrapper = styled.div`
   z-index: 9999;
   background-color: ${({ theme }) => theme.color.positive};
   position: fixed;
-  top: 69px;
-  min-width: 279px;
-  height: calc(100vh - 69px);
+  top: 59px;
+  min-width: 239px;
+  height: calc(100vh - 59px);
   justify-content: space-between;
   border-right: solid 1px #dadce0;
   padding: 16px;
@@ -104,9 +104,9 @@ const SideBarElement = ({
 
 const ChildrenContainer = styled.div`
   overflow: auto;
-  margin-top: 69px;
+  margin-top: 59px;
   margin-bottom: 120px;
-  margin-left: 280px;
+  margin-left: 240px;
   padding: 36px 24px;
   width: 100%;
   display: flex;
@@ -114,7 +114,7 @@ const ChildrenContainer = styled.div`
   overflow: hidden;
   align-items: center;
   & > * {
-    max-width: 1280px;
+    max-width: 1140px;
     width: 100%;
   }
   ${({ theme }) => theme.breakpoints.at("sm")} {
@@ -197,7 +197,6 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
         </Media>
         <BodyContainer>
           <ChildrenContainer>
-            {JSON.stringify(auth)}
             <div>{children}</div>
           </ChildrenContainer>
         </BodyContainer>

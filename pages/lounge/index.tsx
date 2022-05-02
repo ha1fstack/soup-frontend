@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { MdOutlineFavorite, MdOutlineFavoriteBorder } from "react-icons/md";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import ReactTextareaAutosize from "react-textarea-autosize";
 import TextareaAutosize from "react-textarea-autosize";
 import { timeDiffString } from "utils";
@@ -14,12 +14,41 @@ import { timeDiffString } from "utils";
 interface ILoungePost {
   content: string;
   date: string;
+  lounge_id: number;
   fav: number;
+  isfav: boolean;
   picture: string;
-  user: string;
+  username: string;
+  user_id: number;
 }
 
 const LoungePost = ({ post }: { post: ILoungePost }) => {
+  const queryClient = useQueryClient();
+  const auth = useAuth();
+
+  const handleFavVote = async ({ user_id, isfav, lounge_id }: ILoungePost) => {
+    if (!auth.user_id || user_id === auth.user_id) return;
+    const res = await http.post("/lounge/fav", {
+      id: lounge_id,
+      mode: !isfav,
+    });
+    const data = res.data;
+    if (data.success)
+      queryClient.setQueryData<ILoungePost[] | undefined>(
+        "fetchLounge",
+        (postList) =>
+          postList?.map((p) => {
+            if (p.lounge_id === lounge_id)
+              return {
+                ...p,
+                isfav: data.isfav,
+                fav: data.isfav ? p.fav + 1 : p.fav - 1,
+              };
+            return p;
+          })
+      );
+  };
+
   return (
     <Flex css={{ gap: "18px", alignItems: "stretch" }}>
       <Flex
@@ -43,21 +72,33 @@ const LoungePost = ({ post }: { post: ILoungePost }) => {
           alt="profile"
           src={post.picture}
         />
-        <Flex
-          css={{
-            flexDirection: "column",
-            alignItems: "center",
-            color: "#757e88",
-          }}
-        >
-          <MdOutlineFavoriteBorder style={{ fontSize: "17px", margin: 0 }} />
-          <span css={{ fontSize: "13px" }}>{post.fav}</span>
-        </Flex>
       </Flex>
-      <Flex column css={{ gap: "6px", flex: "1 1 auto" }}>
-        <p>
-          by <b>{post.user}</b> · {timeDiffString(post.date)}
-        </p>
+      <Flex column css={{ gap: "12px", flex: "1 1 auto" }}>
+        <Flex css={{ justifyContent: "space-between", alignItems: "center" }}>
+          <p>
+            by <b>{post.username}</b> · {timeDiffString(post.date)}
+          </p>
+          <Button
+            variant="white"
+            css={{
+              padding: "0px 6px 0px 8px",
+              height: "24px",
+              gap: "4px",
+              alignItems: "center",
+              color: "#757e88",
+            }}
+            onClick={() => handleFavVote(post)}
+          >
+            <span css={{ fontSize: "12px" }}>{post.fav}</span>
+            {post.isfav || false ? (
+              <MdOutlineFavorite style={{ fontSize: "14px", margin: 0 }} />
+            ) : (
+              <MdOutlineFavoriteBorder
+                style={{ fontSize: "14px", margin: 0 }}
+              />
+            )}
+          </Button>
+        </Flex>
         <div css={{ whiteSpace: "pre-line" }}>{post.content}</div>
       </Flex>
     </Flex>
@@ -85,8 +126,6 @@ const LoungeEditor = () => {
   }, [trigger]);
 
   const onSubmit = async (data: any) => {
-    console.log(errors);
-    console.log(data);
     const res = await http.post<{ success: boolean }>("/lounge/add", data);
     if (res.data.success) {
       reset();
@@ -199,61 +238,73 @@ const Lounge = () => {
           css={{
             flex: "1 0 400px",
             gap: "24px",
-            maxWidth: "960px",
+            maxWidth: "720px",
           }}
         >
           {auth.success ? (
             <LoungeEditor />
           ) : (
-            <Box variant="primary">
+            <Box variant="primary" css={{ lineHeight: "initial" }}>
               로그인 후 라운지에 이야기를 작성해 보세요.
             </Box>
           )}
 
           <Box responsive column css={{ gap: "16px", padding: "16px" }}>
-            {data?.reverse().map((post) => (
+            {data?.map((post) => (
               <>
-                <LoungePost post={post} />
+                <LoungePost key={post.lounge_id} post={post} />
                 <hr css={{ color: "#dadce0" }} />
               </>
             ))}
             <LoungePost
               post={{
+                user_id: -1,
                 content: `Apple의 system-ui가 익숙한 나로서는 San Francisco와 Apple SD 산돌고딕 Neo가 없는 다른 환경에서 이를 대체할 수 있는 글꼴을 꾸준히 갈망해왔다. Inter는 San Francisco가 없는 다른 환경에서 대체 역할을 쏠쏠히 해오고 있다고는 하지만, 타협 없이 네오 그로테스크의 뜻을 가진 San Francisco와 달리 몇몇 소문자 글자가 휴머니스트적인 인상을 가지고 있기 때문에, 이를 다듬어 아예 완벽한 따라쟁이를 만들어버리는 것은 어떨까 싶은 것이다. 이어서 맑은 고딕과 나눔고딕을 대신해 본문용 무료 글꼴의 대명사로 쓰이고 있는 Noto Sans KR—본고딕은, 그 글자를 조형하는 여러 사람들이 공통적으로 자간을 조정하는 데 시간을 쏟고 있다는 것과, 본고딕의 한글 크기가 대부분의 한글 글꼴들과 비슷하게 다국어 타이포그래피 환경에서는 조금 크게 자리잡아 라틴 글자와 섞어쓸 때 글자 비율을 어느정도 조정해서 쓰는 점이 제품을 만드는 데 어느정도 부채가 쌓이는 상황이라 보았고, 이처럼 적합하지 않은 글꼴로부터 생기는 추가적인 소요를 줄이자는 데에서 이 프로젝트를 2020년 11월부터 천천히 다듬어왔다.`,
                 date: "2022-04-28T17:10:16.035104",
+                lounge_id: -1,
                 fav: 17,
+                isfav: true,
                 picture: "https://i.imgur.com/tvzwhsF.png",
-                user: "Glidong Hong",
+                username: "Glidong Hong",
               }}
             />
             <hr css={{ color: "#dadce0" }} />
             <LoungePost
               post={{
+                user_id: -1,
                 content: `Apple의 system-ui가 익숙한 나로서는 San Francisco와 Apple SD 산돌고딕 Neo가 없는 다른 환경에서 이를 대체할 수 있는 글꼴을 꾸준히 갈망해왔다. Inter는 San Francisco가 없는 다른 환경에서 대체 역할을 쏠쏠히 해오고 있다고는 하지만, 타협 없이 네오 그로테스크의 뜻을 가진 San Francisco와 달리 몇몇 소문자 글자가 휴머니스트적인 인상을 가지고 있기 때문에, 이를 다듬어 아예 완벽한 따라쟁이를 만들어버리는 것은 어떨까 싶은 것이다. 이어서 맑은 고딕과 나눔고딕을 대신해 본문용 무료 글꼴의 대명사로 쓰이고 있는 Noto Sans KR—본고딕은, 그 글자를 조형하는 여러 사람들이 공통적으로 자간을 조정하는 데 시간을 쏟고 있다는 것과, 본고딕의 한글 크기가 대부분의 한글 글꼴들과 비슷하게 다국어 타이포그래피 환경에서는 조금 크게 자리잡아 라틴 글자와 섞어쓸 때 글자 비율을 어느정도 조정해서 쓰는 점이 제품을 만드는 데 어느정도 부채가 쌓이는 상황이라 보았고, 이처럼 적합하지 않은 글꼴로부터 생기는 추가적인 소요를 줄이자는 데에서 이 프로젝트를 2020년 11월부터 천천히 다듬어왔다.`,
                 date: "2022-04-28T17:10:16.035104",
+                lounge_id: -1,
                 fav: 17,
+                isfav: true,
                 picture: "https://i.imgur.com/tvzwhsF.png",
-                user: "Glidong Hong",
+                username: "Glidong Hong",
               }}
             />
             <hr css={{ color: "#dadce0" }} />
             <LoungePost
               post={{
+                user_id: -1,
                 content: `Apple의 system-ui가 익숙한 나로서는 San Francisco와 Apple SD 산돌고딕 Neo가 없는 다른 환경에서 이를 대체할 수 있는 글꼴을 꾸준히 갈망해왔다. Inter는 San Francisco가 없는 다른 환경에서 대체 역할을 쏠쏠히 해오고 있다고는 하지만, 타협 없이 네오 그로테스크의 뜻을 가진 San Francisco와 달리 몇몇 소문자 글자가 휴머니스트적인 인상을 가지고 있기 때문에, 이를 다듬어 아예 완벽한 따라쟁이를 만들어버리는 것은 어떨까 싶은 것이다. 이어서 맑은 고딕과 나눔고딕을 대신해 본문용 무료 글꼴의 대명사로 쓰이고 있는 Noto Sans KR—본고딕은, 그 글자를 조형하는 여러 사람들이 공통적으로 자간을 조정하는 데 시간을 쏟고 있다는 것과, 본고딕의 한글 크기가 대부분의 한글 글꼴들과 비슷하게 다국어 타이포그래피 환경에서는 조금 크게 자리잡아 라틴 글자와 섞어쓸 때 글자 비율을 어느정도 조정해서 쓰는 점이 제품을 만드는 데 어느정도 부채가 쌓이는 상황이라 보았고, 이처럼 적합하지 않은 글꼴로부터 생기는 추가적인 소요를 줄이자는 데에서 이 프로젝트를 2020년 11월부터 천천히 다듬어왔다.`,
                 date: "2022-04-28T17:10:16.035104",
+                lounge_id: -1,
                 fav: 17,
+                isfav: true,
                 picture: "https://i.imgur.com/tvzwhsF.png",
-                user: "Glidong Hong",
+                username: "Glidong Hong",
               }}
             />
             <hr css={{ color: "#dadce0" }} />
             <LoungePost
               post={{
+                user_id: -1,
                 content: `Apple의 system-ui가 익숙한 나로서는 San Francisco와 Apple SD 산돌고딕 Neo가 없는 다른 환경에서 이를 대체할 수 있는 글꼴을 꾸준히 갈망해왔다. Inter는 San Francisco가 없는 다른 환경에서 대체 역할을 쏠쏠히 해오고 있다고는 하지만, 타협 없이 네오 그로테스크의 뜻을 가진 San Francisco와 달리 몇몇 소문자 글자가 휴머니스트적인 인상을 가지고 있기 때문에, 이를 다듬어 아예 완벽한 따라쟁이를 만들어버리는 것은 어떨까 싶은 것이다. 이어서 맑은 고딕과 나눔고딕을 대신해 본문용 무료 글꼴의 대명사로 쓰이고 있는 Noto Sans KR—본고딕은, 그 글자를 조형하는 여러 사람들이 공통적으로 자간을 조정하는 데 시간을 쏟고 있다는 것과, 본고딕의 한글 크기가 대부분의 한글 글꼴들과 비슷하게 다국어 타이포그래피 환경에서는 조금 크게 자리잡아 라틴 글자와 섞어쓸 때 글자 비율을 어느정도 조정해서 쓰는 점이 제품을 만드는 데 어느정도 부채가 쌓이는 상황이라 보았고, 이처럼 적합하지 않은 글꼴로부터 생기는 추가적인 소요를 줄이자는 데에서 이 프로젝트를 2020년 11월부터 천천히 다듬어왔다.`,
                 date: "2022-04-28T17:10:16.035104",
+                lounge_id: -1,
                 fav: 17,
+                isfav: true,
                 picture: "https://i.imgur.com/tvzwhsF.png",
-                user: "Glidong Hong",
+                username: "Glidong Hong",
               }}
             />
           </Box>

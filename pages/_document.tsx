@@ -24,7 +24,15 @@ document.body.dataset.auth = getAuthCache();
   `;
   return (
     <Html>
-      <Head />
+      <Head>
+        <link
+          rel="stylesheet preload prefetch"
+          as="style"
+          type="text/css"
+          crossOrigin=""
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css"
+        />
+      </Head>
       <body>
         <script dangerouslySetInnerHTML={{ __html: setInitialAuth }} />
         <div id="portal" />

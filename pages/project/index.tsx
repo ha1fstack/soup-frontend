@@ -265,8 +265,11 @@ const Post = ({ image, post }: { image?: boolean; post: Post }) => {
 const Project: NextPage = () => {
   const router = useRouter();
   const currentPage = parseInt(router.query.page as string) || 1;
-  const { data } = useQuery("projects", () => fetchProjects(currentPage));
+  const { data, isLoading, isError } = useQuery("projects", () =>
+    fetchProjects(currentPage)
+  );
 
+  console.log("project");
   console.log(data);
 
   const ProjectPagination = () => (
@@ -283,6 +286,8 @@ const Project: NextPage = () => {
       end={data?.totalPages || 0}
     />
   );
+
+  if (!data || isLoading || isError) return null;
 
   return (
     <div>

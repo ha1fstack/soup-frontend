@@ -366,8 +366,7 @@ export const Editor = () => {
 
   return (
     <>
-      <Box
-        responsive
+      <Flex
         column
         css={{
           ".ProseMirror": {
@@ -414,9 +413,9 @@ export const Editor = () => {
         }}
       >
         <MenuBar editor={editor} />
-        <hr css={{ margin: "12px 0px", color: "#dadce0" }} />
-        <EditorContent editor={editor} />
-      </Box>
+        <hr css={{ margin: "12px 0px", color: "#dfe2e6" }} />
+        <EditorContent css={{ padding: "0px 4px" }} editor={editor} />
+      </Flex>
       <div css={{ whiteSpace: "break-spaces" }}>
         {JSON.stringify(editor?.getJSON())}
       </div>

@@ -19,16 +19,14 @@ const Write = () => {
         responsive
         column
         css={{
-          "& > *+*": {
-            marginTop: "12px",
-          },
+          padding: "16px",
+          gap: "16px",
           marginBottom: "24px",
         }}
       >
         <Flex
           css={{
             justifyContent: "space-between",
-            gap: "12px",
           }}
         >
           <Input
@@ -37,8 +35,10 @@ const Write = () => {
           />
           <Button variant="primary">작성</Button>
         </Flex>
+        <Box column>
+          <Editor />
+        </Box>
       </Box>
-      <Editor />
     </div>
   );
 };

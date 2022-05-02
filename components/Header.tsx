@@ -21,12 +21,12 @@ const HeaderContainer = styled.div`
   background-color: rgba(255, 255, 255, 0.5);
   backdrop-filter: brightness(103%) blur(4px);
   box-sizing: border-box;
-  padding: 0px 24px;
+  padding: 0px 12px;
   ${({ theme }) => theme.breakpoints.at("sm")} {
     padding: 0px 12px;
   }
   position: fixed;
-  height: 69px;
+  height: 59px;
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -51,10 +51,8 @@ const HeaderMenuContainer = styled.div`
 `;
 
 const LogoLink = styled.a`
+  height: 32px;
   cursor: pointer;
-  font-weight: bold;
-  font-size: 24px;
-  color: ${({ theme }) => theme.color.primary};
 `;
 const Logo = ({ children, ...props }: React.PropsWithChildren<LinkProps>) => (
   <Link {...props}>
@@ -146,7 +144,14 @@ export const Header = ({ toggleSideBar }: { toggleSideBar?: () => void }) => {
                 }}
               />
             </Media>
-            <Logo href="/">SouP</Logo>
+            <Logo href="/">
+              <Image
+                height="32"
+                width="96"
+                src={"/logo-with-text.svg"}
+                alt="logo"
+              />
+            </Logo>
           </Flex>
           <HeaderMenuContainer>
             <Media css={{ display: "flex", gap: "12px" }} greaterThan="sm">
@@ -199,7 +204,7 @@ export const Header = ({ toggleSideBar }: { toggleSideBar?: () => void }) => {
                     gap: "8px",
                   }}
                 >
-                  <span>Gildong Hong</span>
+                  <span>{auth?.username}</span>
                   <span
                     css={{
                       width: "32px",
