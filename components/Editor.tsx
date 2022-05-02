@@ -34,13 +34,14 @@ const ButtonElem = styled.button<{
   border-radius: 4px;
   padding: 6px;
   :disabled {
-    color: #ccc;
+    color: var(--outline);
   }
-  // border: 1px solid #dadce0;
+  // border: 1px solid var(--outline);
   ${({ active }) =>
     active &&
     css`
-      background-color: #f0f0f0;
+      background-color: var(--background);
+      outline: 1px solid var(--outline);
     `};
 `;
 
@@ -48,7 +49,7 @@ const ButtonGroup = styled(Flex)`
   font-size: 14px;
   border-radius: 4px;
   // padding: 4px;
-  // border: 1px solid #dadce0;
+  // border: 1px solid var(--outline);
 `;
 
 const Button = ({
@@ -393,8 +394,8 @@ export const Editor = () => {
             },
             pre: {
               padding: "8px",
-              backgroundColor: "#fafbfb",
-              outline: "1px solid #dadce0",
+              backgroundColor: "var(--background)",
+              border: "1px solid var(--outline)",
               marginBlockStart: "12px",
               marginBlockEnd: "12px",
               borderRadius: "4px",
@@ -403,7 +404,7 @@ export const Editor = () => {
               marginBlockStart: "18px",
               marginBlockEnd: "18px",
               borderRadius: "8px",
-              backgroundColor: "#f0f0f0",
+              backgroundColor: "var(--outline)",
               width: "100%",
               maxWidth: "560px",
               height: "50vw",
@@ -413,7 +414,7 @@ export const Editor = () => {
         }}
       >
         <MenuBar editor={editor} />
-        <hr css={{ margin: "12px 0px", color: "#dfe2e6" }} />
+        <hr css={{ margin: "12px 0px", color: "var(--outline)" }} />
         <EditorContent css={{ padding: "0px 4px" }} editor={editor} />
       </Flex>
       <div css={{ whiteSpace: "break-spaces" }}>

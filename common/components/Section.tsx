@@ -26,9 +26,9 @@ export const DividingSection = styled(Flex)`
   margin-left: -100vw;
   padding-right: 100vw;
   margin-right: -100vw;
-  background-color: #ffffff;
-  border-top: 1px solid #dadce0;
-  border-bottom: 1px solid #dadce0;
+  background-color: ${({ theme }) => theme.color.positive};
+  border-top: 1px solid var(--outline);
+  border-bottom: 1px solid var(--outline);
   padding-top: 12px;
   padding-bottom: 12px;
 `;

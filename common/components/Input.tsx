@@ -28,7 +28,7 @@ export const Input = styled.input<{
   align-items: center;
   justify-content: center;
   :focus {
-    outline: 2px solid #ffeeda;
+    outline: 2px solid var(--primarylight);
   }
   ${({ size }) =>
     size
@@ -43,8 +43,8 @@ export const Input = styled.input<{
     variant
       ? LabelVariant(theme)[variant]
       : css`
-          border: 1px solid #dadce0;
-          background-color: ${theme.color.positive};
+          border: 1px solid var(--outline);
+          background-color: var(--positive);
         `}
 `;
 
@@ -57,7 +57,7 @@ export const TextArea = styled(TextareaAutosize)<{
   align-items: center;
   justify-content: center;
   :focus {
-    outline: 2px solid #ffeeda;
+    outline: 2px solid var(--primarylight);
   }
   ${({ size }) =>
     size
@@ -72,7 +72,7 @@ export const TextArea = styled(TextareaAutosize)<{
     variant
       ? LabelVariant[variant]
       : css`
-          border: 1px solid #dadce0;
-          background-color: ${theme.color.positive};
+          border: 1px solid var(--outline);
+          background-color: var(--positive);
         `}
 `;

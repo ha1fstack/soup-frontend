@@ -85,7 +85,7 @@ const LoungePost = ({ post }: { post: ILoungePost }) => {
               height: "24px",
               gap: "4px",
               alignItems: "center",
-              color: "#757e88",
+              color: "var(--negative2)",
             }}
             onClick={() => handleFavVote(post)}
           >
@@ -167,6 +167,7 @@ const LoungeEditor = () => {
               })}
               placeholder="간단한 이야기를 작성해 보세요..."
               css={{
+                background: "transparent",
                 fontSize: "18px",
                 marginTop: "10px",
                 flex: "1 0 auto",
@@ -253,7 +254,7 @@ const Lounge = () => {
             {data?.map((post) => (
               <>
                 <LoungePost key={post.lounge_id} post={post} />
-                <hr css={{ color: "#dadce0" }} />
+                <hr css={{ color: "var(--outline)" }} />
               </>
             ))}
             <LoungePost
@@ -268,7 +269,7 @@ const Lounge = () => {
                 username: "Glidong Hong",
               }}
             />
-            <hr css={{ color: "#dadce0" }} />
+            <hr css={{ color: "var(--outline)" }} />
             <LoungePost
               post={{
                 user_id: -1,
@@ -281,7 +282,7 @@ const Lounge = () => {
                 username: "Glidong Hong",
               }}
             />
-            <hr css={{ color: "#dadce0" }} />
+            <hr css={{ color: "var(--outline)" }} />
             <LoungePost
               post={{
                 user_id: -1,
@@ -294,7 +295,7 @@ const Lounge = () => {
                 username: "Glidong Hong",
               }}
             />
-            <hr css={{ color: "#dadce0" }} />
+            <hr css={{ color: "var(--outline)" }} />
             <LoungePost
               post={{
                 user_id: -1,

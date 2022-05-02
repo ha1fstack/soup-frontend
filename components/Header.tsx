@@ -11,15 +11,16 @@ import {
   MdOutlineSearch,
   MdOutlineNotifications,
   MdOutlineMail,
+  MdOutlineDarkMode,
+  MdOutlineLightMode,
 } from "react-icons/md";
 import { useQueryClient } from "react-query";
 import { Login } from "./Login";
 import { Media } from "./Media";
 import Image from "next/image";
+import { useTheme as useNextTheme } from "next-themes";
 
 const HeaderContainer = styled.div`
-  background-color: rgba(255, 255, 255, 0.5);
-  backdrop-filter: brightness(103%) blur(4px);
   box-sizing: border-box;
   padding: 0px 12px;
   ${({ theme }) => theme.breakpoints.at("sm")} {
@@ -32,16 +33,17 @@ const HeaderContainer = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  border-bottom: solid 1px #dadce0;
-  z-index: 999;
+  border-bottom: solid 1px var(--outline);
+  z-index: 1;
+  backdrop-filter: blur(6px);
 `;
 
-const HeaderMenuContainer = styled.div`
+const HeaderMenuContainer = styled.header`
   display: flex;
   flex-direction: row;
   align-items: center;
   font-size: 14px;
-  color: #3e5060;
+  color: var(--negative2);
   & > :not(:last-child) {
     margin-right: 12px;
   }
@@ -61,7 +63,7 @@ const Logo = ({ children, ...props }: React.PropsWithChildren<LinkProps>) => (
 );
 
 const HeaderIconStyle = css({
-  color: "#3e5060",
+  color: "var(--negative2)",
   margin: "-9px",
 });
 
@@ -110,130 +112,163 @@ export const Header = ({ toggleSideBar }: { toggleSideBar?: () => void }) => {
 
   const auth = useAuth();
 
+  const { theme: nextTheme, setTheme: setNextTheme } = useNextTheme();
+
   return (
     <>
-      <header>
-        <HeaderContainer
-          css={false && { position: "initial", padding: "0px 12px" }}
+      <div
+        css={{
+          position: "fixed",
+          width: "100%",
+          height: "58px",
+          backgroundColor: "var(--positive)",
+          zIndex: -100,
+        }}
+      />
+      <div
+        css={{
+          position: "fixed",
+          width: "100%",
+          height: "58px",
+          backgroundColor: "var(--positive)",
+          opacity: 0.75,
+          zIndex: 1,
+        }}
+      />
+      <HeaderContainer
+        css={false && { position: "initial", padding: "0px 12px" }}
+      >
+        <Flex
+          css={{
+            alignItems: "center",
+            gap: "12px",
+            color: theme.color.primary,
+          }}
         >
-          <Flex
-            css={{
-              alignItems: "center",
-              gap: "12px",
-              color: theme.color.primary,
-            }}
-          >
-            <Media css={{ display: "flex", gap: "12px" }} at="sm">
+          <Media css={{ display: "flex", gap: "12px" }} at="sm">
+            <Button
+              onClick={toggleSideBar}
+              variant="transparent"
+              icon
+              css={{
+                marginLeft: "4px",
+                fontSize: "24px",
+                padding: 0,
+              }}
+            >
+              <MdOutlineMenu />
+            </Button>
+            <div
+              css={{
+                width: "1px",
+                height: "36px",
+                backgroundColor: "var(--outline)",
+              }}
+            />
+          </Media>
+          <Logo href="/">
+            <Image
+              height="32"
+              width="96"
+              src={"/logo-with-text.svg"}
+              alt="logo"
+            />
+          </Logo>
+        </Flex>
+        <HeaderMenuContainer>
+          <Media css={{ display: "flex", gap: "12px" }} greaterThan="sm">
+            <SearchButton>
+              <MdOutlineSearch />
+              프로젝트 찾아보기
+            </SearchButton>
+            <div css={{ position: "relative" }}>
               <Button
-                onClick={toggleSideBar}
-                variant="transparent"
                 icon
-                css={{
-                  marginLeft: "4px",
-                  fontSize: "24px",
-                  padding: 0,
-                }}
+                onClick={
+                  notificationPopup
+                    ? undefined
+                    : () => toggleNotificationPopup()
+                }
+                css={{ width: "36px" }}
               >
-                <MdOutlineMenu />
+                <MdOutlineNotifications css={HeaderIconStyle} />
               </Button>
+              {notificationPopup && <Popup ref={notificationRef} />}
+            </div>
+            <div css={{ position: "relative" }}>
+              <Button
+                icon
+                onClick={messagePopup ? undefined : () => toggleMessagePopup()}
+                css={{ width: "36px" }}
+              >
+                <MdOutlineMail css={HeaderIconStyle} />
+              </Button>
+              {messagePopup && <Popup ref={messageRef} />}
+            </div>
+            <div css={{ position: "relative" }}>
+              <Button
+                icon
+                onClick={() =>
+                  setNextTheme(nextTheme === "light" ? "dark" : "light")
+                }
+                css={{ width: "36px" }}
+              >
+                {nextTheme === "light" ? (
+                  <MdOutlineLightMode css={HeaderIconStyle} />
+                ) : (
+                  <MdOutlineDarkMode css={HeaderIconStyle} />
+                )}
+              </Button>
+              {messagePopup && <Popup ref={messageRef} />}
+            </div>
+          </Media>
+
+          {auth.success ? (
+            <>
               <div
                 css={{
+                  height: "32px",
                   width: "1px",
-                  height: "36px",
-                  backgroundColor: "#dadce0",
+                  backgroundColor: "var(--outline)",
+                  marginLeft: "4px",
                 }}
               />
-            </Media>
-            <Logo href="/">
-              <Image
-                height="32"
-                width="96"
-                src={"/logo-with-text.svg"}
-                alt="logo"
-              />
-            </Logo>
-          </Flex>
-          <HeaderMenuContainer>
-            <Media css={{ display: "flex", gap: "12px" }} greaterThan="sm">
-              <SearchButton>
-                <MdOutlineSearch />
-                프로젝트 찾아보기
-              </SearchButton>
-              <div css={{ position: "relative" }}>
-                <Button
-                  icon
-                  onClick={
-                    notificationPopup
-                      ? undefined
-                      : () => toggleNotificationPopup()
-                  }
-                  css={{ width: "36px" }}
-                >
-                  <MdOutlineNotifications css={HeaderIconStyle} />
-                </Button>
-                {notificationPopup && <Popup ref={notificationRef} />}
-              </div>
-              <div css={{ position: "relative" }}>
-                <Button
-                  icon
-                  onClick={
-                    messagePopup ? undefined : () => toggleMessagePopup()
-                  }
-                  css={{ width: "36px" }}
-                >
-                  <MdOutlineMail css={HeaderIconStyle} />
-                </Button>
-                {messagePopup && <Popup ref={messageRef} />}
-              </div>
-            </Media>
-
-            {auth.success ? (
-              <>
-                <div
-                  css={{
-                    height: "32px",
-                    width: "1px",
-                    backgroundColor: "#dadce0",
-                    marginLeft: "4px",
-                  }}
-                />
-                <Flex
-                  inline
-                  css={{
-                    alignItems: "center",
-                    gap: "8px",
-                  }}
-                >
-                  <span>{auth?.username}</span>
-                  <span
-                    css={{
-                      width: "32px",
-                      height: "32px",
-                      borderRadius: "99999px",
-                      overflow: "hidden",
-                    }}
-                  >
-                    <Image
-                      src={auth?.profileImage!}
-                      height="32px"
-                      width="32px"
-                      alt="profile-image"
-                    />
-                  </span>
-                </Flex>
-              </>
-            ) : (
-              <Button
-                onClick={() => toggleLogin()}
-                variant="primary"
-                css={{ fontWeight: "bold" }}
+              <Flex
+                inline
+                css={{
+                  alignItems: "center",
+                  gap: "8px",
+                }}
               >
-                로그인
-              </Button>
-            )}
-          </HeaderMenuContainer>
-        </HeaderContainer>
-      </header>
+                <span>{auth?.username}</span>
+                <span
+                  css={{
+                    width: "32px",
+                    height: "32px",
+                    borderRadius: "99999px",
+                    overflow: "hidden",
+                  }}
+                >
+                  <Image
+                    src={auth?.profileImage!}
+                    height="32px"
+                    width="32px"
+                    alt="profile-image"
+                  />
+                </span>
+              </Flex>
+            </>
+          ) : (
+            <Button
+              onClick={() => toggleLogin()}
+              variant="primary"
+              css={{ fontWeight: "bold" }}
+            >
+              로그인
+            </Button>
+          )}
+        </HeaderMenuContainer>
+      </HeaderContainer>
       {login && <Login toggle={toggleLogin} />}
     </>
   );

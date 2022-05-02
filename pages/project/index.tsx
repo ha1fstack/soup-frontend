@@ -93,7 +93,7 @@ const Post = ({ image, post }: { image?: boolean; post: Post }) => {
             overflow: "hidden",
             lineHeight: "1.2em",
             paddingBottom: "6px",
-            borderBottom: "1px solid #dadce0",
+            borderBottom: "1px solid var(--outline)",
           }}
         >
           <div
@@ -149,7 +149,7 @@ const Post = ({ image, post }: { image?: boolean; post: Post }) => {
               overflow: "hidden",
               position: "relative",
               flex: "0 0 auto",
-              background: "#dadce0",
+              background: "var(--outline)",
               width: "120px",
             }}
           >
@@ -242,7 +242,7 @@ const Post = ({ image, post }: { image?: boolean; post: Post }) => {
           css={{
             cursor: "pointer",
             display: "flex",
-            color: "#616b77",
+            color: "var(--negative2)",
             alignItems: "center",
           }}
         >

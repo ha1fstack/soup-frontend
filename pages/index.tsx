@@ -73,7 +73,7 @@ const Article = ({ title, content }: { title: string; content: string }) => {
           margin: "0px 12px",
           padding: "12px 0px",
           justifyContent: "space-between",
-          borderTop: "1px solid #dadce0",
+          borderTop: "1px solid var(--outline)",
           alignItems: "center",
         }}
       >
@@ -311,8 +311,8 @@ const Home: NextPage = () => {
         css={{
           margin: "-36px -50vw 0 -50vw",
           padding: "36px 50vw 36px 50vw",
-          backgroundColor: "white",
-          borderBottom: "1px solid #dadce0",
+          backgroundColor: "var(--positive)",
+          borderBottom: "1px solid var(--outline)",
         }}
       >
         <Flex

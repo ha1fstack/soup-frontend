@@ -16,7 +16,6 @@ const PageContainer = styled.div`
   min-height: 100vh;
 `;
 const BodyContainer = styled.div`
-  background-color: ${({ theme }) => theme.color.background};
   min-height: 100vh;
   width: 100%;
   display: flex;
@@ -33,7 +32,7 @@ const SideBarContainerWrapper = styled.div`
   min-width: 239px;
   height: calc(100vh - 59px);
   justify-content: space-between;
-  border-right: solid 1px #dadce0;
+  border-right: solid 1px var(--outline);
   padding: 16px;
   ${({ theme }) => theme.breakpoints.at("sm")} {
     top: 0;
@@ -54,7 +53,7 @@ const SideBarContainer: NextComponentType = ({ children }) => {
   return (
     <SideBarContainerWrapper>
       <SideBarContentWrapper>{children}</SideBarContentWrapper>
-      <div css={{ fontSize: "14px", color: "#3e506099" }}>
+      <div css={{ fontSize: "14px", color: "var(--negative2)" }}>
         개인정보처리방침 <br /> © 2022 SouP
       </div>
     </SideBarContainerWrapper>
@@ -76,12 +75,12 @@ const SideBarLink = styled.a<ISideBarProps>`
     props.selected
       ? css`
           font-weight: 700;
-          background-color: #ffeeda;
+          background-color: var(--primarylight);
         `
       : css`
-          color: #3e5060;
+          color: var(--negative2);
           :hover {
-            background-color: #fff8f1;
+            background-color: var(--primarylight2);
           }
         `};
 `;

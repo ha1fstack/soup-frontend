@@ -55,7 +55,7 @@ const InfoEdit = ({ toggleIsEdit }: { toggleIsEdit: () => void }) => {
           </Button>
         </div>
       </Flex>
-      <hr css={{ color: "#dfe2e6" }} />
+      <hr css={{ color: "var(--outline)" }} />
       <Flex
         column
         css={{
@@ -155,7 +155,7 @@ const Info = () => {
               </Button>
             </div>
           </Flex>
-          <hr css={{ color: "#dfe2e6" }} />
+          <hr css={{ color: "var(--outline)" }} />
           <Flex
             column
             css={{

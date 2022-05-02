@@ -19,16 +19,10 @@ const Container = styled(Flex)`
 const Item = styled.button<{
   current?: boolean;
 }>`
-  ${({ current }) =>
-    current &&
-    css`
-      background-color: #ffffff;
-      border: 1px solid #dadce0;
-    `}
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #3e5060;
+  color: var(--negative2);
   width: 24px;
   height: 24px;
   padding: 4px;
@@ -42,6 +36,13 @@ const Item = styled.button<{
   :disabled {
     color: #d3d5d9;
   }
+  ${({ current, theme }) =>
+    current &&
+    css`
+      color: var(--negative);
+      background-color: var(--positive);
+      border: 1px solid var(--outline);
+    `}
 `;
 
 export const Pagination = ({
