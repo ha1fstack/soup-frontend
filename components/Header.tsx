@@ -88,15 +88,31 @@ const Popup = React.forwardRef<HTMLDivElement>((_, ref) => (
     }}
   >
     알림
-    <hr css={{ color: "#dfe2e6" }} />
+    <hr css={{ borderTop: "1px solid #dfe2e6" }} />
     어쩌구
-    <hr css={{ color: "#dfe2e6" }} />
+    <hr css={{ borderTop: "1px solid #dfe2e6" }} />
     어쩌구
-    <hr css={{ color: "#dfe2e6" }} />
+    <hr css={{ borderTop: "1px solid #dfe2e6" }} />
     어쩌구
   </Box>
 ));
 Popup.displayName = "Popup";
+
+const customAnimation = (ms: number) => {
+  const css = document.createElement("style");
+  css.appendChild(
+    document.createTextNode(
+      `* { transition-duration: 250ms; transition-property: background-color, outline-color, border-color; -webkit-transition-duration: 250ms; -webkit-transition-property: background-color, outline-color, border-color; }`
+    )
+  );
+  document.head.appendChild(css);
+  return () => {
+    (() => window.getComputedStyle(document.body))();
+    setTimeout(() => {
+      document.head.removeChild(css);
+    }, ms);
+  };
+};
 
 export const Header = ({ toggleSideBar }: { toggleSideBar?: () => void }) => {
   const theme = useTheme();
@@ -114,13 +130,19 @@ export const Header = ({ toggleSideBar }: { toggleSideBar?: () => void }) => {
 
   const { theme: nextTheme, setTheme: setNextTheme } = useNextTheme();
 
+  const setCustomNextTheme = () => {
+    const removeAnimation = customAnimation(250);
+    setNextTheme(nextTheme === "light" ? "dark" : "light");
+    removeAnimation();
+  };
+
   return (
     <>
       <div
         css={{
           position: "fixed",
           width: "100%",
-          height: "58px",
+          height: "59px",
           backgroundColor: "var(--positive)",
           zIndex: -100,
         }}
@@ -129,7 +151,7 @@ export const Header = ({ toggleSideBar }: { toggleSideBar?: () => void }) => {
         css={{
           position: "fixed",
           width: "100%",
-          height: "58px",
+          height: "59px",
           backgroundColor: "var(--positive)",
           opacity: 0.75,
           zIndex: 1,
@@ -206,13 +228,7 @@ export const Header = ({ toggleSideBar }: { toggleSideBar?: () => void }) => {
               {messagePopup && <Popup ref={messageRef} />}
             </div>
             <div css={{ position: "relative" }}>
-              <Button
-                icon
-                onClick={() =>
-                  setNextTheme(nextTheme === "light" ? "dark" : "light")
-                }
-                css={{ width: "36px" }}
-              >
+              <Button icon onClick={setCustomNextTheme} css={{ width: "36px" }}>
                 {nextTheme === "light" ? (
                   <MdOutlineLightMode css={HeaderIconStyle} />
                 ) : (

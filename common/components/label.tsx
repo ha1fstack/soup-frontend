@@ -3,18 +3,18 @@ import styled from "@emotion/styled";
 
 export const LabelVariant = (theme: Theme) => ({
   primary: css`
-    color: ${theme.color.positive};
+    color: var(--positive);
     border: 0px;
-    background-color: ${theme.color.primary};
+    background-color: var(--primary);
   `,
   "primary-outlined": css`
-    color: ${theme.color.primary};
-    border: 1px solid ${theme.color.primary};
-    background-color: ${theme.color.positive};
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    background-color: var(--positive);
   `,
   white: css`
-    border: 1px solid #dadce0;
-    background-color: ${theme.color.positive};
+    border: 1px solid var(--outline);
+    background-color: var(--positive);
   `,
   transparent: css`
     border: 0px;
@@ -46,6 +46,7 @@ export const Label = styled.div<{
   display: flex;
   align-items: center;
   justify-content: center;
+  font-weight: 600;
   ${({ size }) =>
     size
       ? SizeVariant()[size]
@@ -59,7 +60,7 @@ export const Label = styled.div<{
     variant
       ? LabelVariant(theme)[variant]
       : css`
-          border: 1px solid #dadce0;
-          background-color: #fafbfb;
+          border: 1px solid var(--outline);
+          background-color: var(--background);
         `}
 `;

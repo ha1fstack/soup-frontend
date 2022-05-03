@@ -22,3 +22,8 @@ a {
 * {
   box-sizing: border-box;
 }
+
+* {
+  transition: background-color, outline-color, border-color;
+  -webkit-transition: background-color, outline-color, border-color;
+}

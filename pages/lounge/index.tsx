@@ -254,7 +254,7 @@ const Lounge = () => {
             {data?.map((post) => (
               <>
                 <LoungePost key={post.lounge_id} post={post} />
-                <hr css={{ color: "var(--outline)" }} />
+                <hr css={{ borderTop: "1px solid var(--outline)" }} />
               </>
             ))}
             <LoungePost
@@ -269,7 +269,7 @@ const Lounge = () => {
                 username: "Glidong Hong",
               }}
             />
-            <hr css={{ color: "var(--outline)" }} />
+            <hr css={{ borderTop: "1px solid var(--outline)" }} />
             <LoungePost
               post={{
                 user_id: -1,
@@ -282,7 +282,7 @@ const Lounge = () => {
                 username: "Glidong Hong",
               }}
             />
-            <hr css={{ color: "var(--outline)" }} />
+            <hr css={{ borderTop: "1px solid var(--outline)" }} />
             <LoungePost
               post={{
                 user_id: -1,
@@ -295,7 +295,7 @@ const Lounge = () => {
                 username: "Glidong Hong",
               }}
             />
-            <hr css={{ color: "var(--outline)" }} />
+            <hr css={{ borderTop: "1px solid var(--outline)" }} />
             <LoungePost
               post={{
                 user_id: -1,

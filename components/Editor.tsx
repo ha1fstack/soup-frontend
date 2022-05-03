@@ -4,6 +4,7 @@ import {
   useEditor,
   EditorContent,
   Editor as TipTapEditor,
+  JSONContent,
 } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
@@ -27,6 +28,9 @@ import {
   MdOutlineUndo,
 } from "react-icons/md";
 import { Youtube } from "tiptap/youtube";
+import { UseFormSetValue } from "react-hook-form";
+import { useEffect } from "react";
+import { IArticleData } from "pages/write";
 
 const ButtonElem = styled.button<{
   active?: boolean;
@@ -58,6 +62,7 @@ const Button = ({
 }: React.ComponentProps<typeof ButtonElem>) => {
   return (
     <ButtonElem
+      type="button"
       onMouseDown={(e) => {
         e.preventDefault();
         if (onMouseDown) onMouseDown(e);
@@ -255,8 +260,15 @@ const MenuBar = ({ editor }: { editor: TipTapEditor | null }) => {
   );
 };
 
-export const Editor = () => {
+export const Editor = ({
+  setValue,
+}: {
+  setValue: UseFormSetValue<IArticleData>;
+}) => {
   const editor = useEditor({
+    onBlur({ editor }) {
+      setValue("content", editor?.getJSON());
+    },
     extensions: [StarterKit, Image, Youtube],
     parseOptions: {
       preserveWhitespace: "full",
@@ -365,6 +377,10 @@ export const Editor = () => {
     },
   });
 
+  useEffect(() => {
+    if (editor) setValue("content", editor?.getJSON());
+  }, [setValue, editor]);
+
   return (
     <>
       <Flex
@@ -414,11 +430,13 @@ export const Editor = () => {
         }}
       >
         <MenuBar editor={editor} />
-        <hr css={{ margin: "12px 0px", color: "var(--outline)" }} />
+        <hr
+          css={{ margin: "12px 0px", borderTop: "1px solid var(--outline)" }}
+        />
         <EditorContent css={{ padding: "0px 4px" }} editor={editor} />
       </Flex>
       <div css={{ whiteSpace: "break-spaces" }}>
-        {JSON.stringify(editor?.getJSON())}
+        {JSON.stringify(editor?.getText())}
       </div>
     </>
   );

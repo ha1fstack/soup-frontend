@@ -3,13 +3,13 @@ import styled from "@emotion/styled";
 
 const BoxVariant = (theme: Theme) => ({
   primary: css`
-    border: 1px solid ${theme.color.primary};
-    background: #ffeeda;
-    color: ${theme.color.primary};
+    border: 1px solid var(--primary);
+    background: var(--primarylight);
+    color: var(--primary);
   `,
   background: css`
-    border: 1px solid #dadce0;
-    background: ${theme.color.background};
+    border: 1px solid var(--outline);
+    background: var(--background);
   `,
   transparent: css``,
 });
@@ -67,7 +67,7 @@ export const Box = styled.div<{
     variant
       ? BoxVariant(theme)[variant]
       : css`
-          border: 1px solid #dadce0;
-          background-color: ${theme.color.positive};
+          border: 1px solid var(--outline);
+          background-color: var(--positive);
         `}
 `;

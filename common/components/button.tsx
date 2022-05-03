@@ -28,7 +28,7 @@ export const Button = styled.button<{
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 500;
+  font-weight: 600;
   ${({ icon }) =>
     icon ||
     css`
@@ -51,8 +51,8 @@ export const Button = styled.button<{
     variant
       ? LabelVariant(theme)[variant]
       : css`
-          border: 1px solid #dadce0;
-          background-color: #fafbfb;
+          border: 1px solid var(--outline);
+          background-color: var(--background);
         `}
   &:hover {
     filter: brightness(0.98);
