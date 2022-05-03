@@ -190,7 +190,7 @@ const Lander = () => {
         backgroundRepeat: "no-repeat",
         backgroundPosition: "right",
         backgroundBlendMode: "multiply",
-        color: theme.color.primary,
+        color: "var(--primary)",
         minHeight: "180px",
         overflow: "hidden",
         maxWidth: "720px",

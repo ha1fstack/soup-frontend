@@ -34,7 +34,7 @@ const GlobalStyle = css`
   }
 
   [data-theme="dark"] {
-    --negative: #f8f9fa;
+    --negative: #e7ebf0;
     --negative2: #b1b5b9;
     --positive: #23272b;
     --background: #282c30;
@@ -52,12 +52,6 @@ const GlobalStyle = css`
 
 const theme: Theme = {
   breakpoints: createBreakpoints(),
-  color: {
-    primary: "var(--primary)",
-    positive: "var(--positive)",
-    background: "var(--background)",
-    negative: "var(--negative)",
-  },
 };
 
 function MyApp({

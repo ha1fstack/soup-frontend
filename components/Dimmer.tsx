@@ -1,4 +1,5 @@
 import { Interpolation, Theme } from "@emotion/react";
+import { useTheme } from "next-themes";
 import React from "react";
 import Portal from "./Portal";
 
@@ -7,6 +8,7 @@ export const Dimmer = ({
 }: React.ComponentProps<"div"> & {
   css?: Interpolation<Theme>;
 }) => {
+  const { theme } = useTheme();
   return (
     <Portal at={"#portal"}>
       <div
@@ -14,8 +16,11 @@ export const Dimmer = ({
           position: "fixed",
           top: 0,
           left: 0,
-          backdropFilter: "blur(4px)",
-          backgroundColor: "rgba(255, 255, 255, 0.5)",
+          backdropFilter: "blur(8px)",
+          backgroundColor:
+            theme === "light"
+              ? "rgba(255, 255, 255, 0.5)"
+              : "rgba(0, 0, 0, 0.5)",
           width: "100vw",
           height: "100vh",
           zIndex: 99999,

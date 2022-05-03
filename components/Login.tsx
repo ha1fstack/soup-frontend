@@ -10,7 +10,7 @@ const Logo = styled.span`
   cursor: pointer;
   font-weight: bold;
   font-size: 28px;
-  color: ${({ theme }) => theme.color.primary};
+  color: var(--primary);
 `;
 
 const fetchAuth = async () => {
@@ -24,8 +24,6 @@ const fetchAuth = async () => {
 };
 
 export const Login = ({ toggle }: { toggle: () => void }) => {
-  const theme = useTheme();
-
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -56,7 +54,7 @@ export const Login = ({ toggle }: { toggle: () => void }) => {
           onClick={(e) => e.stopPropagation()}
           css={{
             height: "240px",
-            backgroundColor: theme.color.positive,
+            backgroundColor: "var(--positive)",
             borderRadius: "8px",
             padding: "24px 36px",
             boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.1)",
@@ -75,12 +73,6 @@ export const Login = ({ toggle }: { toggle: () => void }) => {
               },
             }}
           >
-            <Button
-              onClick={() => window.open("/api/login-redirect")}
-              css={{ width: "72px", height: "72px" }}
-            >
-              Google
-            </Button>
             <Button
               onClick={() =>
                 window.open(

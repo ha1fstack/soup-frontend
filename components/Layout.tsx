@@ -26,7 +26,7 @@ const SideBarContainerWrapper = styled.div`
   display: flex;
   flex-direction: column;
   z-index: 9999;
-  background-color: ${({ theme }) => theme.color.positive};
+  background-color: var(--positive);
   position: fixed;
   top: 59px;
   min-width: 239px;

@@ -164,7 +164,7 @@ export const Header = ({ toggleSideBar }: { toggleSideBar?: () => void }) => {
           css={{
             alignItems: "center",
             gap: "12px",
-            color: theme.color.primary,
+            color: "var(--primary)",
           }}
         >
           <Media css={{ display: "flex", gap: "12px" }} at="sm">
