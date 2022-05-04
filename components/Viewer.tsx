@@ -1,16 +1,21 @@
-import { useEditor, EditorContent } from "@tiptap/react";
+import { useEditor, EditorContent, JSONContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
 import { Youtube } from "tiptap/youtube";
 
-export const Viewer = (props: React.HTMLProps<HTMLDivElement>) => {
+export const Viewer = ({
+  content,
+  ...props
+}: Omit<React.HTMLProps<HTMLDivElement>, "content"> & {
+  content: JSONContent;
+}) => {
   const editor = useEditor({
     editable: false,
     extensions: [StarterKit, Image, Youtube],
     parseOptions: {
       preserveWhitespace: "full",
     },
-    content: {
+    content: content || {
       type: "doc",
       content: [
         {
@@ -118,7 +123,6 @@ export const Viewer = (props: React.HTMLProps<HTMLDivElement>) => {
     <div
       css={{
         ".ProseMirror": {
-          minHeight: "600px",
           ":focus": {
             outline: "none",
           },

@@ -13,7 +13,7 @@ const Article = ({ title, content }: { title: string; content: string }) => {
   const router = useRouter();
   const handleClick = (e: React.SyntheticEvent) => {
     e.preventDefault();
-    router.push("/project/1");
+    router.push("/projects/1");
   };
 
   return (

@@ -2,8 +2,39 @@ import Image from "next/image";
 import { Flex, Box } from "common/components";
 import { SectionHeader, DividingSection } from "common/components/Section";
 import { Viewer } from "components";
+import { useQuery } from "react-query";
+import { http } from "common/services";
+import { JSONContent } from "@tiptap/react";
+import { useRouter } from "next/router";
+
+const fetchProject = async (id?: string) => {
+  if (!id) return;
+  const res = await http.get<
+    (
+      | { type: "string"; content: string }
+      | {
+          type: "prosemirror";
+          content: JSONContent;
+        }
+    ) & {
+      title: string;
+      source: string;
+      stacks: string[];
+      url: string;
+    }
+  >(`/projects/${id}`);
+  return res.data;
+};
 
 const Page = () => {
+  const router = useRouter();
+  const { id } = router.query;
+
+  const { data, isLoading, isError } = useQuery(["project", id], () =>
+    fetchProject(id as string)
+  );
+
+  if (!data || isLoading || isError) return null;
   return (
     <div>
       <SectionHeader>
@@ -28,7 +59,7 @@ const Page = () => {
             lineHeight: "initial",
           }}
         >
-          사이드 프로젝트 같이 하실 UI/UX 디자이너 분을 구합니다!
+          {data.title}
         </p>
         <Flex css={{ alignItems: "center", gap: "8px" }}>
           <span
@@ -53,18 +84,31 @@ const Page = () => {
           </Flex>
         </Flex>
       </DividingSection>
-      <Flex>
-        <Viewer
+      <Flex
+        column
+        css={{
+          maxWidth: "960px",
+        }}
+      >
+        <Box
+          responsive
           css={{
-            maxWidth: "960px",
+            padding: "24px",
             marginTop: "24px",
-            marginBottom: "96px",
+            marginBottom: "48px",
+            lineHeight: 1.5,
           }}
-        />
+        >
+          {data.source === "SOUP" ? (
+            <Viewer content={JSON.parse(data.content as any) as JSONContent} />
+          ) : (
+            data.content
+          )}
+        </Box>
+        <Box column>
+          <div css={{ height: "240px" }}></div>
+        </Box>
       </Flex>
-      <Box column>
-        <div css={{ height: "240px" }}></div>
-      </Box>
     </div>
   );
 };

@@ -118,7 +118,7 @@ const ChildrenContainer = styled.div`
   }
   ${({ theme }) => theme.breakpoints.at("sm")} {
     margin-left: 0px;
-    padding: 24px 18px;
+    padding: 24px 16px;
   }
 `;
 
@@ -129,7 +129,7 @@ const SideBarNavigation = () => {
         홈
       </SideBarElement>
       <SideBarElement href="/write">새 모집 만들기</SideBarElement>
-      <SideBarElement href="/project" exact={false}>
+      <SideBarElement href="/projects" exact={false}>
         프로젝트/스터디 찾기
       </SideBarElement>
       <SideBarElement href="/lounge">라운지</SideBarElement>

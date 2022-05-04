@@ -15,6 +15,8 @@ import { Pagination } from "common/components/Pagination";
 import { AppContext } from "next/app";
 import { timeDiffString } from "utils";
 import { useMemo } from "react";
+import { ellipsis } from "polished";
+import { useTheme } from "@emotion/react";
 
 interface Pageable<T> {
   content: T;
@@ -53,22 +55,27 @@ interface Post {
 
 const Post = ({ image, post }: { image?: boolean; post: Post }) => {
   const router = useRouter();
-  const handleArticleClick = (e: React.SyntheticEvent) => {
+  const handleArticleClick = (e: React.SyntheticEvent, id: number) => {
     e.preventDefault();
-    router.push("/project/1");
+    router.push(`/projects/${id}`);
   };
 
   const timeString = useMemo(() => timeDiffString(post.date), [post]);
+
+  const theme = useTheme();
 
   return (
     <Box
       responsive
       column
       css={{
-        minWidth: "480px",
+        minWidth: "100%",
+        [theme.breakpoints.greaterThan("md")]: {
+          minWidth: "480px",
+        },
         flex: "40%",
-        padding: 0,
-        height: "170px",
+        padding: "12px",
+        height: "188px",
       }}
     >
       <div
@@ -76,7 +83,6 @@ const Post = ({ image, post }: { image?: boolean; post: Post }) => {
           height: "100%",
           display: "flex",
           flexDirection: "row",
-          padding: "10px 12px 8px 12px",
           justifyContent: "space-between",
         }}
       >
@@ -92,16 +98,35 @@ const Post = ({ image, post }: { image?: boolean; post: Post }) => {
             justifyContent: "space-between",
             overflow: "hidden",
             lineHeight: "1.2em",
-            paddingBottom: "6px",
-            borderBottom: "1px solid var(--outline)",
+            // borderBottom: "1px solid var(--outline)",
           }}
         >
           <div
             css={{
               cursor: "pointer",
             }}
-            onClick={handleArticleClick}
+            onClick={(e) => handleArticleClick(e, post.id)}
           >
+            <Flex
+              css={{
+                alignItems: "center",
+                fontSize: "13px",
+                marginBottom: "12px",
+                gap: "8px",
+              }}
+            >
+              <div
+                css={{
+                  width: "24px",
+                  height: "24px",
+                  borderRadius: "12px",
+                  backgroundColor: "lightgray",
+                }}
+              />
+              <span>
+                by <b>{post.userName}</b> · {timeString} · 댓글 3개 · 좋아요 6개
+              </span>
+            </Flex>
             <div
               css={{
                 fontWeight: "500",
@@ -126,18 +151,6 @@ const Post = ({ image, post }: { image?: boolean; post: Post }) => {
             >
               {post.content}
             </div>
-          </div>
-
-          <div
-            css={{
-              overflow: "hidden",
-              fontSize: "13px",
-              display: "-webkit-box",
-              WebkitBoxOrient: "vertical",
-              WebkitLineClamp: 2,
-            }}
-          >
-            by <b>{post.userName}</b> · {timeString} · 댓글 3개
           </div>
         </div>
         {image ? (
@@ -168,7 +181,6 @@ const Post = ({ image, post }: { image?: boolean; post: Post }) => {
         css={{
           display: "flex",
           flexDirection: "row",
-          margin: "8px",
           marginTop: 0,
           justifyContent: "space-between",
           alignItems: "center",
@@ -182,80 +194,45 @@ const Post = ({ image, post }: { image?: boolean; post: Post }) => {
             "& > *+*": { marginLeft: "8px" },
           }}
         >
-          <Label variant="white" size="small">
+          <Label variant="background" size="small">
             {post.source}
           </Label>
-          <Label variant="white" size="small">
-            웹 개발
-          </Label>
-          <Label variant="white" size="small">
+          <Label variant="background" size="small">
             <div
               css={{
-                height: "20px",
-                width: "20px",
-                marginLeft: "-2px",
-                marginRight: "4px",
+                width: "6px",
+                height: "6px",
+                borderRadius: "3px",
+                backgroundColor: "#007acc",
+                marginRight: "6px",
               }}
-            >
-              <Image src="/stacks/ts.png" alt="me" width="24px" height="24px" />
-            </div>
+            />
             Typescript
           </Label>
-          <Label variant="white" size="small">
+          <Label variant="background" size="small">
             <div
               css={{
-                height: "20px",
-                width: "20px",
-                marginLeft: "-2px",
-                marginRight: "4px",
+                width: "6px",
+                height: "6px",
+                borderRadius: "3px",
+                backgroundColor: "#539e43",
+                marginRight: "6px",
               }}
-            >
-              <Image
-                src="/stacks/node.png"
-                alt="me"
-                width="24px"
-                height="24px"
-              />
-            </div>
+            />
             node.js
           </Label>
-          <Label variant="white" size="small">
+          <Label variant="background" size="small">
             <div
               css={{
-                height: "20px",
-                width: "20px",
-                marginLeft: "-2px",
-                marginRight: "4px",
+                width: "6px",
+                height: "6px",
+                borderRadius: "3px",
+                backgroundColor: "#61dafb",
+                marginRight: "6px",
               }}
-            >
-              <Image
-                src="/stacks/react.png"
-                alt="me"
-                width="24px"
-                height="24px"
-              />
-            </div>
+            />
             React
           </Label>
-        </div>
-        <div
-          css={{
-            cursor: "pointer",
-            display: "flex",
-            color: "var(--negative2)",
-            alignItems: "center",
-          }}
-        >
-          <span css={{ fontSize: "13px" }}>6</span>
-          <div
-            css={{
-              fontSize: "17px",
-              marginLeft: "4px",
-              marginRight: "4px",
-            }}
-          >
-            <MdOutlineFavoriteBorder />
-          </div>
         </div>
       </div>
     </Box>

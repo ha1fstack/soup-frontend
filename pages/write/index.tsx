@@ -26,7 +26,7 @@ const Write = () => {
 
   const onSubmit: SubmitHandler<IArticleData> = async (data) => {
     console.log(data);
-    const res = await http.post<{ success: boolean }>("/project/build", data);
+    const res = await http.post<{ success: boolean }>("/projects/build", data);
     if (res.data.success) {
       alert("ok");
       router.push("/projects");
