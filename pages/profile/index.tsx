@@ -1,6 +1,14 @@
 import Image from "next/image";
-import { Flex, Button, TextArea, Input, Box } from "common/components";
-import { SectionHeader } from "common/components/Section";
+import {
+  Flex,
+  Button,
+  TextArea,
+  Input,
+  Box,
+  SectionHeader,
+  SectionBody,
+} from "common/components";
+import { ChildrenContainer } from "components";
 import { useToggle } from "hooks/useToggle";
 import { MdOutlineEdit } from "react-icons/md";
 
@@ -21,7 +29,7 @@ const DetailsRow = ({
 
 const InfoEdit = ({ toggleIsEdit }: { toggleIsEdit: () => void }) => {
   return (
-    <>
+    <ChildrenContainer>
       <Flex
         css={{
           alignItems: "center",
@@ -101,7 +109,7 @@ const InfoEdit = ({ toggleIsEdit }: { toggleIsEdit: () => void }) => {
           </div>
         </div>
       </Flex>
-    </>
+    </ChildrenContainer>
   );
 };
 
@@ -207,44 +215,46 @@ const Info = () => {
 
 const Profile = () => {
   return (
-    <div>
+    <ChildrenContainer>
       <SectionHeader>
         <SectionHeader.Title>내 프로필</SectionHeader.Title>
         <SectionHeader.Description>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         </SectionHeader.Description>
       </SectionHeader>
-      <Flex
-        css={{
-          flexWrap: "wrap",
-          justifyContent: "space-between",
-          width: "100%",
-          alignItems: "flex-start",
-          "& > *": {
-            flex: 1,
-          },
-          gap: "24px",
-        }}
-      >
-        <Info />
+      <SectionBody>
         <Flex
-          column
           css={{
-            flex: "1 0 400px",
+            flexWrap: "wrap",
+            justifyContent: "space-between",
+            width: "100%",
+            alignItems: "flex-start",
+            "& > *": {
+              flex: 1,
+            },
             gap: "24px",
           }}
         >
-          <Box responsive column>
-            <p css={{ fontWeight: 600 }}>선호 스택</p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          </Box>
-          <Box responsive column>
-            <p css={{ fontWeight: 600 }}>스킬</p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          </Box>
+          <Info />
+          <Flex
+            column
+            css={{
+              flex: "1 0 400px",
+              gap: "24px",
+            }}
+          >
+            <Box responsive column>
+              <p css={{ fontWeight: 600 }}>선호 스택</p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            </Box>
+            <Box responsive column>
+              <p css={{ fontWeight: 600 }}>스킬</p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            </Box>
+          </Flex>
         </Flex>
-      </Flex>
-    </div>
+      </SectionBody>
+    </ChildrenContainer>
   );
 };
 

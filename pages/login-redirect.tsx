@@ -3,7 +3,6 @@ import { useEffect } from "react";
 const LoginRedirect = () => {
   useEffect(() => {
     if (window.opener) {
-      console.log(window.opener.postMessage);
       window.opener.postMessage("asdf", location.origin);
     }
   }, []);

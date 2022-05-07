@@ -1,4 +1,10 @@
-import { Box, Flex, Button } from "common/components";
+import {
+  Box,
+  Flex,
+  Button,
+  SectionBody,
+  SectionBodyAlt,
+} from "common/components";
 import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import Image from "next/image";
@@ -8,6 +14,7 @@ import { dehydrate, QueryClient, useQuery } from "react-query";
 import styled from "@emotion/styled";
 import { http } from "common/services";
 import { ellipsis } from "polished";
+import { ChildrenContainer } from "components";
 
 const Article = ({ title, content }: { title: string; content: string }) => {
   const router = useRouter();
@@ -306,12 +313,12 @@ const Home: NextPage = () => {
   const { data } = useQuery("front-projects", fetchFrontProjects);
 
   return (
-    <div>
-      <div
+    <ChildrenContainer>
+      <SectionBodyAlt
         css={{
-          margin: "-36px -50vw 0 -50vw",
-          padding: "36px 50vw 36px 50vw",
-          backgroundColor: "var(--positive)",
+          paddingTop: "36px",
+          paddingBottom: "36px",
+          border: "0px",
           borderBottom: "1px solid var(--outline)",
         }}
       >
@@ -383,24 +390,27 @@ const Home: NextPage = () => {
             </Flex>
           </Flex>
         </Flex>
-      </div>
-      {/* <Lander /> */}
-      {/*<ArticleList data={data?.slice(20, 24)} source="SouP" />*/}
-      <ArticleList data={data?.OKKY.slice(0, 8)} source="Okky" />
-      <ArticleList data={data?.INFLEARN.slice(0, 8)} source="인프런" />
-      <ArticleList data={data?.CAMPICK.slice(0, 8)} source="캠퍼스픽" />
-      <ArticleList data={data?.HOLA.slice(0, 8)} source="HOLA" />
-    </div>
+      </SectionBodyAlt>
+      <SectionBody>
+        {/* <Lander /> */}
+        {/* <ArticleList data={data?.SOUP.slice(20, 24)} source="SouP" /> */}
+        <ArticleList data={data?.OKKY.slice(0, 8)} source="Okky" />
+        <ArticleList data={data?.INFLEARN.slice(0, 8)} source="인프런" />
+        <ArticleList data={data?.CAMPICK.slice(0, 8)} source="캠퍼스픽" />
+        <ArticleList data={data?.HOLA.slice(0, 8)} source="HOLA" />
+      </SectionBody>
+    </ChildrenContainer>
   );
 };
 
 const fetchFrontProjects = async () => {
   const res = await http.get<{
+    SOUP: any[];
     OKKY: any[];
     INFLEARN: any[];
     CAMPICK: any[];
     HOLA: any[];
-  }>("/front-projects");
+  }>("/front/projects");
   return res.data;
 };
 

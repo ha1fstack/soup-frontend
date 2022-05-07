@@ -1,10 +1,15 @@
 import { JSONContent } from "@tiptap/react";
-import { Box, Flex, Input, Button } from "common/components";
-import { SectionHeader } from "common/components/Section";
+import {
+  Box,
+  Flex,
+  Input,
+  Button,
+  SectionBody,
+  SectionHeader,
+} from "common/components";
 import { http } from "common/services";
-import { Editor } from "components";
+import { ChildrenContainer, Editor } from "components";
 import { useRouter } from "next/router";
-import { FormEventHandler } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 export interface IArticleData {
@@ -34,47 +39,45 @@ const Write = () => {
   };
 
   return (
-    <div
-      css={{
-        maxWidth: "960px",
-      }}
-    >
+    <ChildrenContainer width={960}>
       <SectionHeader>
         <SectionHeader.Title>새 모집 만들기</SectionHeader.Title>
         <SectionHeader.Description>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         </SectionHeader.Description>
       </SectionHeader>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Box
-          responsive
-          column
-          css={{
-            padding: "16px",
-            gap: "16px",
-            marginBottom: "24px",
-          }}
-        >
-          <Flex
+      <SectionBody>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Box
+            responsive
+            column
             css={{
-              justifyContent: "space-between",
+              padding: "16px",
+              gap: "16px",
+              marginBottom: "24px",
             }}
           >
-            <Input
-              {...register("title")}
-              css={{ maxWidth: "480px", flex: "1 0 auto" }}
-              placeholder="제목"
-            />
-            <Button type="submit" variant="primary">
-              작성
-            </Button>
-          </Flex>
-          <Box column>
-            <Editor setValue={setValue} />
+            <Flex
+              css={{
+                justifyContent: "space-between",
+              }}
+            >
+              <Input
+                {...register("title")}
+                css={{ maxWidth: "480px", flex: "1 0 auto" }}
+                placeholder="제목"
+              />
+              <Button type="submit" variant="primary">
+                작성
+              </Button>
+            </Flex>
+            <Box responsive column>
+              <Editor setValue={setValue} />
+            </Box>
           </Box>
-        </Box>
-      </form>
-    </div>
+        </form>
+      </SectionBody>
+    </ChildrenContainer>
   );
 };
 

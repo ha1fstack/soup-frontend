@@ -6,6 +6,7 @@ body {
     Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-tap-highlight-color: transparent;
+  word-break: break-all;
 }
 
 input,
@@ -21,9 +22,4 @@ a {
 
 * {
   box-sizing: border-box;
-}
-
-* {
-  transition: background-color, outline-color, border-color;
-  -webkit-transition: background-color, outline-color, border-color;
 }

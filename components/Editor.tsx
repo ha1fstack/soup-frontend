@@ -429,15 +429,35 @@ export const Editor = ({
           },
         }}
       >
-        <MenuBar editor={editor} />
-        <hr
-          css={{ margin: "12px 0px", borderTop: "1px solid var(--outline)" }}
-        />
+        <div
+          css={{
+            position: "sticky",
+            top: "59px",
+            zIndex: 1,
+            borderBottom: "1px solid var(--outline)",
+            padding: "12px 0px",
+            marginTop: "-12px",
+            marginBottom: "12px",
+          }}
+        >
+          <div
+            css={{
+              marginTop: "-12px",
+              position: "absolute",
+              backgroundColor: "var(--positive)",
+              width: "100%",
+              height: "50px",
+              opacity: 0.95,
+              zIndex: -1,
+            }}
+          />
+          <MenuBar editor={editor} />
+        </div>
         <EditorContent css={{ padding: "0px 4px" }} editor={editor} />
       </Flex>
-      <div css={{ whiteSpace: "break-spaces" }}>
+      {/* <div css={{ whiteSpace: "break-spaces" }}>
         {JSON.stringify(editor?.getText())}
-      </div>
+      </div> */}
     </>
   );
 };

@@ -58,7 +58,7 @@ const LogoLink = styled.a`
 `;
 const Logo = ({ children, ...props }: React.PropsWithChildren<LinkProps>) => (
   <Link {...props}>
-    <LogoLink>{children}</LogoLink>
+    <LogoLink href={props.href.toString()}>{children}</LogoLink>
   </Link>
 );
 
@@ -88,11 +88,11 @@ const Popup = React.forwardRef<HTMLDivElement>((_, ref) => (
     }}
   >
     알림
-    <hr css={{ borderTop: "1px solid #dfe2e6" }} />
+    <hr css={{ borderTop: "1px solid var(--outline)" }} />
     어쩌구
-    <hr css={{ borderTop: "1px solid #dfe2e6" }} />
+    <hr css={{ borderTop: "1px solid var(--outline)" }} />
     어쩌구
-    <hr css={{ borderTop: "1px solid #dfe2e6" }} />
+    <hr css={{ borderTop: "1px solid var(--outline)" }} />
     어쩌구
   </Box>
 ));
@@ -138,16 +138,16 @@ export const Header = ({ toggleSideBar }: { toggleSideBar?: () => void }) => {
 
   return (
     <>
-      <div
+      <div // 배경
         css={{
           position: "fixed",
           width: "100%",
           height: "59px",
           backgroundColor: "var(--positive)",
-          zIndex: -100,
+          zIndex: -1,
         }}
       />
-      <div
+      <div // 오버레이
         css={{
           position: "fixed",
           width: "100%",
@@ -157,9 +157,7 @@ export const Header = ({ toggleSideBar }: { toggleSideBar?: () => void }) => {
           zIndex: 1,
         }}
       />
-      <HeaderContainer
-        css={false && { position: "initial", padding: "0px 12px" }}
-      >
+      <HeaderContainer css={{ zIndex: 2 }}>
         <Flex
           css={{
             alignItems: "center",

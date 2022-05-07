@@ -1,22 +1,23 @@
-import { Box, Label, Button, Flex } from "common/components";
-import { SectionHeader, DividingSection } from "common/components/Section";
+import {
+  Box,
+  Label,
+  Button,
+  Flex,
+  ProfilePlaceholder,
+  SectionHeader,
+  SectionBody,
+  SectionBodyAlt,
+} from "common/components";
 import { GetServerSideProps, NextPage } from "next";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { MdOutlineFavoriteBorder } from "react-icons/md";
-import {
-  dehydrate,
-  QueryClient,
-  useInfiniteQuery,
-  useQuery,
-} from "react-query";
+import { dehydrate, QueryClient, useQuery } from "react-query";
 import { http } from "common/services";
 import { Pagination } from "common/components/Pagination";
-import { AppContext } from "next/app";
-import { timeDiffString } from "utils";
+import { SOURCE, timeDiffString } from "utils";
 import { useMemo } from "react";
-import { ellipsis } from "polished";
 import { useTheme } from "@emotion/react";
+import { ChildrenContainer } from "components";
 
 interface Pageable<T> {
   content: T;
@@ -65,19 +66,7 @@ const Post = ({ image, post }: { image?: boolean; post: Post }) => {
   const theme = useTheme();
 
   return (
-    <Box
-      responsive
-      column
-      css={{
-        minWidth: "100%",
-        [theme.breakpoints.greaterThan("md")]: {
-          minWidth: "480px",
-        },
-        flex: "40%",
-        padding: "12px",
-        height: "188px",
-      }}
-    >
+    <Box responsive column>
       <div
         css={{
           height: "100%",
@@ -92,13 +81,11 @@ const Post = ({ image, post }: { image?: boolean; post: Post }) => {
             flexWrap: "nowrap",
             boxSizing: "border-box",
             height: "100%",
-            flex: "0 1 auto",
             display: "flex",
             flexDirection: "column",
             justifyContent: "space-between",
             overflow: "hidden",
             lineHeight: "1.2em",
-            // borderBottom: "1px solid var(--outline)",
           }}
         >
           <div
@@ -110,32 +97,25 @@ const Post = ({ image, post }: { image?: boolean; post: Post }) => {
             <Flex
               css={{
                 alignItems: "center",
-                fontSize: "13px",
-                marginBottom: "12px",
+                fontSize: "14px",
+                marginBottom: "16px",
                 gap: "8px",
               }}
             >
-              <div
-                css={{
-                  width: "24px",
-                  height: "24px",
-                  borderRadius: "12px",
-                  backgroundColor: "lightgray",
-                }}
-              />
+              <ProfilePlaceholder value={post.userName} size={24} />
               <span>
-                by <b>{post.userName}</b> · {timeString} · 댓글 3개 · 좋아요 6개
+                {post.userName} · {timeString} · 댓글 3개 · 좋아요 6개
               </span>
             </Flex>
             <div
               css={{
-                fontWeight: "500",
-                fontSize: "16px",
+                fontWeight: "700",
+                fontSize: "18px",
                 overflow: "hidden",
                 display: "-webkit-box",
                 WebkitBoxOrient: "vertical",
                 WebkitLineClamp: 2,
-                marginBottom: "8px",
+                marginBottom: "12px",
               }}
             >
               {post.postName}
@@ -143,10 +123,12 @@ const Post = ({ image, post }: { image?: boolean; post: Post }) => {
             <div
               css={{
                 overflow: "hidden",
-                fontSize: "13px",
+                fontSize: "16px",
+                lineHeight: 1.5,
                 display: "-webkit-box",
                 WebkitBoxOrient: "vertical",
                 WebkitLineClamp: 2,
+                marginBottom: "16px",
               }}
             >
               {post.content}
@@ -194,10 +176,20 @@ const Post = ({ image, post }: { image?: boolean; post: Post }) => {
             "& > *+*": { marginLeft: "8px" },
           }}
         >
-          <Label variant="background" size="small">
-            {post.source}
+          <Label
+            css={{
+              backgroundColor: "var(--positive1)",
+            }}
+            variant="background"
+            size="small"
+          >
+            {SOURCE[post.source]}
           </Label>
-          <Label variant="background" size="small">
+          <Label
+            css={{ backgroundColor: "var(--positive1)" }}
+            variant="background"
+            size="small"
+          >
             <div
               css={{
                 width: "6px",
@@ -209,7 +201,11 @@ const Post = ({ image, post }: { image?: boolean; post: Post }) => {
             />
             Typescript
           </Label>
-          <Label variant="background" size="small">
+          <Label
+            css={{ backgroundColor: "var(--positive1)" }}
+            variant="background"
+            size="small"
+          >
             <div
               css={{
                 width: "6px",
@@ -221,7 +217,11 @@ const Post = ({ image, post }: { image?: boolean; post: Post }) => {
             />
             node.js
           </Label>
-          <Label variant="background" size="small">
+          <Label
+            css={{ backgroundColor: "var(--positive1)" }}
+            variant="background"
+            size="small"
+          >
             <div
               css={{
                 width: "6px",
@@ -264,38 +264,306 @@ const Project: NextPage = () => {
     />
   );
 
+  const theme = useTheme();
+
   if (!data || isLoading || isError) return null;
 
   return (
-    <div>
+    <ChildrenContainer>
       <SectionHeader>
         <SectionHeader.Title>프로젝트/스터디 찾기</SectionHeader.Title>
         <SectionHeader.Description>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         </SectionHeader.Description>
       </SectionHeader>
-      <DividingSection>
+      <SectionBodyAlt>
         <div css={{ display: "flex", "& > *+*": { marginLeft: "8px" } }}>
           <Button variant="primary-outlined">+ 태그 추가</Button>
           <Button variant="white">Typescript</Button>
           <Button variant="white">Vue</Button>
           <Button variant="white">Python</Button>
         </div>
-      </DividingSection>
-      <ProjectPagination />
-      <Flex
-        css={{
-          flexWrap: "wrap",
-          margin: "12px 0px",
-          gap: "12px",
-        }}
-      >
-        {data?.content.map((post, i) => (
-          <Post post={post} key={i} />
-        ))}
-      </Flex>
-      <ProjectPagination />
-    </div>
+      </SectionBodyAlt>
+      <SectionBody>
+        <Flex css={{ gap: "24px", flexWrap: "wrap", marginBottom: "56px" }}>
+          <Flex column css={{ flex: "99999 1 480px", marginBottom: "-56px" }}>
+            <ProjectPagination />
+            {/* <DividingSection> */}
+            <Flex
+              column
+              css={{
+                gap: "12px",
+              }}
+            >
+              {data?.content.map((post, i) => (
+                <>
+                  <Post post={post} key={i} />
+                  {/* <hr
+                css={{ borderTop: "1px solid var(--outline)", width: "100%" }}
+              /> */}
+                </>
+              ))}
+            </Flex>
+            {/* </DividingSection> */}
+            <ProjectPagination />
+          </Flex>
+          <Flex
+            css={{
+              marginTop: "56px",
+              flex: "1 0 300px",
+              gap: "12px",
+              alignSelf: "flex-start",
+              position: "sticky",
+              top: "71px",
+            }}
+            column
+          >
+            <Box column>
+              <Flex
+                css={{
+                  alignItems: "center",
+                  fontSize: "14px",
+                  fontWeight: "600",
+                  lineHeight: "initial",
+                  marginBottom: "20px",
+                }}
+              >
+                <span
+                  css={{
+                    display: "inline-block",
+                    width: "6px",
+                    height: "6px",
+                    borderRadius: "6px",
+                    backgroundColor: "var(--primary)",
+                    marginRight: "6px",
+                  }}
+                />
+                이런 프로젝트는 어떠세요?
+              </Flex>
+              <Flex column css={{ gap: "20px" }}>
+                <Flex column css={{ gap: "8px" }}>
+                  <Flex
+                    css={{
+                      alignItems: "center",
+                      fontSize: "13px",
+                      gap: "8px",
+                    }}
+                  >
+                    <span
+                      css={{
+                        display: "inline-block",
+                        width: "20px",
+                        height: "20px",
+                        borderRadius: "12px",
+                        backgroundColor: "lightgray",
+                      }}
+                    />
+                    <span>Gildong Hong</span>
+                  </Flex>
+                  <p
+                    css={{
+                      fontSize: "14px",
+                      fontWeight: "700",
+                      display: "-webkit-box",
+                      WebkitBoxOrient: "vertical",
+                      WebkitLineClamp: 2,
+                    }}
+                  >
+                    황금 4일(목,금,토,일)동안 죙일 모각코 스터디원 모집(선착순
+                    10명)
+                  </p>
+                </Flex>
+                <Flex column css={{ gap: "8px" }}>
+                  <Flex
+                    css={{
+                      alignItems: "center",
+                      fontSize: "13px",
+                      gap: "8px",
+                    }}
+                  >
+                    <span
+                      css={{
+                        display: "inline-block",
+                        width: "20px",
+                        height: "20px",
+                        borderRadius: "12px",
+                        backgroundColor: "lightgray",
+                      }}
+                    />
+                    <span>Gildong Hong</span>
+                  </Flex>
+                  <p
+                    css={{
+                      fontSize: "14px",
+                      fontWeight: "700",
+                      display: "-webkit-box",
+                      WebkitBoxOrient: "vertical",
+                      WebkitLineClamp: 2,
+                    }}
+                  >
+                    황금 4일(목,금,토,일)동안 죙일 모각코 스터디원 모집(선착순
+                    10명)
+                  </p>
+                </Flex>
+                <Flex column css={{ gap: "8px" }}>
+                  <Flex
+                    css={{
+                      alignItems: "center",
+                      fontSize: "13px",
+                      gap: "8px",
+                    }}
+                  >
+                    <span
+                      css={{
+                        display: "inline-block",
+                        width: "20px",
+                        height: "20px",
+                        borderRadius: "12px",
+                        backgroundColor: "lightgray",
+                      }}
+                    />
+                    <span>Gildong Hong</span>
+                  </Flex>
+                  <p
+                    css={{
+                      fontSize: "14px",
+                      fontWeight: "700",
+                      display: "-webkit-box",
+                      WebkitBoxOrient: "vertical",
+                      WebkitLineClamp: 2,
+                    }}
+                  >
+                    황금 4일(목,금,토,일)동안 죙일 모각코 스터디원 모집(선착순
+                    10명)
+                  </p>
+                </Flex>
+              </Flex>
+            </Box>
+            <Box column>
+              <Flex
+                css={{
+                  alignItems: "center",
+                  fontSize: "14px",
+                  fontWeight: "600",
+                  lineHeight: "initial",
+                  marginBottom: "20px",
+                }}
+              >
+                <span
+                  css={{
+                    display: "inline-block",
+                    width: "6px",
+                    height: "6px",
+                    borderRadius: "6px",
+                    backgroundColor: "var(--primary)",
+                    marginRight: "6px",
+                  }}
+                />
+                지금 HOT한 프로젝트 🔥
+              </Flex>
+              <Flex column css={{ gap: "20px" }}>
+                <Flex column css={{ gap: "8px" }}>
+                  <Flex
+                    css={{
+                      alignItems: "center",
+                      fontSize: "13px",
+                      gap: "8px",
+                    }}
+                  >
+                    <span
+                      css={{
+                        display: "inline-block",
+                        width: "20px",
+                        height: "20px",
+                        borderRadius: "12px",
+                        backgroundColor: "lightgray",
+                      }}
+                    />
+                    <span>Gildong Hong</span>
+                  </Flex>
+                  <p
+                    css={{
+                      fontSize: "14px",
+                      fontWeight: "700",
+                      display: "-webkit-box",
+                      WebkitBoxOrient: "vertical",
+                      WebkitLineClamp: 2,
+                    }}
+                  >
+                    황금 4일(목,금,토,일)동안 죙일 모각코 스터디원 모집(선착순
+                    10명)
+                  </p>
+                </Flex>
+                <Flex column css={{ gap: "8px" }}>
+                  <Flex
+                    css={{
+                      alignItems: "center",
+                      fontSize: "13px",
+                      gap: "8px",
+                    }}
+                  >
+                    <span
+                      css={{
+                        display: "inline-block",
+                        width: "20px",
+                        height: "20px",
+                        borderRadius: "12px",
+                        backgroundColor: "lightgray",
+                      }}
+                    />
+                    <span>Gildong Hong</span>
+                  </Flex>
+                  <p
+                    css={{
+                      fontSize: "14px",
+                      fontWeight: "700",
+                      display: "-webkit-box",
+                      WebkitBoxOrient: "vertical",
+                      WebkitLineClamp: 2,
+                    }}
+                  >
+                    황금 4일(목,금,토,일)동안 죙일 모각코 스터디원 모집(선착순
+                    10명)
+                  </p>
+                </Flex>
+                <Flex column css={{ gap: "8px" }}>
+                  <Flex
+                    css={{
+                      alignItems: "center",
+                      fontSize: "13px",
+                      gap: "8px",
+                    }}
+                  >
+                    <span
+                      css={{
+                        display: "inline-block",
+                        width: "20px",
+                        height: "20px",
+                        borderRadius: "12px",
+                        backgroundColor: "lightgray",
+                      }}
+                    />
+                    <span>Gildong Hong</span>
+                  </Flex>
+                  <p
+                    css={{
+                      fontSize: "14px",
+                      fontWeight: "700",
+                      display: "-webkit-box",
+                      WebkitBoxOrient: "vertical",
+                      WebkitLineClamp: 2,
+                    }}
+                  >
+                    황금 4일(목,금,토,일)동안 죙일 모각코 스터디원 모집(선착순
+                    10명)
+                  </p>
+                </Flex>
+              </Flex>
+            </Box>
+          </Flex>
+        </Flex>
+      </SectionBody>
+    </ChildrenContainer>
   );
 };
 

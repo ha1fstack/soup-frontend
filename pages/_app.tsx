@@ -7,11 +7,12 @@ import { createBreakpoints } from "utils/createBreakpoints";
 
 import "common/styles/reset.css";
 import "common/styles/globals.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NextPage } from "next";
 import useAuth, { fetchAuth } from "hooks/useAuth";
 
 import { ThemeProvider as NextThemeProvider } from "next-themes";
+import { http } from "common/services";
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: React.ReactElement) => React.ReactNode;
@@ -25,9 +26,13 @@ const GlobalStyle = css`
   :root {
     --negative: #23272b;
     --negative2: #3e5060;
+
     --positive: #ffffff;
+    --positive1: #f5f6f7;
+
     --background: #f8f9fa;
     --outline: #dadce0;
+
     --primary: #ff8a05;
     --primarylight: #ffeeda;
     --primarylight2: #fff8f1;
@@ -36,9 +41,13 @@ const GlobalStyle = css`
   [data-theme="dark"] {
     --negative: #e7ebf0;
     --negative2: #b1b5b9;
+
     --positive: #23272b;
+    --positive1: #2b3035;
+
     --background: #282c30;
     --outline: #35393d;
+
     --primary: #ff8a05;
     --primarylight: #1e2124;
     --primarylight2: #212428;
@@ -74,10 +83,16 @@ function MyApp({
     Component.getLayout ||
     ((page: React.ReactElement) => <Layout>{page}</Layout>);
 
+  useEffect(() => {
+    if (window)
+      http.defaults.baseURL =
+        window.location.protocol + "//" + window.location.host + "/api";
+  }, []);
+
   return (
     <>
       <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=0.9" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>SouP</title>
       </Head>
       <QueryClientProvider client={queryClient}>
@@ -114,9 +129,6 @@ MyApp.getInitialProps = async (context: AppContext) => {
   const res = await fetchAuth(cookie);
   const initialAuth = res;
 
-  console.log(context.ctx.req?.url);
-
-  console.log("initialAuth:", initialAuth);
   return {
     ...initialProps,
     initialAuth,

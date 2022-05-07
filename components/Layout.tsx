@@ -15,11 +15,20 @@ import useAuth from "hooks/useAuth";
 const PageContainer = styled.div`
   min-height: 100vh;
 `;
+
 const BodyContainer = styled.div`
   min-height: 100vh;
-  width: 100%;
+  ${({ theme }) => theme.breakpoints.greaterThan("md")} {
+    margin-left: 240px;
+  }
   display: flex;
   flex-direction: row;
+  padding-right: 36px;
+  padding-left: 36px;
+  ${({ theme }) => theme.breakpoints.at("sm")} {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
 `;
 
 const SideBarContainerWrapper = styled.div`
@@ -95,30 +104,37 @@ const SideBarElement = ({
   return (
     <li>
       <Link {...props}>
-        <SideBarLink selected={match}>{children}</SideBarLink>
+        <SideBarLink href={props.href.toString()} selected={match}>
+          {children}
+        </SideBarLink>
       </Link>
     </li>
   );
 };
 
-const ChildrenContainer = styled.div`
-  overflow: auto;
+export const ChildrenContainer = styled.div<{
+  width?: number;
+}>`
   margin-top: 59px;
   margin-bottom: 120px;
-  margin-left: 240px;
-  padding: 36px 24px;
-  width: 100%;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
   align-items: center;
-  & > * {
-    max-width: 1140px;
-    width: 100%;
-  }
-  ${({ theme }) => theme.breakpoints.at("sm")} {
-    margin-left: 0px;
-    padding: 24px 16px;
+  width: 100%;
+  --width: ${({ width }) => width || 1140}px;
+  & > .dividing {
+    margin-right: -36px;
+    margin-left: -36px;
+    padding-right: 36px;
+    padding-left: 36px;
+    width: calc(100% + 72px);
+    ${({ theme }) => theme.breakpoints.at("sm")} {
+      margin-right: -12px;
+      margin-left: -12px;
+      padding-right: 12px;
+      padding-left: 12px;
+      width: calc(100% + 24px);
+    }
   }
 `;
 
@@ -194,21 +210,8 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
         <Media greaterThan="sm">
           <SideBar />
         </Media>
-        <BodyContainer>
-          <ChildrenContainer>
-            <div>{children}</div>
-          </ChildrenContainer>
-        </BodyContainer>
+        <BodyContainer>{children}</BodyContainer>
       </PageContainer>
     </>
   );
-};
-
-const fetchAuth = async () => {
-  const res = await http.get<{
-    success: boolean;
-    profileImage?: string;
-    nickname?: string;
-  }>("/auth");
-  return res.data;
 };

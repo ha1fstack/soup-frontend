@@ -1,11 +1,19 @@
 import Image from "next/image";
-import { Flex, Box } from "common/components";
-import { SectionHeader, DividingSection } from "common/components/Section";
-import { Viewer } from "components";
+import {
+  Flex,
+  Box,
+  Button,
+  ButtonLink,
+  SectionHeader,
+  SectionBody,
+  SectionBodyAlt,
+} from "common/components";
+import { ChildrenContainer, Viewer } from "components";
 import { useQuery } from "react-query";
 import { http } from "common/services";
 import { JSONContent } from "@tiptap/react";
 import { useRouter } from "next/router";
+import { MdOutlineOpenInNew } from "react-icons/md";
 
 const fetchProject = async (id?: string) => {
   if (!id) return;
@@ -36,20 +44,19 @@ const Page = () => {
 
   if (!data || isLoading || isError) return null;
   return (
-    <div>
+    <ChildrenContainer width={960}>
       <SectionHeader>
         <SectionHeader.Title>프로젝트/스터디 찾기</SectionHeader.Title>
         <SectionHeader.Description>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         </SectionHeader.Description>
       </SectionHeader>
-
-      <DividingSection
+      <SectionBodyAlt
         column
         css={{
-          gap: "18px",
           paddingTop: "18px",
-          paddingBottom: "18px",
+          paddingBottom: "24px",
+          marginBottom: "48px",
         }}
       >
         <p
@@ -83,33 +90,39 @@ const Page = () => {
             <p>2022.01.01. 09:00</p>
           </Flex>
         </Flex>
-      </DividingSection>
-      <Flex
-        column
-        css={{
-          maxWidth: "960px",
-        }}
-      >
-        <Box
-          responsive
-          css={{
-            padding: "24px",
-            marginTop: "24px",
-            marginBottom: "48px",
-            lineHeight: 1.5,
-          }}
-        >
-          {data.source === "SOUP" ? (
-            <Viewer content={JSON.parse(data.content as any) as JSONContent} />
-          ) : (
-            data.content
-          )}
-        </Box>
+        <Flex column>
+          <Box
+            responsive
+            css={{
+              padding: "24px",
+              marginTop: "24px",
+              lineHeight: 1.5,
+            }}
+          >
+            {data.type === "prosemirror" ? (
+              <Viewer content={data.content} />
+            ) : (
+              <Flex column css={{ gap: "32px" }}>
+                <div>{data.content}</div>
+                <ButtonLink
+                  href={data.url}
+                  target="_blank"
+                  variant="primary-outlined"
+                >
+                  <MdOutlineOpenInNew css={{ fontSize: "16px" }} />
+                  원문 보기
+                </ButtonLink>
+              </Flex>
+            )}
+          </Box>
+        </Flex>
+      </SectionBodyAlt>
+      <SectionBody>
         <Box column>
           <div css={{ height: "240px" }}></div>
         </Box>
-      </Flex>
-    </div>
+      </SectionBody>
+    </ChildrenContainer>
   );
 };
 

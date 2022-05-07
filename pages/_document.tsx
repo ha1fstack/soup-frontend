@@ -23,7 +23,7 @@ function getAuthCache() {
 document.body.dataset.auth = getAuthCache();
   `;
   return (
-    <Html>
+    <Html lang="ko">
       <Head>
         <link
           rel="stylesheet preload prefetch"

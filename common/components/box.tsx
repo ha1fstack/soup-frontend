@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 const BoxVariant = (theme: Theme) => ({
   primary: css`
     border: 1px solid var(--primary);
-    background: var(--primarylight);
+    background: var(--positive);
     color: var(--primary);
   `,
   background: css`
@@ -34,11 +34,11 @@ export const Flex = styled.div<{
 `;
 
 const fullspanStyle = css`
-  box-sizing: content-box;
-  padding-left: 10vw;
-  margin-left: -10vw;
-  padding-right: 10vw;
-  margin-right: -10vw;
+  border-radius: 0;
+  padding-left: 16px;
+  margin-left: -16px;
+  padding-right: 16px;
+  margin-right: -16px;
   border-left: 0px;
   border-right: 0px;
 `;
