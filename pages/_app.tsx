@@ -4,6 +4,7 @@ import NextApp, { AppContext, AppProps } from "next/app";
 import Head from "next/head";
 import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
 import { createBreakpoints } from "utils/createBreakpoints";
+import { RecoilRoot } from "recoil";
 
 import "common/styles/reset.css";
 import "common/styles/globals.css";
@@ -95,19 +96,21 @@ function MyApp({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>SouP</title>
       </Head>
-      <QueryClientProvider client={queryClient}>
-        <Hydrate state={pageProps.dehydratedState}>
-          <AuthQuery initialAuth={initialAuth} />
-          <Global styles={GlobalStyle} />
-          <NextThemeProvider defaultTheme="system">
-            <ThemeProvider theme={theme}>
-              <MediaContextProvider>
-                {getLayout(<Component {...pageProps} />)}
-              </MediaContextProvider>
-            </ThemeProvider>
-          </NextThemeProvider>
-        </Hydrate>
-      </QueryClientProvider>
+      <RecoilRoot>
+        <QueryClientProvider client={queryClient}>
+          <Hydrate state={pageProps.dehydratedState}>
+            <AuthQuery initialAuth={initialAuth} />
+            <Global styles={GlobalStyle} />
+            <NextThemeProvider defaultTheme="system">
+              <ThemeProvider theme={theme}>
+                <MediaContextProvider>
+                  {getLayout(<Component {...pageProps} />)}
+                </MediaContextProvider>
+              </ThemeProvider>
+            </NextThemeProvider>
+          </Hydrate>
+        </QueryClientProvider>
+      </RecoilRoot>
     </>
   );
 }

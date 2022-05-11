@@ -15,9 +15,28 @@ import { dehydrate, QueryClient, useQuery } from "react-query";
 import { http } from "common/services";
 import { Pagination } from "common/components/Pagination";
 import { SOURCE, timeDiffString } from "utils";
-import { useMemo } from "react";
-import { useTheme } from "@emotion/react";
+import {
+  ComponentProps,
+  ComponentPropsWithRef,
+  PropsWithoutRef,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { keyframes, useTheme } from "@emotion/react";
 import { ChildrenContainer } from "components";
+import styled from "@emotion/styled";
+import React from "react";
+import {
+  MdOutlineCheck,
+  MdOutlineClose,
+  MdOutlineLabel,
+  MdOutlineSearch,
+} from "react-icons/md";
+import { useToggle } from "hooks/useToggle";
+import { useCallback } from "react";
+import { atom, useRecoilState } from "recoil";
 
 interface Pageable<T> {
   content: T;
@@ -47,7 +66,7 @@ interface Post {
   link: string;
   postId: number;
   postName: string;
-  stack: string;
+  stacks: string[];
   talk: string;
   userName: string;
   views: number;
@@ -185,6 +204,34 @@ const Post = ({ image, post }: { image?: boolean; post: Post }) => {
           >
             {SOURCE[post.source]}
           </Label>
+          {post.stacks.map((stack) => (
+            <Label
+              key={stack}
+              css={{ backgroundColor: "var(--positive1)" }}
+              variant="background"
+              size="small"
+            >
+              <div
+                css={{
+                  width: "6px",
+                  height: "6px",
+                  borderRadius: "3px",
+                  backgroundColor: "#007acc",
+                  marginRight: "6px",
+                }}
+              />
+              {stack}
+            </Label>
+          ))}
+          {/* <Label
+            css={{
+              backgroundColor: "var(--positive1)",
+            }}
+            variant="background"
+            size="small"
+          >
+            {SOURCE[post.source]}
+          </Label>
           <Label
             css={{ backgroundColor: "var(--positive1)" }}
             variant="background"
@@ -232,10 +279,554 @@ const Post = ({ image, post }: { image?: boolean; post: Post }) => {
               }}
             />
             React
-          </Label>
+          </Label> */}
         </div>
       </div>
     </Box>
+  );
+};
+
+const MarqueeAnimation = keyframes`
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-100%, 0, 0);
+  }
+`;
+
+const ts = {
+  height: "36px",
+  overflow: "hidden",
+  flex: "0 0 auto",
+  backgroundColor: "var(--positive1)",
+  border: 0,
+};
+
+const Test = React.forwardRef<HTMLDivElement>((_, ref) => {
+  const { addFilter } = useFilter();
+  const shuffle = useMemo(
+    () => STACKS.slice().sort(() => Math.random() - 0.5),
+    []
+  );
+
+  return (
+    <span
+      css={{
+        display: "inline-flex",
+        animation: `${MarqueeAnimation} ${STACKS.length * 15}s linear infinite`,
+        "& > *": { marginRight: "12px" },
+      }}
+      ref={ref}
+    >
+      {shuffle.map((stack, i) => (
+        <Button onClick={() => addFilter(stack)} key={i} css={ts}>
+          {stack}
+        </Button>
+      ))}
+    </span>
+  );
+});
+Test.displayName = "test";
+
+const Slider = ({ toggle }: { toggle: (set?: boolean) => void }) => {
+  const surroundingBackup = 1;
+  const contentRef = React.useRef<HTMLDivElement | null>(null);
+  const scrollRef = React.useRef<HTMLDivElement | null>(null);
+  const [height, setHeight] = React.useState<number>(0);
+
+  const backupHeight = height * surroundingBackup;
+
+  React.useLayoutEffect(() => {
+    if (contentRef.current && scrollRef.current) {
+      setHeight(contentRef.current.offsetWidth);
+      scrollRef.current.scrollLeft = backupHeight;
+    }
+  }, [backupHeight]);
+
+  const onWheel = React.useCallback((e: WheelEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!scrollRef.current) return;
+    const container = scrollRef.current;
+    const containerScrollPosition = scrollRef.current.scrollLeft;
+    container.style.scrollBehavior = "auto";
+    container.scrollTo({
+      top: 0,
+      left: containerScrollPosition + e.deltaY * 0.25,
+    });
+  }, []);
+
+  const onScroll = React.useCallback(() => {
+    if (scrollRef.current) {
+      const scroll = scrollRef.current.scrollLeft;
+      if (scroll < backupHeight || scroll >= backupHeight + height) {
+        scrollRef.current.scrollTo({
+          top: 0,
+          left: backupHeight + (scroll % height),
+          behavior: "auto",
+        });
+      }
+    }
+  }, [backupHeight, height]);
+
+  useEffect(() => {
+    if (!scrollRef.current) return;
+    scrollRef.current.addEventListener("wheel", onWheel);
+    const ref = scrollRef.current;
+    return () => {
+      ref.removeEventListener("wheel", onWheel);
+    };
+  }, [onWheel]);
+
+  return (
+    <>
+      <Flex
+        ref={scrollRef}
+        onScroll={onScroll}
+        css={{
+          marginLeft: "12px",
+          marginRight: "-12px",
+          overflow: "auto",
+          paddingLeft: 0,
+          paddingRight: 0,
+          position: "relative",
+          "& > *": {
+            whiteSpace: "nowrap",
+          },
+          display: "inline-flex",
+          "-ms-overflow-style": "none" /* IE and Edge */,
+          "scrollbar-width": "none" /* Firefox */,
+          "::-webkit-scrollbar": {
+            display: "none",
+          },
+          ":hover": {
+            "*": {
+              animationPlayState: "paused",
+            },
+          },
+        }}
+      >
+        {Array(surroundingBackup)
+          .fill(undefined)
+          .map((i) => (
+            <Test key={i} />
+          ))}
+        <Test ref={contentRef} />
+        {Array(surroundingBackup + 1)
+          .fill(undefined)
+          .map((i) => (
+            <Test key={i} />
+          ))}
+      </Flex>
+      <div css={{ position: "absolute" }}>
+        <Button
+          variant="primary-outlined"
+          css={{
+            height: "36px",
+            width: "36px",
+            padding: 0,
+            backgroundColor: "var(--primarylight2)",
+          }}
+          onClick={() => toggle()}
+        >
+          <MdOutlineSearch css={{ fontSize: "18px" }} />
+        </Button>
+      </div>
+    </>
+  );
+};
+
+type IMenuCategory =
+  | "popular"
+  | "field"
+  | "language"
+  | "frontend"
+  | "backend"
+  | "app"
+  | "etc"
+  | "all";
+const MENU: {
+  displayName: string;
+  key: IMenuCategory;
+  items: string[];
+}[] = [
+  {
+    displayName: "인기",
+    key: "popular",
+    items: [
+      "React",
+      "Angular",
+      "Vue",
+      "Spring",
+      "Python",
+      "Node.js",
+      "Java",
+      "Typescript",
+      "Javascript",
+    ],
+  },
+  {
+    displayName: "분야",
+    key: "field",
+    items: [
+      "스터디",
+      "프로젝트",
+      "기획",
+      "서비스",
+      "코테",
+      "프론트엔드",
+      "백엔드",
+      "모바일",
+      "UI/UX",
+      "AI/머신러닝",
+      "게임",
+      "블록체인",
+    ],
+  },
+  {
+    displayName: "언어",
+    key: "language",
+    items: [
+      "Javascript",
+      "Typescript",
+      "Python",
+      "Java",
+      "Kotlin",
+      "C/C++",
+      "C#",
+      "Swift",
+      "Dart(Flutter)",
+    ],
+  },
+  {
+    displayName: "프론트엔드",
+    key: "frontend",
+    items: [
+      "프론트엔드",
+      "Javascript",
+      "Typescript",
+      "React",
+      "Vue",
+      "Angular",
+      "Svelte",
+    ],
+  },
+  {
+    displayName: "백엔드",
+    key: "backend",
+    items: [
+      "백엔드",
+      "Java",
+      "Node.js",
+      "Go",
+      "Python",
+      "Spring",
+      "Django",
+      "Nestjs",
+      "Express",
+      "GraphQL",
+      "SQL",
+      "MongoDB",
+      "Firebase",
+    ],
+  },
+  {
+    displayName: "모바일",
+    key: "app",
+    items: [
+      "모바일",
+      "Java",
+      "Kotlin",
+      "Swift",
+      "Dart(Flutter)",
+      "React Native",
+    ],
+  },
+  {
+    displayName: "기타",
+    key: "etc",
+    items: ["AWS", "Kubernetes", "Docker", "Git"],
+  },
+];
+const STACKS = Array.from(
+  new Set(MENU.reduce((acc, cur) => acc.concat(cur.items), [] as string[]))
+);
+
+const useSearchMenu = (initial: IMenuCategory) => {
+  const [state, setState] = useState<IMenuCategory>(initial);
+  const currentMenu = useMemo(
+    () => MENU.find((menu) => menu.key === state)!,
+    [state]
+  );
+
+  return [currentMenu, setState] as [typeof currentMenu, typeof setState];
+};
+
+const filterState = atom<string[]>({
+  key: "filterState",
+  default: [],
+});
+
+const useFilter = () => {
+  const [filter, setFilter] = useRecoilState(filterState);
+  const resetFilter = useCallback(() => setFilter([]), []);
+  const addFilter = useCallback(
+    (x: string) => {
+      if (filter.length < 3 && !filter.includes(x)) setFilter([...filter, x]);
+    },
+    [filter, setFilter]
+  );
+  const removeFilter = useCallback(
+    (i) => setFilter([...filter.slice(0, i), ...filter.slice(i + 1)]),
+    [filter, setFilter]
+  );
+  return { filter, resetFilter, addFilter, removeFilter };
+};
+
+const Search = ({ toggle }: { toggle: (set?: boolean) => void }) => {
+  const [currentMenu, setCurrentMenu] = useSearchMenu("popular");
+  const { addFilter } = useFilter();
+
+  return (
+    <Flex column css={{ flex: "1", gap: "16px" }}>
+      <Flex css={{ gap: "16px" }}>
+        <Button
+          variant="primary-outlined"
+          css={{
+            height: "36px",
+            width: "36px",
+            padding: 0,
+            backgroundColor: "var(--primarylight2)",
+          }}
+          onClick={() => toggle()}
+        >
+          <MdOutlineCheck css={{ fontSize: "18px" }} />
+        </Button>
+        <Flex
+          css={{
+            gap: "12px",
+            "*": {
+              padding: "16px",
+              height: "36px",
+              alignItems: "center",
+              flex: 1,
+              wordBreak: "keep-all",
+              whiteSpace: "nowrap",
+            },
+          }}
+        >
+          {MENU.map((menu) => (
+            <Button
+              key={menu.key}
+              onClick={() => setCurrentMenu(menu.key)}
+              css={{
+                backgroundColor:
+                  menu.key === currentMenu.key
+                    ? "var(--primarylight)"
+                    : "var(--positive)",
+                border: 0,
+              }}
+            >
+              {menu.displayName}
+            </Button>
+          ))}
+        </Flex>
+      </Flex>
+      <Flex css={{ flexWrap: "wrap", gap: "12px" }}>
+        {currentMenu.items.map((stack, i) => (
+          <Button
+            onClick={() => addFilter(stack)}
+            key={i}
+            css={{ border: 0, backgroundColor: "var(--positive1)" }}
+          >
+            {stack}
+          </Button>
+        ))}
+      </Flex>
+    </Flex>
+  );
+};
+
+const TagSearch = () => {
+  const [isSearchMode, toggleIsSearchMode] = useToggle(false);
+
+  return (
+    <Flex css={{ flexWrap: "wrap", marginTop: "-56px" }}>
+      <Box
+        css={{
+          flex: "99999 1 480px",
+          overflow: "hidden",
+        }}
+      >
+        {isSearchMode ? (
+          <Search toggle={toggleIsSearchMode} />
+        ) : (
+          <Slider toggle={toggleIsSearchMode} />
+        )}
+      </Box>
+      <div css={{ flex: "1 0 300px", height: 0, marginLeft: "24px" }}></div>
+    </Flex>
+  );
+};
+
+const FilterList = () => {
+  const { filter, removeFilter } = useFilter();
+
+  return (
+    <Flex column css={{ gap: "12px", marginBottom: "31px" }}>
+      <div
+        css={{
+          display: "flex",
+          gap: "12px",
+          "& > *": { fontSize: "14px" },
+        }}
+      >
+        <Label css={{ padding: "0px 8px" }}>
+          <MdOutlineLabel css={{ fontSize: "18px" }} />
+          {!filter.length && (
+            <span css={{ marginLeft: "4px" }}>
+              태그를 3개까지 추가해 검색해보세요...
+            </span>
+          )}
+        </Label>
+        {filter.map((item, i) => (
+          <Label css={{ border: 0, fontSize: "16px" }} key={item}>
+            {item}
+            <Button
+              css={{
+                width: "16px",
+                height: "16px",
+                borderRadius: "18px",
+                padding: 0,
+                margin: "0px -4px 0px 6px",
+                fontSize: "11px",
+                color: "var(--negative2)",
+              }}
+              onClick={() => removeFilter(i)}
+            >
+              <MdOutlineClose />
+            </Button>
+          </Label>
+        ))}
+      </div>
+    </Flex>
+  );
+};
+
+const FeaturedHeader = ({ content }: { content: string }) => (
+  <Flex
+    css={{
+      alignItems: "center",
+      fontSize: "14px",
+      fontWeight: "600",
+      lineHeight: "initial",
+      marginBottom: "24px",
+    }}
+  >
+    <span
+      css={{
+        display: "inline-block",
+        width: "6px",
+        height: "6px",
+        borderRadius: "6px",
+        backgroundColor: "var(--primary)",
+        marginRight: "6px",
+      }}
+    />
+    {content}
+  </Flex>
+);
+
+const FeaturedItem = ({ userName, title, id }: IFeaturedItem) => {
+  const router = useRouter();
+  return (
+    <Flex
+      onClick={() => router.push(`/projects/${id}`)}
+      column
+      css={{ gap: "8px", cursor: "pointer" }}
+    >
+      <Flex
+        css={{
+          alignItems: "center",
+          fontSize: "13px",
+          gap: "8px",
+          fontWeight: "500",
+        }}
+      >
+        <ProfilePlaceholder size={20} value={userName} />
+        <span css={{ lineHeight: "initial" }}>{userName}</span>
+      </Flex>
+      <p
+        css={{
+          fontSize: "14px",
+          fontWeight: "700",
+          display: "-webkit-box",
+          WebkitBoxOrient: "vertical",
+          WebkitLineClamp: 2,
+        }}
+      >
+        {title}
+      </p>
+    </Flex>
+  );
+};
+
+interface IFeaturedItem {
+  title: string;
+  userName: string;
+  id: number;
+}
+
+const Featured = () => {
+  const { data, isLoading, isError } = useQuery(
+    "projects/featured",
+    async () => {
+      return (
+        await http.get<{
+          RECOMMEND: IFeaturedItem[];
+          HOT: IFeaturedItem[];
+        }>("/projects/featured")
+      ).data;
+    }
+  );
+  if (!data || isLoading || isError)
+    return (
+      <Flex
+        css={{
+          flex: "1 0 300px",
+        }}
+      />
+    );
+  return (
+    <Flex
+      css={{
+        marginTop: "56px",
+        flex: "1 0 300px",
+        gap: "12px",
+        alignSelf: "flex-start",
+        position: "sticky",
+        top: "71px",
+      }}
+      column
+    >
+      <Box css={{ padding: "14px 12px" }} column>
+        <FeaturedHeader content="이런 프로젝트는 어떠신가요?" />
+        <Flex column css={{ gap: "20px" }}>
+          {data.RECOMMEND.map(({ title, userName, id }) => (
+            <FeaturedItem key={id} title={title} userName={userName} id={id} />
+          ))}
+        </Flex>
+      </Box>
+      <Box css={{ padding: "14px 12px" }} column>
+        <FeaturedHeader content="지금 HOT한 프로젝트 🔥" />
+        <Flex column css={{ gap: "20px" }}>
+          {data.HOT.map(({ title, userName, id }) => (
+            <FeaturedItem key={id} title={title} userName={userName} id={id} />
+          ))}
+        </Flex>
+      </Box>
+    </Flex>
   );
 };
 
@@ -249,9 +840,14 @@ const Project: NextPage = () => {
   console.log("project");
   console.log(data);
 
-  const ProjectPagination = () => (
+  const ProjectPagination = ({
+    className,
+  }: {
+    className?: string | undefined;
+  }) => (
     <Pagination
       css={{ justifyContent: "center", margin: "12px 0px" }}
+      className={className}
       onClick={(i) => {
         router.push({
           query: {
@@ -264,8 +860,6 @@ const Project: NextPage = () => {
     />
   );
 
-  const theme = useTheme();
-
   if (!data || isLoading || isError) return null;
 
   return (
@@ -277,18 +871,14 @@ const Project: NextPage = () => {
         </SectionHeader.Description>
       </SectionHeader>
       <SectionBodyAlt>
-        <div css={{ display: "flex", "& > *+*": { marginLeft: "8px" } }}>
-          <Button variant="primary-outlined">+ 태그 추가</Button>
-          <Button variant="white">Typescript</Button>
-          <Button variant="white">Vue</Button>
-          <Button variant="white">Python</Button>
-        </div>
+        <FilterList />
       </SectionBodyAlt>
+
       <SectionBody>
+        <TagSearch />
         <Flex css={{ gap: "24px", flexWrap: "wrap", marginBottom: "56px" }}>
           <Flex column css={{ flex: "99999 1 480px", marginBottom: "-56px" }}>
             <ProjectPagination />
-            {/* <DividingSection> */}
             <Flex
               column
               css={{
@@ -304,263 +894,9 @@ const Project: NextPage = () => {
                 </>
               ))}
             </Flex>
-            {/* </DividingSection> */}
             <ProjectPagination />
           </Flex>
-          <Flex
-            css={{
-              marginTop: "56px",
-              flex: "1 0 300px",
-              gap: "12px",
-              alignSelf: "flex-start",
-              position: "sticky",
-              top: "71px",
-            }}
-            column
-          >
-            <Box column>
-              <Flex
-                css={{
-                  alignItems: "center",
-                  fontSize: "14px",
-                  fontWeight: "600",
-                  lineHeight: "initial",
-                  marginBottom: "20px",
-                }}
-              >
-                <span
-                  css={{
-                    display: "inline-block",
-                    width: "6px",
-                    height: "6px",
-                    borderRadius: "6px",
-                    backgroundColor: "var(--primary)",
-                    marginRight: "6px",
-                  }}
-                />
-                이런 프로젝트는 어떠세요?
-              </Flex>
-              <Flex column css={{ gap: "20px" }}>
-                <Flex column css={{ gap: "8px" }}>
-                  <Flex
-                    css={{
-                      alignItems: "center",
-                      fontSize: "13px",
-                      gap: "8px",
-                    }}
-                  >
-                    <span
-                      css={{
-                        display: "inline-block",
-                        width: "20px",
-                        height: "20px",
-                        borderRadius: "12px",
-                        backgroundColor: "lightgray",
-                      }}
-                    />
-                    <span>Gildong Hong</span>
-                  </Flex>
-                  <p
-                    css={{
-                      fontSize: "14px",
-                      fontWeight: "700",
-                      display: "-webkit-box",
-                      WebkitBoxOrient: "vertical",
-                      WebkitLineClamp: 2,
-                    }}
-                  >
-                    황금 4일(목,금,토,일)동안 죙일 모각코 스터디원 모집(선착순
-                    10명)
-                  </p>
-                </Flex>
-                <Flex column css={{ gap: "8px" }}>
-                  <Flex
-                    css={{
-                      alignItems: "center",
-                      fontSize: "13px",
-                      gap: "8px",
-                    }}
-                  >
-                    <span
-                      css={{
-                        display: "inline-block",
-                        width: "20px",
-                        height: "20px",
-                        borderRadius: "12px",
-                        backgroundColor: "lightgray",
-                      }}
-                    />
-                    <span>Gildong Hong</span>
-                  </Flex>
-                  <p
-                    css={{
-                      fontSize: "14px",
-                      fontWeight: "700",
-                      display: "-webkit-box",
-                      WebkitBoxOrient: "vertical",
-                      WebkitLineClamp: 2,
-                    }}
-                  >
-                    황금 4일(목,금,토,일)동안 죙일 모각코 스터디원 모집(선착순
-                    10명)
-                  </p>
-                </Flex>
-                <Flex column css={{ gap: "8px" }}>
-                  <Flex
-                    css={{
-                      alignItems: "center",
-                      fontSize: "13px",
-                      gap: "8px",
-                    }}
-                  >
-                    <span
-                      css={{
-                        display: "inline-block",
-                        width: "20px",
-                        height: "20px",
-                        borderRadius: "12px",
-                        backgroundColor: "lightgray",
-                      }}
-                    />
-                    <span>Gildong Hong</span>
-                  </Flex>
-                  <p
-                    css={{
-                      fontSize: "14px",
-                      fontWeight: "700",
-                      display: "-webkit-box",
-                      WebkitBoxOrient: "vertical",
-                      WebkitLineClamp: 2,
-                    }}
-                  >
-                    황금 4일(목,금,토,일)동안 죙일 모각코 스터디원 모집(선착순
-                    10명)
-                  </p>
-                </Flex>
-              </Flex>
-            </Box>
-            <Box column>
-              <Flex
-                css={{
-                  alignItems: "center",
-                  fontSize: "14px",
-                  fontWeight: "600",
-                  lineHeight: "initial",
-                  marginBottom: "20px",
-                }}
-              >
-                <span
-                  css={{
-                    display: "inline-block",
-                    width: "6px",
-                    height: "6px",
-                    borderRadius: "6px",
-                    backgroundColor: "var(--primary)",
-                    marginRight: "6px",
-                  }}
-                />
-                지금 HOT한 프로젝트 🔥
-              </Flex>
-              <Flex column css={{ gap: "20px" }}>
-                <Flex column css={{ gap: "8px" }}>
-                  <Flex
-                    css={{
-                      alignItems: "center",
-                      fontSize: "13px",
-                      gap: "8px",
-                    }}
-                  >
-                    <span
-                      css={{
-                        display: "inline-block",
-                        width: "20px",
-                        height: "20px",
-                        borderRadius: "12px",
-                        backgroundColor: "lightgray",
-                      }}
-                    />
-                    <span>Gildong Hong</span>
-                  </Flex>
-                  <p
-                    css={{
-                      fontSize: "14px",
-                      fontWeight: "700",
-                      display: "-webkit-box",
-                      WebkitBoxOrient: "vertical",
-                      WebkitLineClamp: 2,
-                    }}
-                  >
-                    황금 4일(목,금,토,일)동안 죙일 모각코 스터디원 모집(선착순
-                    10명)
-                  </p>
-                </Flex>
-                <Flex column css={{ gap: "8px" }}>
-                  <Flex
-                    css={{
-                      alignItems: "center",
-                      fontSize: "13px",
-                      gap: "8px",
-                    }}
-                  >
-                    <span
-                      css={{
-                        display: "inline-block",
-                        width: "20px",
-                        height: "20px",
-                        borderRadius: "12px",
-                        backgroundColor: "lightgray",
-                      }}
-                    />
-                    <span>Gildong Hong</span>
-                  </Flex>
-                  <p
-                    css={{
-                      fontSize: "14px",
-                      fontWeight: "700",
-                      display: "-webkit-box",
-                      WebkitBoxOrient: "vertical",
-                      WebkitLineClamp: 2,
-                    }}
-                  >
-                    황금 4일(목,금,토,일)동안 죙일 모각코 스터디원 모집(선착순
-                    10명)
-                  </p>
-                </Flex>
-                <Flex column css={{ gap: "8px" }}>
-                  <Flex
-                    css={{
-                      alignItems: "center",
-                      fontSize: "13px",
-                      gap: "8px",
-                    }}
-                  >
-                    <span
-                      css={{
-                        display: "inline-block",
-                        width: "20px",
-                        height: "20px",
-                        borderRadius: "12px",
-                        backgroundColor: "lightgray",
-                      }}
-                    />
-                    <span>Gildong Hong</span>
-                  </Flex>
-                  <p
-                    css={{
-                      fontSize: "14px",
-                      fontWeight: "700",
-                      display: "-webkit-box",
-                      WebkitBoxOrient: "vertical",
-                      WebkitLineClamp: 2,
-                    }}
-                  >
-                    황금 4일(목,금,토,일)동안 죙일 모각코 스터디원 모집(선착순
-                    10명)
-                  </p>
-                </Flex>
-              </Flex>
-            </Box>
-          </Flex>
+          <Featured />
         </Flex>
       </SectionBody>
     </ChildrenContainer>

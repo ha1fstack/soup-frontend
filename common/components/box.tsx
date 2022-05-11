@@ -35,10 +35,10 @@ export const Flex = styled.div<{
 
 const fullspanStyle = css`
   border-radius: 0;
-  padding-left: 16px;
-  margin-left: -16px;
-  padding-right: 16px;
-  margin-right: -16px;
+  padding-left: 12px;
+  margin-left: -12px;
+  padding-right: 12px;
+  margin-right: -12px;
   border-left: 0px;
   border-right: 0px;
 `;

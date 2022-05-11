@@ -3,11 +3,7 @@ import { useTheme } from "next-themes";
 import React from "react";
 import Portal from "./Portal";
 
-export const Dimmer = ({
-  ...props
-}: React.ComponentProps<"div"> & {
-  css?: Interpolation<Theme>;
-}) => {
+export const Dimmer = ({ ...props }: React.ComponentProps<"div"> & {}) => {
   const { theme } = useTheme();
   return (
     <Portal at={"#portal"}>

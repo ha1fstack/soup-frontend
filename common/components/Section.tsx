@@ -8,6 +8,9 @@ export const SectionHeader = Object.assign(
     display: flex;
     flex-direction: column;
     margin-top: 36px;
+    ${({ theme }) => theme.breakpoints.at("sm")} {
+      margin-top: 24px;
+    }
     margin-bottom: 24px;
     width: 100%;
     max-width: 1140px;
@@ -43,10 +46,16 @@ export const SectionBodyAlt = ({
   inline?: boolean;
   children?: React.ReactNode;
   className?: any;
-  css?: CSSInterpolation;
 }) => {
   return (
-    <SectionBodyAltContainer className="dividing">
+    <SectionBodyAltContainer
+      css={{
+        marginBottom: "24px",
+        paddingTop: "12px",
+        paddingBottom: "12px",
+      }}
+      className={`dividing ${className}`}
+    >
       <div
         css={{
           display: "flex",
@@ -57,10 +66,8 @@ export const SectionBodyAlt = ({
         <div
           css={{
             flex: "0 1 var(--width)",
-            paddingTop: "12px",
-            paddingBottom: "12px",
+            width: 0,
           }}
-          className={className}
         >
           {children}
         </div>
@@ -83,16 +90,18 @@ export const SectionBody = ({
   inline?: boolean;
   children?: React.ReactNode;
   className?: any;
-  css?: CSSInterpolation;
 }) => {
   return (
-    <SectionBodyContainer>
+    <SectionBodyContainer
+      css={{
+        marginBottom: "24px",
+      }}
+    >
       <div
         css={[
           {
             flex: "0 1 var(--width)",
-            paddingTop: "12px",
-            paddingBottom: "12px",
+            width: 0,
           },
           className,
         ]}

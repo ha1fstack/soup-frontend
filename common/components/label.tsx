@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 export const LabelVariant = (theme: Theme) => ({
   default: css`
     border: 1px solid var(--outline);
-    background-color: var(--background);
+    background-color: var(--positive1);
   `,
   primary: css`
     color: var(--positive);
@@ -32,7 +32,7 @@ export const LabelVariant = (theme: Theme) => ({
 export const LabelSize = () => ({
   default: css`
     height: 36px;
-    padding: 0px 16px;
+    padding: 0px 12px;
     border-radius: 8px;
   `,
   smaller: css`
@@ -54,7 +54,6 @@ export const Label = styled.div<{
   size?: keyof ReturnType<typeof LabelSize>;
 }>`
   line-height: normal;
-  padding: 0px 16px;
   display: flex;
   align-items: center;
   justify-content: center;

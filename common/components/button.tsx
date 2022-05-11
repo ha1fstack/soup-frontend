@@ -24,18 +24,10 @@ export const Button = styled.button<{
   icon?: boolean;
 }>`
   ${ButtonStyle}
-  ${({ icon }) =>
-    icon ||
-    css`
-      padding: 0;
-      svg {
-        margin-left: -0.1em;
-        margin-right: 0.3em;
-      }
-    `}
   ${({ size }) => (size ? LabelSize()[size] : LabelSize()["default"])}
   ${({ variant, theme }) =>
     variant ? LabelVariant(theme)[variant] : LabelVariant(theme)["default"]}
+  ${({ icon }) => icon || css``}
 `;
 
 export const ButtonLink = styled.a<{

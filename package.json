@@ -25,6 +25,7 @@
     "react-icons": "^4.3.1",
     "react-query": "^3.34.20",
     "react-textarea-autosize": "^8.3.3",
+    "recoil": "^0.7.3-alpha.2",
     "usehooks-ts": "^2.5.1"
   },
   "devDependencies": {

@@ -119,6 +119,7 @@ const Info = () => {
   return (
     <Box
       css={{
+        width: 0,
         flex: "1 0 400px",
       }}
       responsive
@@ -239,17 +240,21 @@ const Profile = () => {
           <Flex
             column
             css={{
+              width: 0,
               flex: "1 0 400px",
               gap: "24px",
             }}
           >
             <Box responsive column>
               <p css={{ fontWeight: 600 }}>선호 스택</p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              <p>
+                Lorem ipsum dol elit.fgsdfgdfgsor sit amet, consectetur
+                adipiscing
+              </p>
             </Box>
             <Box responsive column>
               <p css={{ fontWeight: 600 }}>스킬</p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              Lorem ipsum dolor
             </Box>
           </Flex>
         </Flex>

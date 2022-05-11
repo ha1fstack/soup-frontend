@@ -62,9 +62,11 @@ const SideBarContainer: NextComponentType = ({ children }) => {
   return (
     <SideBarContainerWrapper>
       <SideBarContentWrapper>{children}</SideBarContentWrapper>
-      <div css={{ fontSize: "14px", color: "var(--negative2)" }}>
-        개인정보처리방침 <br /> © 2022 SouP
-      </div>
+      <footer>
+        <div css={{ fontSize: "14px", color: "var(--negative2)" }}>
+          개인정보처리방침 <br /> © 2022 SouP
+        </div>
+      </footer>
     </SideBarContainerWrapper>
   );
 };
