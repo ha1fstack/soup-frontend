@@ -4,6 +4,9 @@ import {
   Button,
   SectionBody,
   SectionBodyAlt,
+  ProfilePlaceholder,
+  Hr,
+  Label,
 } from "common/components";
 import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
@@ -15,6 +18,8 @@ import styled from "@emotion/styled";
 import { http } from "common/services";
 import { ellipsis } from "polished";
 import { ChildrenContainer } from "components";
+import { timeDiffString } from "utils";
+import { Fragment } from "react";
 
 const Article = ({ title, content }: { title: string; content: string }) => {
   const router = useRouter();
@@ -220,7 +225,7 @@ const Lander = () => {
               "2px 2px 2px  rgba(255, 238, 218, 0.5), -2px -2px 2px  rgba(255, 238, 218, 0.5), 2px -2px 2px  rgba(255, 238, 218, 0.5), -2px 2px 2px  rgba(255, 238, 218, 0.5);",
             fontSize: "20px",
             fontWeight: 500,
-            flex: "9999 2 auto",
+            flex: "99999 2 auto",
             zIndex: "1",
           }}
         >
@@ -251,7 +256,7 @@ const Lander = () => {
   );
 };
 
-const HotItem = ({ title, content }: any) => {
+const HotItem = ({ post }: { post: IPostPreviewContent }) => {
   return (
     <Flex
       column
@@ -263,7 +268,7 @@ const HotItem = ({ title, content }: any) => {
     >
       <Image
         alt="hot1"
-        src="https://i.imgur.com/tvzwhsF.png"
+        src="https://i.imgur.com/hVe2ScX.png"
         width={320}
         height={180}
       />
@@ -271,133 +276,387 @@ const HotItem = ({ title, content }: any) => {
         <p
           css={{
             fontSize: "16px",
-            fontWeight: "bold",
+            fontWeight: "600",
             ...ellipsis(undefined, 2),
           }}
         >
-          {title}
+          {post.postName}
         </p>
-        <p css={{ fontSize: "14px", ...ellipsis(undefined, 3) }}>{content}</p>
+        <p css={{ fontSize: "13px", ...ellipsis(undefined, 2) }}>
+          {post.content}
+        </p>
       </Flex>
     </Flex>
   );
 };
 
-const NewItem = ({ title, content }: any) => {
+const NewItem = ({ post }: { post: IPostPreviewContent }) => {
   return (
-    <Flex css={{ gap: "12px" }}>
-      <span css={{ flex: "0 0 auto" }}>
+    <Flex css={{ gap: "16px" }}>
+      <span css={{ flex: "0 0 auto", height: "75px" }}>
         <Image
           alt="hot1"
-          src="https://i.imgur.com/tvzwhsF.png"
+          src="https://i.imgur.com/oEdONmz.jpeg"
           width={100}
           height={75}
         />
       </span>
-      <Flex column css={{ gap: "4px" }}>
-        <p css={{ fontSize: "16px", fontWeight: "bold" }}>{title}</p>
+      <Flex
+        column
+        css={{ flex: "1", width: 0, gap: "4px", overflow: "hidden" }}
+      >
         <p
           css={{
-            fontSize: "14px",
+            fontSize: "16px",
+            fontWeight: "600",
+            ...ellipsis(),
+          }}
+        >
+          {post.postName}
+        </p>
+        <p
+          css={{
+            fontSize: "13px",
             ...ellipsis(undefined, 2),
           }}
         >
-          {content}
+          {post.content}
         </p>
+      </Flex>
+    </Flex>
+  );
+};
+
+interface IPostPreviewContent {
+  id: number;
+  postName: string;
+  content: string;
+  userName: string;
+  date: string;
+  link: "https://okky.kr/article/1221052";
+  stacks: string[];
+  views: number;
+  talk: string;
+  source: string;
+  fav: number;
+  isfav: boolean;
+}
+
+const PostItem = ({ post }: { post: IPostPreviewContent }) => {
+  return (
+    <Flex css={{ gap: "16px", alignItems: "stretch" }}>
+      <Flex
+        column
+        css={{
+          gap: "16px",
+          alignItems: "center",
+          flex: "0 0 auto",
+        }}
+      >
+        <ProfilePlaceholder size={32} value={post.userName} />
+      </Flex>
+      <Flex
+        column
+        css={{ gap: "4px", flex: "1 1 auto", overflow: "hidden", width: 0 }}
+      >
+        <p
+          css={{
+            fontSize: "16px",
+            fontWeight: "600",
+            ...ellipsis(),
+          }}
+        >
+          {post.postName}
+        </p>
+        <p
+          css={{
+            fontSize: "14px",
+            whiteSpace: "pre-line",
+            ...ellipsis(undefined, 3),
+          }}
+        >
+          {post.content}
+        </p>
+        <Flex css={{ gap: "12px", marginTop: "4px" }}>
+          {post.stacks.map((stack) => (
+            <Label size="smaller" key={stack}>
+              {stack}
+            </Label>
+          ))}
+        </Flex>
+      </Flex>
+    </Flex>
+  );
+};
+
+const LoungeItem = ({ post }: { post: ILoungePost }) => {
+  return (
+    <Flex css={{ gap: "12px", alignItems: "stretch" }}>
+      <Flex
+        column
+        css={{
+          gap: "16px",
+          alignItems: "center",
+          flex: "0 0 auto",
+        }}
+      >
+        <Image
+          css={{
+            width: "32px",
+            height: "32px",
+            borderRadius: "99999px",
+            overflow: "hidden",
+          }}
+          width="32px"
+          height="32px"
+          alt="profile"
+          src={post.picture}
+        />
+      </Flex>
+      <Flex column css={{ gap: "4px", flex: "1 1 auto" }}>
+        <Flex css={{ justifyContent: "space-between", alignItems: "center" }}>
+          <p css={{ fontSize: "14px" }}>
+            <b>{post.username}</b> · {timeDiffString(post.date)}
+          </p>
+        </Flex>
+        <div
+          css={{
+            fontSize: "14px",
+            whiteSpace: "pre-line",
+            ...ellipsis(undefined, 3),
+          }}
+        >
+          {post.content}
+        </div>
+      </Flex>
+    </Flex>
+  );
+};
+
+const Projects = () => {
+  const { data, isLoading, isError } = useQuery(
+    "front/projects",
+    fetchFrontProjects
+  );
+
+  if (!data || isLoading || isError)
+    return <Flex column css={{ flex: "3 1 480px" }} />;
+  console.log(data);
+
+  return (
+    <Flex column css={{ flex: "99999 1 480px", gap: "12px" }}>
+      <p
+        css={{
+          fontSize: "20px",
+          fontWeight: "700",
+          "& > *+*": { marginLeft: "12px" },
+        }}
+      >
+        {["SOUP", "인프런", "OKKY", "캠퍼스픽", "HOLA"].map((source, i) => (
+          <span
+            key={i}
+            css={{
+              color: i === 0 ? undefined : "var(--disabled)",
+              fontWeight: i === 0 ? undefined : 500,
+            }}
+          >
+            {source}
+          </span>
+        ))}
+      </p>
+      <Box responsive column css={{ gap: "16px", padding: "16px 12px" }}>
+        {data.OKKY.map((post, i) => (
+          <Fragment key={post.id}>
+            {i !== 0 && <Hr />}
+            <PostItem post={post} />
+          </Fragment>
+        ))}
+      </Box>
+    </Flex>
+  );
+};
+
+interface ILoungePost {
+  date: string;
+  user_id: number;
+  fav: number;
+  lounge_id: number;
+  isfav: boolean;
+  picture: string;
+  content: string;
+  username: string;
+}
+
+const Lounge = () => {
+  const { data, isLoading, isError } = useQuery("lounge", async () => {
+    return (await http.get<ILoungePost[]>("/lounge")).data;
+  });
+
+  if (!data || isLoading || isError)
+    return <Flex column css={{ flex: "1 1 440px" }} />;
+  return (
+    <Flex column css={{ flex: "1 1 440px", gap: "12px" }}>
+      <p
+        css={{
+          fontSize: "20px",
+          fontWeight: "700",
+          "& > *+*": { marginLeft: "12px" },
+        }}
+      >
+        <span>라운지</span>
+      </p>
+      <Box responsive column css={{ gap: "16px", padding: "16px 12px" }}>
+        {data.map((post, i) => (
+          <Fragment key={post.lounge_id}>
+            {i !== 0 && <Hr />}
+            <LoungeItem post={post} />
+          </Fragment>
+        ))}
+      </Box>
+    </Flex>
+  );
+};
+
+const Featured = () => {
+  const { data, isLoading, isError } = useQuery(
+    "front/featured",
+    fetchFrontFeatured
+  );
+
+  if (!data || isLoading || isError) return null;
+
+  return (
+    <Flex
+      css={{
+        flexWrap: "wrap",
+        gap: "96px",
+        overflow: "hidden",
+      }}
+    >
+      <Flex
+        column
+        css={{
+          flex: "99999 1 0",
+          gap: "24px",
+          minWidth: "480px",
+          marginBottom: "-36px",
+          img: {
+            borderRadius: "8px",
+          },
+        }}
+      >
+        <p css={{ fontSize: "20px", fontWeight: "bold" }}>
+          Hot 스터디/프로젝트 🔥
+        </p>
+        <Flex css={{ gap: "36px" }}>
+          {data.HOT.slice(0, 2).map((post) => (
+            <HotItem key={post.id} post={post} />
+          ))}
+        </Flex>
+      </Flex>
+      <Flex
+        column
+        css={{
+          flex: "1 1 440px",
+          gap: "24px",
+          img: {
+            borderRadius: "6px",
+          },
+          maxWidth: "676px",
+        }}
+      >
+        <p
+          css={{
+            fontSize: "20px",
+            fontWeight: "bold",
+          }}
+        >
+          New 스터디/프로젝트 ✨
+        </p>
+        <Flex column css={{ gap: "24px" }}>
+          {data.NEW.slice(0, 3).map((post) => (
+            <NewItem key={post.id} post={post} />
+          ))}
+        </Flex>
       </Flex>
     </Flex>
   );
 };
 
 const Home: NextPage = () => {
-  const { data } = useQuery("front-projects", fetchFrontProjects);
+  const theme = useTheme();
 
   return (
     <ChildrenContainer>
       <SectionBodyAlt
         css={{
-          paddingTop: "36px",
-          paddingBottom: "36px",
-          border: "0px",
+          [theme.breakpoints.at("sm")]: {
+            paddingTop: "24px",
+          },
+          paddingTop: 0,
+          paddingBottom: 0,
+          backgroundColor: "#111",
+          color: "#ffffff",
           borderBottom: "1px solid var(--outline)",
+          marginBottom: "0",
+          height: "300px",
+          zIndex: -2,
         }}
       >
         <Flex
           css={{
-            flexWrap: "wrap",
-            gap: "72px",
+            height: "100%",
+            alignItems: "center",
+            justifyContent: "space-between",
           }}
         >
           <Flex
             column
             css={{
-              flex: "3 1 0",
-              gap: "24px",
-              minWidth: "480px",
-              marginBottom: "-36px",
-              img: {
-                borderRadius: "8px",
-              },
+              gap: "72px",
+              alignItems: "flex-start",
             }}
           >
-            <p css={{ fontSize: "20px", fontWeight: "bold" }}>
-              Hot 스터디/프로젝트 🔥
-            </p>
-            <Flex css={{ gap: "36px" }}>
-              <HotItem
-                title="자바 ORM 표준 JPA 프로그래밍 - 기본편 스터디 모집합니다"
-                content="스터디 주제 : 김영한님 자바 ORM 표준 JPA 프로그래밍 - 기본편 스터디 목표 : 완강 예상 스터디 일정(횟수) : 일주일에 한  번 디스코드 모임 (일요일 오전 10시~) 예상 커리..."
-              />
-              <HotItem
-                title="프론트엔드 인터뷰 스터디 2명 모집"
-                content="거리두기 해제로 인한 오프라인 스터디원을 충원합니다 현재 5명에 스터디원으로 이루어져 있고 현재 리액트는 스테이트 활용 컴포넌트활용까지 구현했으며 스터디 진행 방..."
-              />
+            <Label variant="primary" css={{ color: "#111", fontWeight: "700" }}>
+              프로모션
+            </Label>
+            <Flex column css={{ gap: "12px" }}>
+              <p css={{ fontWeight: "700", fontSize: "24px" }}>
+                프론트엔드 BEST 강의
+                <br />
+                SouP에서만 30% 할인중👌
+              </p>
+              <p>입문부터 실전까지, 믿고 보는 실무자 Pick</p>
             </Flex>
           </Flex>
-          <Flex
-            column
-            css={{
-              flex: "2 1 0",
-              gap: "24px",
-              img: {
-                borderRadius: "6px",
-              },
-              minWidth: "480px",
-              maxWidth: "676px",
-            }}
-          >
-            <p
-              css={{
-                fontSize: "20px",
-                fontWeight: "bold",
-              }}
-            >
-              New 스터디/프로젝트 ✨
-            </p>
-            <Flex column css={{ gap: "16px" }}>
-              <NewItem
-                title="WebGl 스터디 인원을 모집합니다"
-                content="Webgl 스터디 인원을 모집하고 잇습니다 ^^ 매주 토요일마다 정기모임 스터디가 잇으며 , 서로 열정을 가지고 공부하고 있습니다 [개발 스터..."
-              />
-              <NewItem
-                title="Swift iOS app 개발 / 사이드 프로젝트 / 팀 구축"
-                content="안녕하세요. 저는 프로그래밍쪽 전공을 졸업하고 , si 회사에서 근무 중인 개발자입니다. 최근 ios 개발에 대한 도전 / 이직을 위하여, 맹목적..."
-              />
-              <NewItem
-                title="토이프로젝트 Application 기획자 모집 합니다 ^^"
-                content="UI/UX 앱 디자이너 분 구합니다!! - 앱 주제: 토이프로젝트 or Side Project 공고 Application 토이 프로젝트와 Side Project 공고를 올..."
-              />
-            </Flex>
-          </Flex>
+          <Image
+            alt="front-banner"
+            src="https://i.imgur.com/7FfQL9b.png"
+            width="240"
+            height="240"
+          />
         </Flex>
       </SectionBodyAlt>
+      <SectionBodyAlt
+        css={{
+          paddingTop: "32px",
+          [theme.breakpoints.at("sm")]: {
+            paddingTop: "24px",
+          },
+          paddingBottom: "44px",
+          border: "0px",
+          borderBottom: "1px solid var(--outline)",
+          marginBottom: "36px",
+        }}
+      >
+        <Featured />
+      </SectionBodyAlt>
       <SectionBody>
+        <Flex css={{ gap: "36px", flexWrap: "wrap" }}>
+          <Projects />
+          <Lounge />
+        </Flex>
         {/* <Lander /> */}
-        {/* <ArticleList data={data?.SOUP.slice(20, 24)} source="SouP" /> */}
-        <ArticleList data={data?.OKKY.slice(0, 8)} source="Okky" />
-        <ArticleList data={data?.INFLEARN.slice(0, 8)} source="인프런" />
-        <ArticleList data={data?.CAMPICK.slice(0, 8)} source="캠퍼스픽" />
-        <ArticleList data={data?.HOLA.slice(0, 8)} source="HOLA" />
       </SectionBody>
     </ChildrenContainer>
   );
@@ -405,19 +664,32 @@ const Home: NextPage = () => {
 
 const fetchFrontProjects = async () => {
   const res = await http.get<{
-    SOUP: any[];
-    OKKY: any[];
-    INFLEARN: any[];
-    CAMPICK: any[];
-    HOLA: any[];
+    SOUP: IPostPreviewContent[];
+    OKKY: IPostPreviewContent[];
+    INFLEARN: IPostPreviewContent[];
+    CAMPICK: IPostPreviewContent[];
+    HOLA: IPostPreviewContent[];
   }>("/front/projects");
+  return res.data;
+};
+
+const fetchFrontFeatured = async () => {
+  const res = await http.get<{
+    NEW: IPostPreviewContent[];
+    HOT: IPostPreviewContent[];
+  }>("/front/featured");
   return res.data;
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery("front-projects", fetchFrontProjects);
+  let res = await Promise.all([
+    queryClient.prefetchQuery("front/featured", fetchFrontFeatured),
+    queryClient.prefetchQuery("front/projects", fetchFrontProjects),
+  ]);
+
+  console.log(res);
 
   return {
     props: {

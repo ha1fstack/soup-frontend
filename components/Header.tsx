@@ -1,6 +1,6 @@
 import { css, useTheme } from "@emotion/react";
 import styled from "@emotion/styled";
-import { Button, Box, Flex } from "common/components";
+import { Button, Box, Flex, Hr } from "common/components";
 import useAuth from "hooks/useAuth";
 import { useOuterClick } from "hooks/useOuterClick";
 import { useToggle } from "hooks/useToggle";
@@ -88,11 +88,11 @@ const Popup = React.forwardRef<HTMLDivElement>((_, ref) => (
     }}
   >
     알림
-    <hr css={{ borderTop: "1px solid var(--outline)" }} />
+    <Hr />
     어쩌구
-    <hr css={{ borderTop: "1px solid var(--outline)" }} />
+    <Hr />
     어쩌구
-    <hr css={{ borderTop: "1px solid var(--outline)" }} />
+    <Hr />
     어쩌구
   </Box>
 ));
@@ -115,8 +115,6 @@ const customAnimation = (ms: number) => {
 };
 
 export const Header = ({ toggleSideBar }: { toggleSideBar?: () => void }) => {
-  const theme = useTheme();
-
   const [login, toggleLogin] = useToggle();
   const [notificationPopup, toggleNotificationPopup] = useToggle();
   const [messagePopup, toggleMessagePopup] = useToggle();

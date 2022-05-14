@@ -9,6 +9,7 @@ import {
   SectionBodyAlt,
   ProfilePlaceholder,
   Label,
+  Hr,
 } from "common/components";
 import { ChildrenContainer, Viewer } from "components";
 import { useQuery } from "react-query";
@@ -120,9 +121,7 @@ const Page = () => {
               </Flex>
             </Flex>
           </Flex>
-          <hr
-            css={{ marginTop: "16px", borderTop: "1px solid var(--outline)" }}
-          />
+          <Hr css={{ marginTop: "16px" }} />
           <Flex
             css={{
               marginTop: "36px",

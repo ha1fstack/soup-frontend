@@ -7,6 +7,7 @@ import {
   Box,
   SectionHeader,
   SectionBody,
+  Hr,
 } from "common/components";
 import { ChildrenContainer } from "components";
 import { useToggle } from "hooks/useToggle";
@@ -63,7 +64,7 @@ const InfoEdit = ({ toggleIsEdit }: { toggleIsEdit: () => void }) => {
           </Button>
         </div>
       </Flex>
-      <hr css={{ borderTop: "1px solid var(--outline)" }} />
+      <Hr />
       <Flex
         column
         css={{
@@ -164,7 +165,7 @@ const Info = () => {
               </Button>
             </div>
           </Flex>
-          <hr css={{ borderTop: "1px solid var(--outline)" }} />
+          <Hr />
           <Flex
             column
             css={{

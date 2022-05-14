@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 
 export const LabelVariant = (theme: Theme) => ({
   default: css`
-    border: 1px solid var(--outline);
+    //border: 1px solid var(--outline);
     background-color: var(--positive1);
   `,
   primary: css`
@@ -37,13 +37,13 @@ export const LabelSize = () => ({
   `,
   smaller: css`
     min-height: 22px;
-    padding: 0px 6px;
+    padding: 0px 8px;
     font-size: 11px;
     border-radius: 4px;
   `,
   small: css`
     min-height: 28px;
-    padding: 0px 8px;
+    padding: 0px 10px;
     font-size: 12px;
     border-radius: 6px;
   `,

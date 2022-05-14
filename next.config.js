@@ -4,6 +4,9 @@ const nextConfig = {
   images: {
     domains: ["i.imgur.com", "lh3.googleusercontent.com"],
   },
+  experimental: {
+    scrollRestoration: "manual",
+  },
   async rewrites() {
     return [
       {

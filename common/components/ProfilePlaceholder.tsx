@@ -42,7 +42,7 @@ export const ProfilePlaceholder = ({
         fontWeight="600"
         fill="black"
       >
-        {value[0].toLocaleUpperCase()}
+        {value[0]?.toLocaleUpperCase()}
       </text>
     </svg>
   );

@@ -8,12 +8,16 @@ import { RecoilRoot } from "recoil";
 
 import "common/styles/reset.css";
 import "common/styles/globals.css";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { NextPage } from "next";
 import useAuth, { fetchAuth } from "hooks/useAuth";
 
 import { ThemeProvider as NextThemeProvider } from "next-themes";
 import { http } from "common/services";
+import React from "react";
+
+// suppress useLayoutEffect (and its warnings) when not running in a browser
+if (typeof window === "undefined") React.useLayoutEffect = () => {};
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: React.ReactElement) => React.ReactNode;
@@ -28,8 +32,10 @@ const GlobalStyle = css`
     --negative: #23272b;
     --negative2: #3e5060;
 
+    --disabled: #ced3d7;
+
     --positive: #ffffff;
-    --positive1: #f5f6f7;
+    --positive1: #f1f2f3;
 
     --background: #f8f9fa;
     --outline: #dadce0;
@@ -42,6 +48,8 @@ const GlobalStyle = css`
   [data-theme="dark"] {
     --negative: #e7ebf0;
     --negative2: #b1b5b9;
+
+    --disabled: #ced3d7;
 
     --positive: #23272b;
     --positive1: #2b3035;
@@ -84,7 +92,7 @@ function MyApp({
     Component.getLayout ||
     ((page: React.ReactElement) => <Layout>{page}</Layout>);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (window)
       http.defaults.baseURL =
         window.location.protocol + "//" + window.location.host + "/api";

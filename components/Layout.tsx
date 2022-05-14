@@ -38,7 +38,7 @@ const SideBarContainerWrapper = styled.div`
   background-color: var(--positive);
   position: fixed;
   top: 59px;
-  min-width: 239px;
+  min-width: 240px;
   height: calc(100vh - 59px);
   justify-content: space-between;
   border-right: solid 1px var(--outline);

@@ -27,8 +27,8 @@ document.body.dataset.auth = getAuthCache();
       <Head>
         <link
           rel="stylesheet preload prefetch"
-          as="style"
-          type="text/css"
+          as="font"
+          type="font/woff2"
           crossOrigin=""
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css"
         />

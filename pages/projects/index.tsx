@@ -20,6 +20,7 @@ import {
   ComponentPropsWithRef,
   PropsWithoutRef,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -37,6 +38,8 @@ import {
 import { useToggle } from "hooks/useToggle";
 import { useCallback } from "react";
 import { atom, useRecoilState } from "recoil";
+import useClientRender from "hooks/useClientRender";
+import { ellipsis } from "polished";
 
 interface Pageable<T> {
   content: T;
@@ -310,6 +313,7 @@ const Test = React.forwardRef<HTMLDivElement>((_, ref) => {
     []
   );
 
+  if (!useClientRender()) return null;
   return (
     <span
       css={{
@@ -320,7 +324,7 @@ const Test = React.forwardRef<HTMLDivElement>((_, ref) => {
       ref={ref}
     >
       {shuffle.map((stack, i) => (
-        <Button onClick={() => addFilter(stack)} key={i} css={ts}>
+        <Button onClick={() => addFilter(stack)} key={stack} css={ts}>
           {stack}
         </Button>
       ))}
@@ -330,54 +334,58 @@ const Test = React.forwardRef<HTMLDivElement>((_, ref) => {
 Test.displayName = "test";
 
 const Slider = ({ toggle }: { toggle: (set?: boolean) => void }) => {
-  const surroundingBackup = 1;
-  const contentRef = React.useRef<HTMLDivElement | null>(null);
   const scrollRef = React.useRef<HTMLDivElement | null>(null);
-  const [height, setHeight] = React.useState<number>(0);
+  const [position, setPosition] = React.useState<number>(0);
 
-  const backupHeight = height * surroundingBackup;
+  const backupHeight = position;
 
-  React.useLayoutEffect(() => {
-    if (contentRef.current && scrollRef.current) {
-      setHeight(contentRef.current.offsetWidth);
-      scrollRef.current.scrollLeft = backupHeight;
-    }
-  }, [backupHeight]);
+  // when dom loaded, measure target width and scroll
+  const contentRef = useCallback(
+    (node) => {
+      if (node !== null) {
+        setPosition(node.offsetWidth);
+        if (scrollRef.current) scrollRef.current.scrollLeft = backupHeight;
+      }
+    },
+    [backupHeight]
+  );
 
+  // event listener: on mouse wheel scroll
   const onWheel = React.useCallback((e: WheelEvent) => {
     e.preventDefault();
     e.stopPropagation();
     if (!scrollRef.current) return;
     const container = scrollRef.current;
     const containerScrollPosition = scrollRef.current.scrollLeft;
-    container.style.scrollBehavior = "auto";
     container.scrollTo({
       top: 0,
       left: containerScrollPosition + e.deltaY * 0.25,
     });
   }, []);
 
+  // attach onWheel to scrollRef
+  // why: https://github.com/facebook/react/issues/14856
+  useEffect(() => {
+    if (!scrollRef.current) return;
+    const ref = scrollRef.current;
+    ref.addEventListener("wheel", onWheel);
+    return () => ref.removeEventListener("wheel", onWheel);
+  }, [onWheel]);
+
+  // event listener: on any virtual scroll
   const onScroll = React.useCallback(() => {
     if (scrollRef.current) {
       const scroll = scrollRef.current.scrollLeft;
-      if (scroll < backupHeight || scroll >= backupHeight + height) {
+      console.log(backupHeight + (scroll % position));
+      if (scroll < backupHeight || scroll >= backupHeight + position) {
         scrollRef.current.scrollTo({
           top: 0,
-          left: backupHeight + (scroll % height),
+          left: backupHeight + (scroll % position),
           behavior: "auto",
         });
       }
     }
-  }, [backupHeight, height]);
-
-  useEffect(() => {
-    if (!scrollRef.current) return;
-    scrollRef.current.addEventListener("wheel", onWheel);
-    const ref = scrollRef.current;
-    return () => {
-      ref.removeEventListener("wheel", onWheel);
-    };
-  }, [onWheel]);
+  }, [backupHeight, position]);
 
   return (
     <>
@@ -395,8 +403,8 @@ const Slider = ({ toggle }: { toggle: (set?: boolean) => void }) => {
             whiteSpace: "nowrap",
           },
           display: "inline-flex",
-          "-ms-overflow-style": "none" /* IE and Edge */,
-          "scrollbar-width": "none" /* Firefox */,
+          msOverflowStyle: "none" /* IE and Edge */,
+          scrollbarWidth: "none" /* Firefox */,
           "::-webkit-scrollbar": {
             display: "none",
           },
@@ -407,17 +415,10 @@ const Slider = ({ toggle }: { toggle: (set?: boolean) => void }) => {
           },
         }}
       >
-        {Array(surroundingBackup)
-          .fill(undefined)
-          .map((i) => (
-            <Test key={i} />
-          ))}
+        <Test />
         <Test ref={contentRef} />
-        {Array(surroundingBackup + 1)
-          .fill(undefined)
-          .map((i) => (
-            <Test key={i} />
-          ))}
+        <Test />
+        <Test />
       </Flex>
       <div css={{ position: "absolute" }}>
         <Button
@@ -761,9 +762,7 @@ const FeaturedItem = ({ userName, title, id }: IFeaturedItem) => {
         css={{
           fontSize: "14px",
           fontWeight: "700",
-          display: "-webkit-box",
-          WebkitBoxOrient: "vertical",
-          WebkitLineClamp: 2,
+          ...ellipsis(undefined, 2),
         }}
       >
         {title}
@@ -886,12 +885,7 @@ const Project: NextPage = () => {
               }}
             >
               {data?.content.map((post, i) => (
-                <>
-                  <Post post={post} key={i} />
-                  {/* <hr
-                css={{ borderTop: "1px solid var(--outline)", width: "100%" }}
-              /> */}
-                </>
+                <Post post={post} key={i} />
               ))}
             </Flex>
             <ProjectPagination />
