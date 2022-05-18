@@ -40,43 +40,9 @@ import { useCallback } from "react";
 import { atom, useRecoilState } from "recoil";
 import useClientRender from "hooks/useClientRender";
 import { ellipsis } from "polished";
+import { IPageable, IPost } from "types";
 
-interface Pageable<T> {
-  content: T;
-  pageable: {
-    sort: { empty: true; sorted: false; unsorted: true };
-    offset: number;
-    pageNumber: number;
-    pageSize: number;
-    unpaged: boolean;
-    paged: boolean;
-  };
-  last: boolean;
-  totalPages: number;
-  totalElements: number;
-  size: number;
-  number: number;
-  sort: { empty: boolean; sorted: boolean; unsorted: boolean };
-  first: boolean;
-  numberOfElements: number;
-  empty: boolean;
-}
-interface Post {
-  content: string;
-  date: string;
-  end: boolean;
-  id: number;
-  link: string;
-  postId: number;
-  postName: string;
-  stacks: string[];
-  talk: string;
-  userName: string;
-  views: number;
-  source: "SOUP" | "INFLEARN" | "OKKY" | "CAMPICK" | "HOLA";
-}
-
-const Post = ({ image, post }: { image?: boolean; post: Post }) => {
+const Post = ({ image, post }: { image?: boolean; post: IPost }) => {
   const router = useRouter();
   const handleArticleClick = (e: React.SyntheticEvent, id: number) => {
     e.preventDefault();
@@ -899,7 +865,7 @@ const Project: NextPage = () => {
 
 const fetchProjects = async (page = 1) => {
   console.log(`/projects?page=${page}`);
-  const res = await http.get<Pageable<Post[]>>(`/projects?page=${page}`);
+  const res = await http.get<IPageable<IPost[]>>(`/projects?page=${page}`);
   return res.data;
 };
 

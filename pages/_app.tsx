@@ -136,6 +136,8 @@ MyApp.getInitialProps = async (context: AppContext) => {
   if (context.ctx.req?.url && context.ctx.req.url.startsWith("/_next/data"))
     return initialProps;
 
+  console.log(context.ctx.asPath);
+
   const cookie = context.ctx.req?.headers.cookie;
   const res = await fetchAuth(cookie);
   const initialAuth = res;

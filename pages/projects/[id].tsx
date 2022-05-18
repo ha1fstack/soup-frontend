@@ -6,7 +6,6 @@ import {
   ButtonLink,
   SectionHeader,
   SectionBody,
-  SectionBodyAlt,
   ProfilePlaceholder,
   Label,
   Hr,
@@ -16,37 +15,30 @@ import { useQuery } from "react-query";
 import { http } from "common/services";
 import { JSONContent } from "@tiptap/react";
 import { useRouter } from "next/router";
-import { MdOutlineOpenInNew } from "react-icons/md";
+import {
+  MdOutlineDelete,
+  MdOutlineEdit,
+  MdOutlineOpenInNew,
+} from "react-icons/md";
+import useAuth from "hooks/useAuth";
+import { IProjectData } from "types";
 
-interface IProjectContentData<T> {
-  id: number;
-  postName: string;
-  content: T;
-  userName: string;
-  date: string;
-  link: "https://okky.kr/article/1221052";
-  stacks: string[];
-  views: number;
-  talk: string;
-  source: string;
-  fav: number;
-  isfav: boolean;
-}
-
-type IProjectData =
-  | ({ type: "string" } & IProjectContentData<string>)
-  | ({
-      type: "prosemirror";
-    } & IProjectContentData<JSONContent>);
-
-const fetchProject = async (id?: string) => {
-  if (!id) return;
+const fetchProject = async (id: string) => {
   const res = await http.get<IProjectData>(`/projects/${id}`);
+  return res.data;
+};
+
+const deleteProject = async (id: string) => {
+  const res = await http.post<IProjectData>(`/projects/delete`, { id });
   return res.data;
 };
 
 const Page = () => {
   const router = useRouter();
+
+  const auth = useAuth();
+  const ownership = auth.user_id === data.userId;
+
   const { id } = router.query as {
     id: string;
   };
@@ -55,7 +47,19 @@ const Page = () => {
     fetchProject(id)
   );
 
+  const handleDelete = async () => {
+    if (!window.confirm("정말 삭제하시겠습니까?")) return;
+    deleteProject(id)
+      .then(() => router.push("/projects"))
+      .catch(() => alert("알 수 없는 오류가 발생했습니다."));
+  };
+
+  const handleEdit = async () => {
+    router.push(`/projects/edit/${id}`);
+  };
+
   if (!data || isLoading || isError) return null;
+
   return (
     <ChildrenContainer width={840}>
       <SectionHeader>
@@ -108,17 +112,54 @@ const Page = () => {
             </p>
             <Flex
               css={{
+                justifyContent: "space-between",
                 alignItems: "center",
                 gap: "12px",
                 marginTop: "16px",
                 fontSize: "14px",
               }}
             >
-              <ProfilePlaceholder value={data.userName} size={36} />
-              <Flex column css={{ lineHeight: "initial" }}>
-                <p css={{ fontWeight: "600" }}>{data.userName}</p>
-                <p>{new Date(data.date).toLocaleString()}</p>
+              <Flex
+                css={{
+                  alignItems: "center",
+                  gap: "12px",
+                }}
+              >
+                <ProfilePlaceholder value={data.userName} size={36} />
+                <Flex column css={{ lineHeight: "initial" }}>
+                  <p css={{ fontWeight: "600" }}>{data.userName}</p>
+                  <p>{new Date(data.date).toLocaleString()}</p>
+                </Flex>
               </Flex>
+              {ownership && (
+                <Flex
+                  css={{
+                    alignItems: "center",
+                    gap: "12px",
+                    fontSize: "18px",
+                    color: "var(--negative2)",
+                  }}
+                >
+                  <Button
+                    onClick={handleEdit}
+                    css={{
+                      padding: 0,
+                      width: "36px",
+                    }}
+                  >
+                    <MdOutlineEdit />
+                  </Button>
+                  <Button
+                    onClick={handleDelete}
+                    css={{
+                      padding: 0,
+                      width: "36px",
+                    }}
+                  >
+                    <MdOutlineDelete />
+                  </Button>
+                </Flex>
+              )}
             </Flex>
           </Flex>
           <Hr css={{ marginTop: "16px" }} />

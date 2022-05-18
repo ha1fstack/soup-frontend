@@ -146,7 +146,7 @@ const SideBarNavigation = () => {
       <SideBarElement href="/" selected>
         홈
       </SideBarElement>
-      <SideBarElement href="/write">새 모집 만들기</SideBarElement>
+      <SideBarElement href="/projects/write">새 모집 만들기</SideBarElement>
       <SideBarElement href="/projects" exact={false}>
         프로젝트/스터디 찾기
       </SideBarElement>
