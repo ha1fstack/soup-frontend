@@ -14,7 +14,7 @@ import { useRouter } from "next/router";
 import { dehydrate, QueryClient, useQuery } from "react-query";
 import { http } from "common/services";
 import { Pagination } from "common/components/Pagination";
-import { SOURCE, timeDiffString } from "utils";
+import { SourceDictionary, timeDiffString } from "utils";
 import {
   ComponentProps,
   ComponentPropsWithRef,
@@ -41,6 +41,14 @@ import { atom, useRecoilState } from "recoil";
 import useClientRender from "hooks/useClientRender";
 import { ellipsis } from "polished";
 import { IPageable, IPost } from "types";
+import {
+  getDisplayTag,
+  ITag,
+  ITagCategory,
+  TagDictionary,
+  TagGroup,
+  TagList,
+} from "utils/tagDictionary";
 
 const Post = ({ image, post }: { image?: boolean; post: IPost }) => {
   const router = useRouter();
@@ -92,7 +100,8 @@ const Post = ({ image, post }: { image?: boolean; post: IPost }) => {
             >
               <ProfilePlaceholder value={post.userName} size={24} />
               <span>
-                {post.userName} · {timeString} · 댓글 3개 · 좋아요 6개
+                {post.userName} · {timeString} · 조회 {post.views}건 · 좋아요{" "}
+                {post.fav}개
               </span>
             </Flex>
             <div
@@ -171,7 +180,7 @@ const Post = ({ image, post }: { image?: boolean; post: IPost }) => {
             variant="background"
             size="small"
           >
-            {SOURCE[post.source]}
+            {SourceDictionary[post.source]}
           </Label>
           {post.stacks.map((stack) => (
             <Label
@@ -189,7 +198,7 @@ const Post = ({ image, post }: { image?: boolean; post: IPost }) => {
                   marginRight: "6px",
                 }}
               />
-              {stack}
+              {getDisplayTag(stack)}
             </Label>
           ))}
           {/* <Label
@@ -275,7 +284,7 @@ const ts = {
 const Test = React.forwardRef<HTMLDivElement>((_, ref) => {
   const { addFilter } = useFilter();
   const shuffle = useMemo(
-    () => STACKS.slice().sort(() => Math.random() - 0.5),
+    () => TagList.slice().sort(() => Math.random() - 0.5),
     []
   );
 
@@ -284,14 +293,16 @@ const Test = React.forwardRef<HTMLDivElement>((_, ref) => {
     <span
       css={{
         display: "inline-flex",
-        animation: `${MarqueeAnimation} ${STACKS.length * 15}s linear infinite`,
+        animation: `${MarqueeAnimation} ${
+          TagList.length * 15
+        }s linear infinite`,
         "& > *": { marginRight: "12px" },
       }}
       ref={ref}
     >
       {shuffle.map((stack, i) => (
         <Button onClick={() => addFilter(stack)} key={stack} css={ts}>
-          {stack}
+          {getDisplayTag(stack)}
         </Button>
       ))}
     </span>
@@ -342,7 +353,6 @@ const Slider = ({ toggle }: { toggle: (set?: boolean) => void }) => {
   const onScroll = React.useCallback(() => {
     if (scrollRef.current) {
       const scroll = scrollRef.current.scrollLeft;
-      console.log(backupHeight + (scroll % position));
       if (scroll < backupHeight || scroll >= backupHeight + position) {
         scrollRef.current.scrollTo({
           top: 0,
@@ -404,149 +414,76 @@ const Slider = ({ toggle }: { toggle: (set?: boolean) => void }) => {
   );
 };
 
-type IMenuCategory =
-  | "popular"
-  | "field"
-  | "language"
-  | "frontend"
-  | "backend"
-  | "app"
-  | "etc"
-  | "all";
-const MENU: {
-  displayName: string;
-  key: IMenuCategory;
-  items: string[];
-}[] = [
-  {
-    displayName: "인기",
-    key: "popular",
-    items: [
-      "React",
-      "Angular",
-      "Vue",
-      "Spring",
-      "Python",
-      "Node.js",
-      "Java",
-      "Typescript",
-      "Javascript",
-    ],
-  },
-  {
-    displayName: "분야",
-    key: "field",
-    items: [
-      "스터디",
-      "프로젝트",
-      "기획",
-      "서비스",
-      "코테",
-      "프론트엔드",
-      "백엔드",
-      "모바일",
-      "UI/UX",
-      "AI/머신러닝",
-      "게임",
-      "블록체인",
-    ],
-  },
-  {
-    displayName: "언어",
-    key: "language",
-    items: [
-      "Javascript",
-      "Typescript",
-      "Python",
-      "Java",
-      "Kotlin",
-      "C/C++",
-      "C#",
-      "Swift",
-      "Dart(Flutter)",
-    ],
-  },
-  {
-    displayName: "프론트엔드",
-    key: "frontend",
-    items: [
-      "프론트엔드",
-      "Javascript",
-      "Typescript",
-      "React",
-      "Vue",
-      "Angular",
-      "Svelte",
-    ],
-  },
-  {
-    displayName: "백엔드",
-    key: "backend",
-    items: [
-      "백엔드",
-      "Java",
-      "Node.js",
-      "Go",
-      "Python",
-      "Spring",
-      "Django",
-      "Nestjs",
-      "Express",
-      "GraphQL",
-      "SQL",
-      "MongoDB",
-      "Firebase",
-    ],
-  },
-  {
-    displayName: "모바일",
-    key: "app",
-    items: [
-      "모바일",
-      "Java",
-      "Kotlin",
-      "Swift",
-      "Dart(Flutter)",
-      "React Native",
-    ],
-  },
-  {
-    displayName: "기타",
-    key: "etc",
-    items: ["AWS", "Kubernetes", "Docker", "Git"],
-  },
-];
-const STACKS = Array.from(
-  new Set(MENU.reduce((acc, cur) => acc.concat(cur.items), [] as string[]))
-);
-
-const useSearchMenu = (initial: IMenuCategory) => {
-  const [state, setState] = useState<IMenuCategory>(initial);
+const useSearchMenu = (initial: ITagCategory) => {
+  const [state, setState] = useState<ITagCategory>(initial);
   const currentMenu = useMemo(
-    () => MENU.find((menu) => menu.key === state)!,
+    () => TagGroup.find((menu) => menu.key === state)!,
     [state]
   );
 
   return [currentMenu, setState] as [typeof currentMenu, typeof setState];
 };
 
-const filterState = atom<string[]>({
+const filterState = atom<ITag[]>({
   key: "filterState",
   default: [],
 });
 
+function isValidTag(arg: any): arg is ITag {
+  return TagList.includes(arg);
+}
+
 const useFilter = () => {
   const [filter, setFilter] = useRecoilState(filterState);
-  const resetFilter = useCallback(() => setFilter([]), []);
+  const resetFilter = useCallback(() => setFilter([]), [setFilter]);
+  const router = useRouter();
   const addFilter = useCallback(
-    (x: string) => {
-      if (filter.length < 3 && !filter.includes(x)) setFilter([...filter, x]);
+    (x: string, shallow?: boolean) => {
+      if (!isValidTag(x)) return;
+      const result = [...filter, x];
+      if (filter.length >= 3 || filter.includes(x)) return;
+      setFilter(result);
+      console.log("push");
+      router.push(
+        {
+          query: {
+            ...router.query,
+            stacks: result.join(","),
+          },
+        },
+        undefined,
+        {
+          shallow,
+        }
+      );
     },
-    [filter, setFilter]
+    [filter, router, setFilter]
   );
+  useLayoutEffect(() => {
+    let stacks = router.query["stacks"];
+    if (!stacks) return;
+    if (Array.isArray(stacks)) stacks = stacks.join(",");
+    console.log("stacks:", stacks);
+    setFilter(stacks.split(",").filter((stack) => isValidTag(stack)) as ITag[]);
+  }, [router.query, setFilter]);
   const removeFilter = useCallback(
-    (i) => setFilter([...filter.slice(0, i), ...filter.slice(i + 1)]),
-    [filter, setFilter]
+    (i, shallow?: boolean) => {
+      const result = [...filter.slice(0, i), ...filter.slice(i + 1)];
+      setFilter(result);
+      router.push(
+        {
+          query: {
+            ...router.query,
+            stacks: result,
+          },
+        },
+        undefined,
+        {
+          shallow,
+        }
+      );
+    },
+    [filter, router, setFilter]
   );
   return { filter, resetFilter, addFilter, removeFilter };
 };
@@ -583,7 +520,7 @@ const Search = ({ toggle }: { toggle: (set?: boolean) => void }) => {
             },
           }}
         >
-          {MENU.map((menu) => (
+          {TagGroup.map((menu) => (
             <Button
               key={menu.key}
               onClick={() => setCurrentMenu(menu.key)}
@@ -607,7 +544,7 @@ const Search = ({ toggle }: { toggle: (set?: boolean) => void }) => {
             key={i}
             css={{ border: 0, backgroundColor: "var(--positive1)" }}
           >
-            {stack}
+            {getDisplayTag(stack)}
           </Button>
         ))}
       </Flex>
@@ -657,9 +594,9 @@ const FilterList = () => {
             </span>
           )}
         </Label>
-        {filter.map((item, i) => (
-          <Label css={{ border: 0, fontSize: "16px" }} key={item}>
-            {item}
+        {filter.map((stack, i) => (
+          <Label css={{ border: 0, fontSize: "16px" }} key={stack}>
+            {getDisplayTag(stack)}
             <Button
               css={{
                 width: "16px",
@@ -799,11 +736,15 @@ const Project: NextPage = () => {
   const router = useRouter();
   const currentPage = parseInt(router.query.page as string) || 1;
   const { data, isLoading, isError } = useQuery("projects", () =>
-    fetchProjects(currentPage)
+    fetchProjects(
+      currentPage,
+      router.query.stacks
+        ? ((Array.isArray(router.query.stacks)
+            ? router.query.stacks
+            : router.query.stacks.split(",")) as ITag[])
+        : undefined
+    )
   );
-
-  console.log("project");
-  console.log(data);
 
   const ProjectPagination = ({
     className,
@@ -863,19 +804,29 @@ const Project: NextPage = () => {
   );
 };
 
-const fetchProjects = async (page = 1) => {
-  console.log(`/projects?page=${page}`);
-  const res = await http.get<IPageable<IPost[]>>(`/projects?page=${page}`);
+const fetchProjects = async (page = 1, stacks?: ITag[]) => {
+  console.log(`link: /projects?page=${page}`);
+  const res = await http.get<IPageable<IPost[]>>(`/projects`, {
+    params: {
+      page,
+      stacks: stacks?.join(","),
+    },
+  });
   return res.data;
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const queryClient = new QueryClient();
 
-  console.log(context.query.page);
-
   await queryClient.prefetchQuery("projects", () =>
-    fetchProjects(parseInt(context.query.page as string) || 1)
+    fetchProjects(
+      parseInt(context.query.page as string) || 1,
+      context.query.stacks
+        ? ((Array.isArray(context.query.stacks)
+            ? context.query.stacks
+            : context.query.stacks.split(",")) as ITag[])
+        : undefined
+    )
   );
 
   return {

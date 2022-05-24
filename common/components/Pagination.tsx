@@ -65,8 +65,14 @@ export const Pagination = ({
         <MdOutlineChevronLeft />
       </Item> */}
       {Array.from(Array(9).keys())
-        .slice(0, end ? (end >= 9 ? end - current + 5 : end) : 9)
-        .map((x) => x + Math.max(1, current - 4))
+        .slice(0, end ? (end > 9 ? 9 : end) : 9)
+        .map(
+          (x) =>
+            x +
+            (end > 9
+              ? Math.max(0, current - 5) + Math.min(0, end - current - 4) + 1
+              : 1)
+        )
         .map((item) => (
           <Item
             onClick={() => onClick(item)}

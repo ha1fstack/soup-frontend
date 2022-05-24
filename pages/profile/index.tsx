@@ -12,6 +12,7 @@ import {
 import { ChildrenContainer } from "components";
 import { useToggle } from "hooks/useToggle";
 import { MdOutlineEdit } from "react-icons/md";
+import useAuth from "hooks/useAuth";
 
 const DetailsRow = ({
   item,
@@ -116,6 +117,7 @@ const InfoEdit = ({ toggleIsEdit }: { toggleIsEdit: () => void }) => {
 
 const Info = () => {
   const [isEdit, toggleIsEdit] = useToggle();
+  const auth = useAuth();
 
   return (
     <Box
@@ -153,7 +155,7 @@ const Info = () => {
               />
             </div>
             <div css={{ marginLeft: "16px", flex: "1" }}>
-              <p css={{ fontSize: "18px", fontWeight: 700 }}>홍길동</p>
+              <p css={{ fontSize: "18px", fontWeight: 700 }}>{auth.username}</p>
               <p css={{ fontSize: "14px", fontWeight: 500 }}>
                 gildong@example.com
               </p>
@@ -195,7 +197,7 @@ const Info = () => {
                 }}
               >
                 {[
-                  ["닉네임", "홍길동"],
+                  ["닉네임", auth.username!],
                   ["소셜 로그인", "Github"],
                   ["이메일", "gildong@example.com"],
                 ].map((item, index) => (

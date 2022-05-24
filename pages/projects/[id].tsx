@@ -22,6 +22,7 @@ import {
 } from "react-icons/md";
 import useAuth from "hooks/useAuth";
 import { IProjectData } from "types";
+import { getDisplayTag, TagDictionary } from "utils/tagDictionary";
 
 const fetchProject = async (id: string) => {
   const res = await http.get<IProjectData>(`/projects/${id}`);
@@ -37,7 +38,6 @@ const Page = () => {
   const router = useRouter();
 
   const auth = useAuth();
-  const ownership = auth.user_id === data.userId;
 
   const { id } = router.query as {
     id: string;
@@ -59,6 +59,7 @@ const Page = () => {
   };
 
   if (!data || isLoading || isError) return null;
+  const ownership = auth.user_id === data.userId;
 
   return (
     <ChildrenContainer width={840}>
@@ -96,7 +97,7 @@ const Page = () => {
                         marginRight: "6px",
                       }}
                     />
-                    {stack}
+                    {getDisplayTag(stack)}
                   </Label>
                 ))}
               </Flex>

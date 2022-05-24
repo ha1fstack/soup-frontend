@@ -13,12 +13,15 @@ import {
   MdOutlineMail,
   MdOutlineDarkMode,
   MdOutlineLightMode,
+  MdOutlinePerson,
+  MdOutlineLogout,
 } from "react-icons/md";
 import { useQueryClient } from "react-query";
 import { Login } from "./Login";
 import { Media } from "./Media";
 import Image from "next/image";
 import { useTheme as useNextTheme } from "next-themes";
+import { useRouter } from "next/router";
 
 const HeaderContainer = styled.div`
   box-sizing: border-box;
@@ -72,30 +75,73 @@ const SearchButton = styled(Button)({
   width: "200px",
 });
 
-const Popup = React.forwardRef<HTMLDivElement>((_, ref) => (
-  <Box
-    column
-    ref={ref}
-    css={{
-      position: "absolute",
-      top: "44px",
-      width: "300px",
-      right: 0,
-      boxShadow: "0px 0px 10px rgba(0,0,0,0.1)",
-      hr: {
-        margin: "8px 0px",
-      },
-    }}
-  >
-    알림
-    <Hr />
-    어쩌구
-    <Hr />
-    어쩌구
-    <Hr />
-    어쩌구
-  </Box>
-));
+const Popup = React.forwardRef<
+  HTMLDivElement,
+  {
+    toggle: (set?: boolean) => void;
+  }
+>(({ toggle }, ref) => {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+
+  const final = (_?: any) => {
+    toggle();
+  };
+
+  const logout = () => {
+    (async () => {
+      document.cookie = "SESSION" + "=;expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+      queryClient.setQueryData(["auth"], () => undefined);
+    })();
+  };
+
+  return (
+    <Box
+      column
+      ref={ref}
+      css={{
+        position: "absolute",
+        top: "44px",
+        width: "150px",
+        right: 0,
+        fontSize: "14px",
+        boxShadow: "0px 0px 10px rgba(0,0,0,0.1)",
+        padding: "6px",
+        hr: {
+          margin: "8px 0px",
+        },
+        svg: {
+          display: "inline-block",
+          marginRight: "8px",
+          fontSize: "22px",
+        },
+        "& > *": {
+          cursor: "pointer",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "6px 8px",
+          borderRadius: "8px",
+          ":hover": {
+            backgroundColor: "var(--positive1)",
+          },
+        },
+        "& > *+*": {
+          marginTop: "4px",
+        },
+      }}
+    >
+      <div onClick={() => final(router.push("profile"))}>
+        <MdOutlinePerson />
+        <span>내 프로필</span>
+      </div>
+      <div onClick={() => final(logout())}>
+        <MdOutlineLogout />
+        <span>로그아웃</span>
+      </div>
+    </Box>
+  );
+});
 Popup.displayName = "Popup";
 
 const customAnimation = (ms: number) => {
@@ -116,12 +162,8 @@ const customAnimation = (ms: number) => {
 
 export const Header = ({ toggleSideBar }: { toggleSideBar?: () => void }) => {
   const [login, toggleLogin] = useToggle();
-  const [notificationPopup, toggleNotificationPopup] = useToggle();
   const [messagePopup, toggleMessagePopup] = useToggle();
 
-  const notificationRef = useOuterClick<HTMLDivElement>(() =>
-    toggleNotificationPopup()
-  );
   const messageRef = useOuterClick<HTMLDivElement>(() => toggleMessagePopup());
 
   const auth = useAuth();
@@ -133,6 +175,8 @@ export const Header = ({ toggleSideBar }: { toggleSideBar?: () => void }) => {
     setNextTheme(nextTheme === "light" ? "dark" : "light");
     removeAnimation();
   };
+
+  const router = useRouter();
 
   return (
     <>
@@ -195,10 +239,11 @@ export const Header = ({ toggleSideBar }: { toggleSideBar?: () => void }) => {
         </Flex>
         <HeaderMenuContainer>
           <Media css={{ display: "flex", gap: "12px" }} greaterThan="sm">
-            <SearchButton>
+            <SearchButton onClick={() => router.push("/projects")}>
               <MdOutlineSearch />
               프로젝트 찾아보기
             </SearchButton>
+            {/* 
             <div css={{ position: "relative" }}>
               <Button
                 icon
@@ -222,7 +267,7 @@ export const Header = ({ toggleSideBar }: { toggleSideBar?: () => void }) => {
                 <MdOutlineMail css={HeaderIconStyle} />
               </Button>
               {messagePopup && <Popup ref={messageRef} />}
-            </div>
+            </div> */}
             <div css={{ position: "relative" }}>
               <Button icon onClick={setCustomNextTheme} css={{ width: "36px" }}>
                 {nextTheme === "light" ? (
@@ -231,7 +276,6 @@ export const Header = ({ toggleSideBar }: { toggleSideBar?: () => void }) => {
                   <MdOutlineDarkMode css={HeaderIconStyle} />
                 )}
               </Button>
-              {messagePopup && <Popup ref={messageRef} />}
             </div>
           </Media>
 
@@ -247,9 +291,13 @@ export const Header = ({ toggleSideBar }: { toggleSideBar?: () => void }) => {
               />
               <Flex
                 inline
+                onClick={messagePopup ? undefined : () => toggleMessagePopup()}
                 css={{
                   alignItems: "center",
                   gap: "8px",
+                  cursor: "pointer",
+                  height: "36px",
+                  position: "relative",
                 }}
               >
                 <span>{auth?.username}</span>
@@ -268,6 +316,9 @@ export const Header = ({ toggleSideBar }: { toggleSideBar?: () => void }) => {
                     alt="profile-image"
                   />
                 </span>
+                {messagePopup && (
+                  <Popup ref={messageRef} toggle={toggleMessagePopup} />
+                )}
               </Flex>
             </>
           ) : (

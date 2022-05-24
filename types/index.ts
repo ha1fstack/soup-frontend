@@ -1,4 +1,5 @@
 import { JSONContent } from "@tiptap/react";
+import { ITag } from "utils/tagDictionary";
 
 export interface IPageable<T> {
   content: T;
@@ -29,11 +30,12 @@ export interface IPost {
   link: string;
   postId: number;
   postName: string;
-  stacks: string[];
+  stacks: ITag[];
   talk: string;
   userName: string;
   views: number;
   source: "SOUP" | "INFLEARN" | "OKKY" | "CAMPICK" | "HOLA";
+  fav: number;
 }
 
 export interface IProjectContentData<T> {
@@ -43,7 +45,7 @@ export interface IProjectContentData<T> {
   userName: string;
   date: string;
   link: "https://okky.kr/article/1221052";
-  stacks: string[];
+  stacks: ITag[];
   views: number;
   talk: string;
   source: string;

@@ -18,8 +18,9 @@ import styled from "@emotion/styled";
 import { http } from "common/services";
 import { ellipsis } from "polished";
 import { ChildrenContainer } from "components";
-import { timeDiffString } from "utils";
-import { Fragment } from "react";
+import { ISource, SourceDictionary, SourceList, timeDiffString } from "utils";
+import { Dispatch, Fragment, SetStateAction, useState } from "react";
+import { getDisplayTag, ITag } from "utils/tagDictionary";
 
 const Article = ({ title, content }: { title: string; content: string }) => {
   const router = useRouter();
@@ -334,7 +335,7 @@ interface IPostPreviewContent {
   userName: string;
   date: string;
   link: "https://okky.kr/article/1221052";
-  stacks: string[];
+  stacks: ITag[];
   views: number;
   talk: string;
   source: string;
@@ -380,7 +381,7 @@ const PostItem = ({ post }: { post: IPostPreviewContent }) => {
         <Flex css={{ gap: "12px", marginTop: "4px" }}>
           {post.stacks.map((stack) => (
             <Label size="smaller" key={stack}>
-              {stack}
+              {getDisplayTag(stack)}
             </Label>
           ))}
         </Flex>
@@ -433,11 +434,22 @@ const LoungeItem = ({ post }: { post: ILoungePost }) => {
   );
 };
 
+const useSource = (initialSource: ISource) => {
+  const [source, setSource] = useState<ISource>(initialSource);
+  const sourceDisplayName = SourceDictionary[source];
+  return [source, sourceDisplayName, setSource] as [
+    ISource,
+    string,
+    Dispatch<SetStateAction<ISource>>
+  ];
+};
+
 const Projects = () => {
   const { data, isLoading, isError } = useQuery(
     "front/projects",
     fetchFrontProjects
   );
+  const [source, sourceDisplayName, setSource] = useSource("OKKY");
 
   if (!data || isLoading || isError)
     return <Flex column css={{ flex: "3 1 480px" }} />;
@@ -452,20 +464,22 @@ const Projects = () => {
           "& > *+*": { marginLeft: "12px" },
         }}
       >
-        {["SOUP", "인프런", "OKKY", "캠퍼스픽", "HOLA"].map((source, i) => (
+        {SourceList.map((currentSource, i) => (
           <span
+            onClick={() => setSource(currentSource)}
             key={i}
             css={{
-              color: i === 0 ? undefined : "var(--disabled)",
-              fontWeight: i === 0 ? undefined : 500,
+              color: source === currentSource ? undefined : "var(--disabled)",
+              fontWeight: source === currentSource ? undefined : 500,
+              cursor: "pointer",
             }}
           >
-            {source}
+            {SourceDictionary[currentSource]}
           </span>
         ))}
       </p>
       <Box responsive column css={{ gap: "16px", padding: "16px 12px" }}>
-        {data.OKKY.map((post, i) => (
+        {data[source].map((post, i) => (
           <Fragment key={post.id}>
             {i !== 0 && <Hr />}
             <PostItem post={post} />
