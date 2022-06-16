@@ -9,36 +9,36 @@ export type ITagCategory =
   | "all";
 
 const _tagDictionary = {
-  react: { displayName: "React", color: "gray" },
-  angular: { displayName: "Angular", color: "gray" },
-  vue: { displayName: "Vue", color: "gray" },
-  svelte: { displayName: "Svelte", color: "gray" },
-  spring: { displayName: "Spring", color: "gray" },
-  nodejs: { displayName: "Node.js", color: "gray" },
-  go: { displayName: "Go", color: "gray" },
-  django: { displayName: "Django", color: "gray" },
-  nestjs: { displayName: "NestJS", color: "gray" },
-  express: { displayName: "Express", color: "gray" },
-  graphql: { displayName: "GraphQL", color: "gray" },
-  sql: { displayName: "SQL", color: "gray" },
-  mongodb: { displayName: "MongoDB", color: "gray" },
-  firebase: { displayName: "FireBase", color: "gray" },
-  react_native: { displayName: "React Native", color: "gray" },
+  react: { displayName: "React", color: "#5ed3f3" },
+  angular: { displayName: "Angular", color: "#c3002f" },
+  vue: { displayName: "Vue", color: "#4eb282" },
+  svelte: { displayName: "Svelte", color: "#ff3e00" },
+  spring: { displayName: "Spring", color: "#5cb230" },
+  nodejs: { displayName: "Node.js", color: "#43733f" },
+  go: { displayName: "Go", color: "#00aed8" },
+  django: { displayName: "Django", color: "#177852" },
+  nestjs: { displayName: "NestJS", color: "#d5214a" },
+  express: { displayName: "Express", color: "#bbbbbb" },
+  graphql: { displayName: "GraphQL", color: "#de33a6" },
+  sql: { displayName: "SQL", color: "#db7533" },
+  mongodb: { displayName: "MongoDB", color: "#00ee64" },
+  firebase: { displayName: "FireBase", color: "#f2c028" },
+  react_native: { displayName: "React Native", color: "#61dafb" },
 
-  aws: { displayName: "AWS", color: "gray" },
-  docker: { displayName: "Docker", color: "gray" },
-  kubernetes: { displayName: "Kubernetes", color: "gray" },
-  git: { displayName: "Git", color: "gray" },
+  aws: { displayName: "AWS", color: "#f29100" },
+  docker: { displayName: "Docker", color: "#2496ed" },
+  kubernetes: { displayName: "Kubernetes", color: "#3069de" },
+  git: { displayName: "Git", color: "#e84d31" },
 
-  typescript: { displayName: "Typescript", color: "gray" },
-  javascript: { displayName: "Javascript", color: "gray" },
-  python: { displayName: "Python", color: "gray" },
-  java: { displayName: "Java", color: "gray" },
-  kotlin: { displayName: "Kotlin", color: "gray" },
-  c_cpp: { displayName: "C/C++", color: "gray" },
+  typescript: { displayName: "Typescript", color: "#2f74c0" },
+  javascript: { displayName: "Javascript", color: "#ead41c" },
+  python: { displayName: "Python", color: "#3f7dae" },
+  java: { displayName: "Java", color: "#ec2025" },
+  kotlin: { displayName: "Kotlin", color: "#c314e2" },
+  c_cpp: { displayName: "C/C++", color: "#659ad2" },
   csharp: { displayName: "C#", color: "gray" },
-  swift: { displayName: "Swift", color: "gray" },
-  dart: { displayName: "Dart", color: "gray" },
+  swift: { displayName: "Swift", color: "#f05138" },
+  dart: { displayName: "Dart", color: "#40c3fe" },
 
   study: { displayName: "스터디", color: "gray" },
   project: { displayName: "프로젝트", color: "gray" },
@@ -48,8 +48,8 @@ const _tagDictionary = {
   frontend: { displayName: "프론트엔드", color: "gray" },
   backend: { displayName: "백엔드", color: "gray" },
   mobile: { displayName: "모바일", color: "gray" },
-  ios: { displayName: "iOS", color: "gray" },
-  android: { displayName: "Android", color: "gray" },
+  ios: { displayName: "iOS", color: "#f44336" },
+  android: { displayName: "Android", color: "#3ddc84" },
   ui_ux: { displayName: "UI/UX", color: "gray" },
   ai_ml: { displayName: "AI/머신러닝", color: "gray" },
   game: { displayName: "게임", color: "gray" },
@@ -69,6 +69,10 @@ export const TagDictionary: Readonly<
 export type ITag = Readonly<keyof typeof TagDictionary>;
 
 export const TagList: ITag[] = Object.keys(TagDictionary) as ITag[];
+
+export const getDisplayColor = (stack: ITag) => {
+  return TagDictionary[stack]?.color || stack;
+};
 
 export const getDisplayTag = (stack: ITag) => {
   return TagDictionary[stack]?.displayName || stack;

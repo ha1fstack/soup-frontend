@@ -42,10 +42,10 @@ import useClientRender from "hooks/useClientRender";
 import { ellipsis } from "polished";
 import { IPageable, IPost } from "types";
 import {
+  getDisplayColor,
   getDisplayTag,
   ITag,
   ITagCategory,
-  TagDictionary,
   TagGroup,
   TagList,
 } from "utils/tagDictionary";
@@ -58,8 +58,6 @@ const Post = ({ image, post }: { image?: boolean; post: IPost }) => {
   };
 
   const timeString = useMemo(() => timeDiffString(post.date), [post]);
-
-  const theme = useTheme();
 
   return (
     <Box responsive column>
@@ -100,8 +98,8 @@ const Post = ({ image, post }: { image?: boolean; post: IPost }) => {
             >
               <ProfilePlaceholder value={post.userName} size={24} />
               <span>
-                {post.userName} · {timeString} · 조회 {post.views}건 · 좋아요{" "}
-                {post.fav}개
+                {post.userName} · {timeString} · 조회 {post.views}건 · 스크랩{" "}
+                {post.fav}회
               </span>
             </Flex>
             <div
@@ -194,7 +192,7 @@ const Post = ({ image, post }: { image?: boolean; post: IPost }) => {
                   width: "6px",
                   height: "6px",
                   borderRadius: "3px",
-                  backgroundColor: "#007acc",
+                  backgroundColor: getDisplayColor(stack),
                   marginRight: "6px",
                 }}
               />

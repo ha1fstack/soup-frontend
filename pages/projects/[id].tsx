@@ -22,7 +22,7 @@ import {
 } from "react-icons/md";
 import useAuth from "hooks/useAuth";
 import { IProjectData } from "types";
-import { getDisplayTag, TagDictionary } from "utils/tagDictionary";
+import { getDisplayTag, getDisplayColor } from "utils/tagDictionary";
 
 const fetchProject = async (id: string) => {
   const res = await http.get<IProjectData>(`/projects/${id}`);
@@ -93,7 +93,7 @@ const Page = () => {
                         width: "6px",
                         height: "6px",
                         borderRadius: "3px",
-                        backgroundColor: "#007acc",
+                        backgroundColor: getDisplayColor(stack),
                         marginRight: "6px",
                       }}
                     />
