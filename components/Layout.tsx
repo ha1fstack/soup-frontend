@@ -15,6 +15,7 @@ import { useSetRecoilState } from "recoil";
 import { loginPopupState } from "state";
 import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
 import { useTheme as useNextTheme } from "next-themes";
+import { json } from "stream/consumers";
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -113,7 +114,7 @@ const SideBarElement = ({
   const auth = useAuth();
 
   const LinkWrapper =
-    authorized && !auth
+    authorized && !auth.success
       ? ({ children }: { children: React.ReactNode }) => (
           <SideBarLink onClick={() => setLoginPopup(true)} selected={match}>
             {children}
