@@ -179,14 +179,24 @@ const Page = () => {
                 column
                 css={{
                   gap: "16px",
-                  maxWidth: "480px",
+                  width: "480px",
                   padding: "16px",
                 }}
               >
-                <p>
+                <Flex css={{ alignItems: "center" }}>
+                  <span
+                    css={{
+                      display: "inline-block",
+                      width: "6px",
+                      height: "6px",
+                      borderRadius: "6px",
+                      backgroundColor: "var(--primary)",
+                      marginRight: "8px",
+                    }}
+                  />
                   <b>{data.source}</b>
                   에서 가져옴
-                </p>
+                </Flex>
                 <p>{data.content}...</p>
                 <ButtonLink
                   href={data.link}

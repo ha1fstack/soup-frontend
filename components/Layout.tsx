@@ -16,6 +16,7 @@ import { loginPopupState } from "state";
 import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
 import { useTheme as useNextTheme } from "next-themes";
 import { json } from "stream/consumers";
+import { breakpoints } from "utils";
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -23,14 +24,14 @@ const PageContainer = styled.div`
 
 const BodyContainer = styled.div`
   min-height: 100vh;
-  ${({ theme }) => theme.breakpoints.greaterThan("md")} {
+  ${breakpoints.greaterThan("md")} {
     margin-left: 240px;
   }
   display: flex;
   flex-direction: row;
   padding-right: 36px;
   padding-left: 36px;
-  ${({ theme }) => theme.breakpoints.at("sm")} {
+  ${breakpoints.at("sm")} {
     padding-right: 12px;
     padding-left: 12px;
   }
@@ -48,7 +49,7 @@ const SideBarContainerWrapper = styled.div`
   justify-content: space-between;
   border-right: solid 1px var(--outline);
   padding: 16px;
-  ${({ theme }) => theme.breakpoints.at("sm")} {
+  ${breakpoints.at("sm")} {
     top: 0;
     height: 100vh;
   }
@@ -58,7 +59,7 @@ const SideBarContentWrapper = styled.ul`
   margin: 0;
   line-height: normal;
   list-style-type: none;
-  ${({ theme }) => theme.breakpoints.at("sm")} {
+  ${breakpoints.at("sm")} {
     top: 0;
   }
 `;
@@ -151,7 +152,7 @@ export const ChildrenContainer = styled.div<{
     padding-right: 36px;
     padding-left: 36px;
     width: calc(100% + 72px);
-    ${({ theme }) => theme.breakpoints.at("sm")} {
+    ${breakpoints.at("sm")} {
       margin-right: -12px;
       margin-left: -12px;
       padding-right: 12px;

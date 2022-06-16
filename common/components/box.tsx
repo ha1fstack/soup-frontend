@@ -1,5 +1,6 @@
 import { css, Theme } from "@emotion/react";
 import styled from "@emotion/styled";
+import { breakpoints } from "utils";
 
 const BoxVariant = (theme: Theme) => ({
   primary: css`
@@ -58,10 +59,10 @@ export const Box = styled.div<{
     css`
       flex-direction: column;
     `}
-  ${({ responsive, theme }) =>
+  ${({ responsive }) =>
     responsive &&
     css({
-      [theme.breakpoints.at("sm")]: fullspanStyle,
+      [breakpoints.at("sm")]: fullspanStyle,
     })}
   ${({ variant, theme }) =>
     variant

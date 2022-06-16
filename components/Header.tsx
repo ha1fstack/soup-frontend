@@ -24,11 +24,12 @@ import { useTheme as useNextTheme } from "next-themes";
 import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
 import { loginPopupState } from "state";
+import { breakpoints } from "utils";
 
 const HeaderContainer = styled.div`
   box-sizing: border-box;
   padding: 0px 12px;
-  ${({ theme }) => theme.breakpoints.at("sm")} {
+  ${breakpoints.at("sm")} {
     padding: 0px 12px;
   }
   position: fixed;

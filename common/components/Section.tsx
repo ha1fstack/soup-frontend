@@ -2,13 +2,14 @@ import { css, Theme } from "@emotion/react";
 import { CSSInterpolation } from "@emotion/serialize";
 import styled from "@emotion/styled";
 import { Flex } from "common/components";
+import { breakpoints } from "utils";
 
 export const SectionHeader = Object.assign(
   styled.div`
     display: flex;
     flex-direction: column;
     margin-top: 36px;
-    ${({ theme }) => theme.breakpoints.at("sm")} {
+    ${breakpoints.at("sm")} {
       margin-top: 24px;
     }
     margin-bottom: 24px;

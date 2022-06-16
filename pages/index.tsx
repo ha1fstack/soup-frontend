@@ -20,6 +20,7 @@ import { http } from "common/services";
 import { ellipsis } from "polished";
 import { ChildrenContainer } from "components";
 import {
+  breakpoints,
   ISource,
   SourceDictionary,
   SourceList,
@@ -587,9 +588,9 @@ const HotFeatured = () => {
     <Flex
       column
       css={{
-        flex: "99999 1 0",
+        flex: "99999 1 480px",
         gap: "24px",
-        minWidth: "480px",
+        minWidth: 0,
         marginBottom: "-36px",
         img: {
           borderRadius: "8px",
@@ -619,7 +620,14 @@ const HotFeatured = () => {
       >
         {content.map((content, i) => (
           <SwiperSlide key={i}>
-            <Flex css={{ gap: "36px" }}>
+            <Flex
+              css={{
+                gap: "36px",
+                [breakpoints.at("sm")]: {
+                  gap: "24px",
+                },
+              }}
+            >
               {content.map((post) => (
                 <HotItem key={post.id} post={post} />
               ))}
@@ -683,64 +691,97 @@ const Featured = () => {
   );
 };
 
-const Home: NextPage = () => {
-  const theme = useTheme();
-
+const Banner = () => {
   return (
-    <ChildrenContainer>
-      <SectionBodyAlt
+    <SectionBodyAlt
+      css={{
+        height: "300px",
+        "--banner-title": "24px",
+        "--banner-description": "16px",
+        "--banner-image-size": "240px",
+        paddingTop: "48px",
+        paddingBottom: "48px",
+        [breakpoints.at("sm")]: {
+          height: "200px",
+          "--banner-title": "16px",
+          "--banner-description": "14px",
+          "--banner-image-size": "128px",
+          padding: "24px 18px !important",
+        },
+        backgroundColor: "#111",
+        color: "#ffffff",
+        borderBottom: "1px solid var(--outline)",
+        marginBottom: "0",
+        zIndex: -2,
+      }}
+    >
+      <Flex
         css={{
-          [theme.breakpoints.at("sm")]: {
-            paddingTop: "24px",
-          },
-          paddingTop: 0,
-          paddingBottom: 0,
-          backgroundColor: "#111",
-          color: "#ffffff",
-          borderBottom: "1px solid var(--outline)",
-          marginBottom: "0",
-          height: "300px",
-          zIndex: -2,
+          height: "100%",
+          alignItems: "center",
+          justifyContent: "space-between",
+          position: "relative",
         }}
       >
         <Flex
+          column
           css={{
             height: "100%",
-            alignItems: "center",
             justifyContent: "space-between",
+            alignItems: "flex-start",
           }}
         >
-          <Flex
-            column
+          <Label
+            variant="primary"
+            size="freeform"
             css={{
-              gap: "72px",
-              alignItems: "flex-start",
+              color: "#111",
+              fontWeight: "700",
+              fontSize: "var(--banner-description)",
+              padding: "0.5em 0.65em",
             }}
           >
-            <Label variant="primary" css={{ color: "#111", fontWeight: "700" }}>
-              프로모션
-            </Label>
-            <Flex column css={{ gap: "12px" }}>
-              <p css={{ fontWeight: "700", fontSize: "24px" }}>
-                프론트엔드 BEST 강의
-                <br />
-                SouP에서만 30% 할인중👌
-              </p>
-              <p>입문부터 실전까지, 믿고 보는 실무자 Pick</p>
-            </Flex>
+            프로모션
+          </Label>
+          <Flex column css={{ gap: "12px" }}>
+            <p css={{ fontWeight: "700", fontSize: "var(--banner-title)" }}>
+              프론트엔드 BEST 강의
+              <br />
+              SouP에서만 30% 할인중👌
+            </p>
+            <p css={{ fontSize: "var(--banner-description)" }}>
+              입문부터 실전까지, 믿고 보는 실무자 Pick
+            </p>
           </Flex>
+        </Flex>
+        <span
+          css={{
+            position: "absolute",
+            right: 0,
+            zIndex: -1,
+            width: "var(--banner-image-size)",
+          }}
+        >
           <Image
             alt="front-banner"
             src="https://i.imgur.com/7FfQL9b.png"
             width="240"
             height="240"
           />
-        </Flex>
-      </SectionBodyAlt>
+        </span>
+      </Flex>
+    </SectionBodyAlt>
+  );
+};
+
+const Home: NextPage = () => {
+  return (
+    <ChildrenContainer>
+      <Banner />
       <SectionBodyAlt
         css={{
           paddingTop: "32px",
-          [theme.breakpoints.at("sm")]: {
+          [breakpoints.at("sm")]: {
             paddingTop: "24px",
           },
           paddingBottom: "44px",

@@ -47,6 +47,9 @@ export const LabelSize = () => ({
     font-size: 12px;
     border-radius: 6px;
   `,
+  freeform: css`
+    border-radius: 8px;
+  `,
 });
 
 export const Label = styled.div<{

@@ -13,6 +13,8 @@ import { ChildrenContainer } from "components";
 import { useToggle } from "hooks/useToggle";
 import { MdOutlineEdit } from "react-icons/md";
 import useAuth from "hooks/useAuth";
+import { useQuery } from "react-query";
+import { http } from "common/services";
 
 const DetailsRow = ({
   item,
@@ -248,21 +250,38 @@ const Profile = () => {
               gap: "24px",
             }}
           >
-            <Box responsive column>
-              <p css={{ fontWeight: 600 }}>선호 스택</p>
-              <p>
-                Lorem ipsum dol elit.fgsdfgdfgsor sit amet, consectetur
-                adipiscing
-              </p>
-            </Box>
-            <Box responsive column>
-              <p css={{ fontWeight: 600 }}>스킬</p>
-              Lorem ipsum dolor
-            </Box>
+            {/* <FavoritePost />
+            <FavoriteLounge /> */}
           </Flex>
         </Flex>
       </SectionBody>
     </ChildrenContainer>
+  );
+};
+
+const FavoriteLounge = () => {
+  const { data, isLoading, isError } = useQuery("FavoriteLounge", async () => {
+    return (await http.get<any>("/myfav")).data;
+  });
+
+  return (
+    <Box responsive column>
+      <p css={{ fontWeight: 600 }}>좋아요한 글</p>
+      <p>{JSON.stringify(data, null, 4)}</p>
+    </Box>
+  );
+};
+
+const FavoritePost = () => {
+  const { data, isLoading, isError } = useQuery("favoritePosts", async () => {
+    return (await http.get<any>("/mypost")).data;
+  });
+
+  return (
+    <Box responsive column>
+      <p css={{ fontWeight: 600 }}>좋아요한 글</p>
+      <p>{JSON.stringify(data, null, 4)}</p>
+    </Box>
   );
 };
 

@@ -105,3 +105,5 @@ export function createBreakpoints(options = defaultBreakpoints): Breakpoints {
       ),
   };
 }
+
+export const breakpoints = createBreakpoints();

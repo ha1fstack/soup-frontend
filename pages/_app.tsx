@@ -70,9 +70,7 @@ const GlobalStyle = css`
   }
 `;
 
-const theme: Theme = {
-  breakpoints: createBreakpoints(),
-};
+const theme: Theme = {};
 
 function MyApp({
   Component,
