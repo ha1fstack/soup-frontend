@@ -5,6 +5,9 @@ import { http } from "common/services";
 import { Dimmer } from "components";
 import { useEffect } from "react";
 import { useQuery, useQueryClient } from "react-query";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { loginPopupState } from "state";
+import Image from "next/image";
 
 const Logo = styled.span`
   cursor: pointer;
@@ -23,25 +26,26 @@ const fetchAuth = async () => {
   return res.data;
 };
 
-export const Login = ({ toggle }: { toggle: () => void }) => {
+export const Login = () => {
   const queryClient = useQueryClient();
+  const setLoginPopup = useSetRecoilState(loginPopupState);
 
   useEffect(() => {
     const listener = (event: MessageEvent) => {
       if (!event) return;
       if (event.origin !== location.origin) return;
       if (event.data !== true) return;
-      toggle();
+      setLoginPopup(false);
       (async () => {
         queryClient.setQueryData(["auth"], await fetchAuth());
       })();
     };
     window.addEventListener("message", listener, false);
     return () => window.removeEventListener("message", listener);
-  }, []);
+  }, [queryClient, setLoginPopup]);
 
   return (
-    <Dimmer onClick={() => toggle()}>
+    <Dimmer onClick={() => setLoginPopup(false)}>
       <div
         css={{
           display: "flex",
@@ -53,18 +57,23 @@ export const Login = ({ toggle }: { toggle: () => void }) => {
         <div
           onClick={(e) => e.stopPropagation()}
           css={{
-            height: "240px",
+            height: "260px",
             backgroundColor: "var(--positive)",
             borderRadius: "8px",
-            padding: "24px 36px",
+            padding: "16px 36px",
             boxShadow: "0px 0px 10px 0px rgba(0,0,0,0.1)",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            justifyContent: "space-between",
+            justifyContent: "space-around",
           }}
         >
-          <Logo>SouP</Logo>
+          <Image
+            height="32"
+            width="128"
+            src={"/logo-with-text.svg"}
+            alt="logo"
+          />
           <Flex
             css={{
               justifyContent: "space-between",
@@ -83,7 +92,12 @@ export const Login = ({ toggle }: { toggle: () => void }) => {
               }
               css={{ width: "72px", height: "72px" }}
             >
-              Google
+              <Image
+                height="32"
+                width="32"
+                src={"/google_login.png"}
+                alt="logo"
+              />
             </Button>
             <Button
               onClick={() =>
@@ -93,9 +107,18 @@ export const Login = ({ toggle }: { toggle: () => void }) => {
                   "height=500,width=400,left=100,top=100,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no, status=yes"
                 )
               }
-              css={{ width: "72px", height: "72px" }}
+              css={{
+                width: "72px",
+                height: "72px",
+                backgroundColor: "#161b22",
+              }}
             >
-              Github
+              <Image
+                height="32"
+                width="32"
+                src={"/github_login.png"}
+                alt="logo"
+              />
             </Button>
             <Button
               onClick={() =>
@@ -105,9 +128,18 @@ export const Login = ({ toggle }: { toggle: () => void }) => {
                   "height=500,width=400,left=100,top=100,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no, status=yes"
                 )
               }
-              css={{ width: "72px", height: "72px" }}
+              css={{
+                width: "72px",
+                height: "72px",
+                backgroundColor: "#fee500",
+              }}
             >
-              Kakao
+              <Image
+                height="32"
+                width="32"
+                src={"/kakao_login.png"}
+                alt="logo"
+              />
             </Button>
             <Button
               onClick={() =>
@@ -117,12 +149,21 @@ export const Login = ({ toggle }: { toggle: () => void }) => {
                   "height=500,width=400,left=100,top=100,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no, status=yes"
                 )
               }
-              css={{ width: "72px", height: "72px" }}
+              css={{
+                width: "72px",
+                height: "72px",
+                backgroundColor: "#03cf5d",
+              }}
             >
-              NAVER
+              <Image
+                height="32"
+                width="32"
+                src={"/naver_login.png"}
+                alt="logo"
+              />
             </Button>
           </Flex>
-          로 로그인 / 회원가입
+          <p>로 로그인 / 회원가입</p>
         </div>
       </div>
     </Dimmer>

@@ -135,7 +135,7 @@ const Write = () => {
   return (
     <ChildrenContainer width={960}>
       <SectionHeader>
-        <SectionHeader.Title>새 모집 만들기</SectionHeader.Title>
+        <SectionHeader.Title>모집 만들기</SectionHeader.Title>
         <SectionHeader.Description>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         </SectionHeader.Description>

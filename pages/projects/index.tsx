@@ -635,7 +635,7 @@ const FeaturedHeader = ({ content }: { content: string }) => (
         height: "6px",
         borderRadius: "6px",
         backgroundColor: "var(--primary)",
-        marginRight: "6px",
+        marginRight: "8px",
       }}
     />
     {content}

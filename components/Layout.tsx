@@ -4,13 +4,17 @@ import { useMatch } from "hooks/useMatch";
 import { useToggle } from "hooks/useToggle";
 import Link, { LinkProps } from "next/link";
 import { useRouter } from "next/router";
-import { useRef, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import { Dimmer, Header, Media, Portal } from "components";
-import { Flex } from "common/components";
+import { Button, Flex } from "common/components";
 import { NextComponentType } from "next";
 import { http } from "common/services";
 import { useQuery, QueryClient, dehydrate } from "react-query";
 import useAuth from "hooks/useAuth";
+import { useSetRecoilState } from "recoil";
+import { loginPopupState } from "state";
+import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
+import { useTheme as useNextTheme } from "next-themes";
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -74,6 +78,7 @@ const SideBarContainer: NextComponentType = ({ children }) => {
 interface ISideBarProps {
   exact?: boolean;
   selected?: boolean;
+  authorized?: boolean;
 }
 const SideBarLink = styled.a<ISideBarProps>`
   display: block;
@@ -100,16 +105,31 @@ const SideBarElement = ({
   children,
   selected,
   exact,
+  authorized,
   ...props
 }: ISideBarProps & React.PropsWithChildren<LinkProps>) => {
   const match = useMatch(props.href, exact);
+  const setLoginPopup = useSetRecoilState(loginPopupState);
+  const auth = useAuth();
+
+  const LinkWrapper =
+    authorized && !auth
+      ? ({ children }: { children: React.ReactNode }) => (
+          <SideBarLink onClick={() => setLoginPopup(true)} selected={match}>
+            {children}
+          </SideBarLink>
+        )
+      : ({ children }: { children: React.ReactNode }) => (
+          <Link {...props}>
+            <SideBarLink href={props.href.toString()} selected={match}>
+              {children}
+            </SideBarLink>
+          </Link>
+        );
+
   return (
     <li>
-      <Link {...props}>
-        <SideBarLink href={props.href.toString()} selected={match}>
-          {children}
-        </SideBarLink>
-      </Link>
+      <LinkWrapper>{children}</LinkWrapper>
     </li>
   );
 };
@@ -140,19 +160,65 @@ export const ChildrenContainer = styled.div<{
   }
 `;
 
+const HeaderIconStyle = css({
+  color: "var(--negative2)",
+  margin: "-9px",
+});
+
+const customAnimation = (ms: number) => {
+  const css = document.createElement("style");
+  css.appendChild(
+    document.createTextNode(
+      `* { transition-duration: 250ms; transition-property: background-color, outline-color, border-color; -webkit-transition-duration: 250ms; -webkit-transition-property: background-color, outline-color, border-color; }`
+    )
+  );
+  document.head.appendChild(css);
+  return () => {
+    (() => window.getComputedStyle(document.body))();
+    setTimeout(() => {
+      document.head.removeChild(css);
+    }, ms);
+  };
+};
+
 const SideBarNavigation = () => {
+  const { theme: nextTheme, setTheme: setNextTheme } = useNextTheme();
+
+  const setCustomNextTheme = () => {
+    const removeAnimation = customAnimation(250);
+    setNextTheme(nextTheme === "light" ? "dark" : "light");
+    removeAnimation();
+  };
+
   return (
     <>
+      <Media at="sm">
+        <Button
+          icon
+          onClick={setCustomNextTheme}
+          css={{ width: "36px", marginBottom: "16px" }}
+        >
+          {nextTheme === "light" ? (
+            <MdOutlineLightMode css={HeaderIconStyle} />
+          ) : (
+            <MdOutlineDarkMode css={HeaderIconStyle} />
+          )}
+        </Button>
+      </Media>
       <SideBarElement href="/" selected>
         홈
       </SideBarElement>
-      <SideBarElement href="/projects/write">새 모집 만들기</SideBarElement>
+      <SideBarElement authorized href="/projects/write">
+        모집 만들기
+      </SideBarElement>
       <SideBarElement href="/projects" exact={false}>
         프로젝트/스터디 찾기
       </SideBarElement>
       <SideBarElement href="/lounge">라운지</SideBarElement>
       <br />
-      <SideBarElement href="/profile">내 프로필</SideBarElement>
+      <SideBarElement authorized href="/profile">
+        내 프로필
+      </SideBarElement>
       <SideBarElement href="">새소식</SideBarElement>
       <SideBarElement href="">쪽지</SideBarElement>
     </>

@@ -13,7 +13,7 @@ const Container = styled(Flex)`
   justify-content: center;
   align-items: center;
   padding: 4px;
-  gap: 4px;
+  gap: 2px;
 `;
 
 const Item = styled.button<{
@@ -23,9 +23,9 @@ const Item = styled.button<{
   align-items: center;
   justify-content: center;
   color: var(--negative2);
-  width: 24px;
   height: 24px;
-  padding: 4px;
+  padding: 4px 6px;
+  min-width: 24px;
   border-radius: 4px;
   font-size: 14px;
   font-weight: 600;

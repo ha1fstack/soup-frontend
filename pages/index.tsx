@@ -7,6 +7,7 @@ import {
   ProfilePlaceholder,
   Hr,
   Label,
+  CarouselPagination,
 } from "common/components";
 import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
@@ -18,9 +19,24 @@ import styled from "@emotion/styled";
 import { http } from "common/services";
 import { ellipsis } from "polished";
 import { ChildrenContainer } from "components";
-import { ISource, SourceDictionary, SourceList, timeDiffString } from "utils";
-import { Dispatch, Fragment, SetStateAction, useState } from "react";
+import {
+  ISource,
+  SourceDictionary,
+  SourceList,
+  timeDiffString,
+  toMatrix,
+} from "utils";
+import {
+  Dispatch,
+  Fragment,
+  SetStateAction,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { getDisplayTag, ITag } from "utils/tagDictionary";
+import { Swiper, SwiperSlide } from "swiper/react";
+import SwiperType, { Pagination, Navigation, Autoplay } from "swiper";
 
 const Article = ({ title, content }: { title: string; content: string }) => {
   const router = useRouter();
@@ -258,13 +274,17 @@ const Lander = () => {
 };
 
 const HotItem = ({ post }: { post: IPostPreviewContent }) => {
+  const router = useRouter();
+
   return (
     <Flex
       column
+      onClick={() => router.push(`/projects/${post.id}`)}
       css={{
         gap: "16px",
         flex: "0 1 320px",
         overflow: "hidden",
+        cursor: "pointer",
       }}
     >
       <Image
@@ -292,8 +312,13 @@ const HotItem = ({ post }: { post: IPostPreviewContent }) => {
 };
 
 const NewItem = ({ post }: { post: IPostPreviewContent }) => {
+  const router = useRouter();
+
   return (
-    <Flex css={{ gap: "16px" }}>
+    <Flex
+      onClick={() => router.push(`/projects/${post.id}`)}
+      css={{ gap: "16px", cursor: "pointer" }}
+    >
       <span css={{ flex: "0 0 auto", height: "75px" }}>
         <Image
           alt="hot1"
@@ -344,8 +369,13 @@ interface IPostPreviewContent {
 }
 
 const PostItem = ({ post }: { post: IPostPreviewContent }) => {
+  const router = useRouter();
+
   return (
-    <Flex css={{ gap: "16px", alignItems: "stretch" }}>
+    <Flex
+      onClick={() => router.push(`/projects/${post.id}`)}
+      css={{ gap: "16px", alignItems: "stretch", cursor: "pointer" }}
+    >
       <Flex
         column
         css={{
@@ -449,7 +479,9 @@ const Projects = () => {
     "front/projects",
     fetchFrontProjects
   );
-  const [source, sourceDisplayName, setSource] = useSource("OKKY");
+  const [source, sourceDisplayName, setSource] = useSource(
+    SourceList[(Math.random() * SourceList.length) | 0]
+  );
 
   if (!data || isLoading || isError)
     return <Flex column css={{ flex: "3 1 480px" }} />;
@@ -506,6 +538,8 @@ const Lounge = () => {
     return (await http.get<ILoungePost[]>("/lounge")).data;
   });
 
+  const router = useRouter();
+
   if (!data || isLoading || isError)
     return <Flex column css={{ flex: "1 1 440px" }} />;
   return (
@@ -519,7 +553,12 @@ const Lounge = () => {
       >
         <span>라운지</span>
       </p>
-      <Box responsive column css={{ gap: "16px", padding: "16px 12px" }}>
+      <Box
+        onClick={() => router.push("/lounge")}
+        responsive
+        column
+        css={{ gap: "16px", padding: "16px 12px", cursor: "pointer" }}
+      >
         {data.map((post, i) => (
           <Fragment key={post.lounge_id}>
             {i !== 0 && <Hr />}
@@ -531,7 +570,68 @@ const Lounge = () => {
   );
 };
 
-const Featured = () => {
+const HotFeatured = () => {
+  const { data, isLoading, isError } = useQuery(
+    "front/featured",
+    fetchFrontFeatured
+  );
+
+  const content = useMemo(() => toMatrix(data?.HOT || [], 2), [data]);
+  const [pagination, setPagination] = useState(0);
+
+  const swiperRef = useRef<SwiperType | null>(null);
+
+  if (!data || isLoading || isError) return null;
+
+  return (
+    <Flex
+      column
+      css={{
+        flex: "99999 1 0",
+        gap: "24px",
+        minWidth: "480px",
+        marginBottom: "-36px",
+        img: {
+          borderRadius: "8px",
+        },
+      }}
+    >
+      <Flex css={{ alignItems: "center", justifyContent: "space-between" }}>
+        <span css={{ fontSize: "20px", fontWeight: "bold" }}>
+          Hot 스터디/프로젝트 🔥
+        </span>
+        <CarouselPagination
+          swiperRef={swiperRef}
+          current={pagination}
+          end={content.length}
+        />
+      </Flex>
+      <Swiper
+        onSwiper={(ref) => (swiperRef.current = ref)}
+        loop={true}
+        autoplay={{
+          delay: 5000,
+          disableOnInteraction: false,
+        }}
+        modules={[Autoplay]}
+        spaceBetween={72}
+        onSlideChange={(swiper) => setPagination(swiper.realIndex)}
+      >
+        {content.map((content, i) => (
+          <SwiperSlide key={i}>
+            <Flex css={{ gap: "36px" }}>
+              {content.map((post) => (
+                <HotItem key={post.id} post={post} />
+              ))}
+            </Flex>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </Flex>
+  );
+};
+
+const NewFeatured = () => {
   const { data, isLoading, isError } = useQuery(
     "front/featured",
     fetchFrontFeatured
@@ -541,58 +641,44 @@ const Featured = () => {
 
   return (
     <Flex
+      column
+      css={{
+        flex: "1 1 440px",
+        gap: "24px",
+        img: {
+          borderRadius: "6px",
+        },
+        maxWidth: "676px",
+      }}
+    >
+      <p
+        css={{
+          fontSize: "20px",
+          fontWeight: "bold",
+        }}
+      >
+        New 스터디/프로젝트 ✨
+      </p>
+      <Flex column css={{ gap: "24px" }}>
+        {data.NEW.slice(0, 3).map((post) => (
+          <NewItem key={post.id} post={post} />
+        ))}
+      </Flex>
+    </Flex>
+  );
+};
+
+const Featured = () => {
+  return (
+    <Flex
       css={{
         flexWrap: "wrap",
         gap: "96px",
         overflow: "hidden",
       }}
     >
-      <Flex
-        column
-        css={{
-          flex: "99999 1 0",
-          gap: "24px",
-          minWidth: "480px",
-          marginBottom: "-36px",
-          img: {
-            borderRadius: "8px",
-          },
-        }}
-      >
-        <p css={{ fontSize: "20px", fontWeight: "bold" }}>
-          Hot 스터디/프로젝트 🔥
-        </p>
-        <Flex css={{ gap: "36px" }}>
-          {data.HOT.slice(0, 2).map((post) => (
-            <HotItem key={post.id} post={post} />
-          ))}
-        </Flex>
-      </Flex>
-      <Flex
-        column
-        css={{
-          flex: "1 1 440px",
-          gap: "24px",
-          img: {
-            borderRadius: "6px",
-          },
-          maxWidth: "676px",
-        }}
-      >
-        <p
-          css={{
-            fontSize: "20px",
-            fontWeight: "bold",
-          }}
-        >
-          New 스터디/프로젝트 ✨
-        </p>
-        <Flex column css={{ gap: "24px" }}>
-          {data.NEW.slice(0, 3).map((post) => (
-            <NewItem key={post.id} post={post} />
-          ))}
-        </Flex>
-      </Flex>
+      <HotFeatured />
+      <NewFeatured />
     </Flex>
   );
 };
@@ -700,7 +786,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
   let res = await Promise.all([
     queryClient.prefetchQuery("front/featured", fetchFrontFeatured),
-    queryClient.prefetchQuery("front/projects", fetchFrontProjects),
+    // queryClient.prefetchQuery("front/projects", fetchFrontProjects),
   ]);
 
   console.log(res);

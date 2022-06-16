@@ -22,6 +22,8 @@ import { Media } from "./Media";
 import Image from "next/image";
 import { useTheme as useNextTheme } from "next-themes";
 import { useRouter } from "next/router";
+import { useRecoilState } from "recoil";
+import { loginPopupState } from "state";
 
 const HeaderContainer = styled.div`
   box-sizing: border-box;
@@ -161,7 +163,7 @@ const customAnimation = (ms: number) => {
 };
 
 export const Header = ({ toggleSideBar }: { toggleSideBar?: () => void }) => {
-  const [login, toggleLogin] = useToggle();
+  const [loginPopup, setLoginPopup] = useRecoilState(loginPopupState);
   const [messagePopup, toggleMessagePopup] = useToggle();
 
   const messageRef = useOuterClick<HTMLDivElement>(() => toggleMessagePopup());
@@ -231,7 +233,7 @@ export const Header = ({ toggleSideBar }: { toggleSideBar?: () => void }) => {
           <Logo href="/">
             <Image
               height="32"
-              width="96"
+              width="76"
               src={"/logo-with-text.svg"}
               alt="logo"
             />
@@ -323,7 +325,7 @@ export const Header = ({ toggleSideBar }: { toggleSideBar?: () => void }) => {
             </>
           ) : (
             <Button
-              onClick={() => toggleLogin()}
+              onClick={() => setLoginPopup(true)}
               variant="primary"
               css={{ fontWeight: "bold" }}
             >
@@ -332,7 +334,7 @@ export const Header = ({ toggleSideBar }: { toggleSideBar?: () => void }) => {
           )}
         </HeaderMenuContainer>
       </HeaderContainer>
-      {login && <Login toggle={toggleLogin} />}
+      {loginPopup && <Login />}
     </>
   );
 };

@@ -8,6 +8,8 @@ import { RecoilRoot } from "recoil";
 
 import "common/styles/reset.css";
 import "common/styles/globals.css";
+import "swiper/css";
+
 import { useEffect, useLayoutEffect, useState } from "react";
 import { NextPage } from "next";
 import useAuth, { fetchAuth } from "hooks/useAuth";
@@ -30,7 +32,7 @@ type AppPropsWithLayout = AppProps & {
 const GlobalStyle = css`
   :root {
     --negative: #23272b;
-    --negative2: #3e5060;
+    --negative2: #586672;
 
     --disabled: #ced3d7;
 
