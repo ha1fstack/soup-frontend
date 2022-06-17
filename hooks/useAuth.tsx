@@ -1,12 +1,16 @@
 import { http } from "common/services";
 import { useQuery } from "react-query";
 
-interface IAuthData {
-  success: boolean;
-  user_id?: number;
-  profileImage?: string;
-  username?: string;
-}
+type IAuthData =
+  | {
+      success: true;
+      user_id: number;
+      profileImage: string;
+      username: string;
+    }
+  | {
+      success: false;
+    };
 
 export const fetchAuth = async (cookie?: any) => {
   const res = await http.get<IAuthData>("/auth", {

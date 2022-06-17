@@ -44,7 +44,7 @@ const _tagDictionary = {
   project: { displayName: "프로젝트", color: "gray" },
   planning: { displayName: "기획", color: "gray" },
   service: { displayName: "서비스", color: "gray" },
-  code_interview: { displayName: "코테", color: "gray" },
+  code_interview: { displayName: "코테/알고리즘", color: "gray" },
   frontend: { displayName: "프론트엔드", color: "gray" },
   backend: { displayName: "백엔드", color: "gray" },
   mobile: { displayName: "모바일", color: "gray" },

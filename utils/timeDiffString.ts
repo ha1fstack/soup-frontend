@@ -16,8 +16,18 @@ export function timeDiffString(value: Date | string | number) {
   }
 
   const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
-  if (betweenTimeDay < 365) {
+  if (betweenTimeDay < 7) {
     return `${betweenTimeDay}일 전`;
+  }
+
+  const betweenTimeWeek = Math.floor(betweenTime / 60 / 24 / 7);
+  if (betweenTimeDay < 30) {
+    return `${betweenTimeWeek}주 전`;
+  }
+
+  const betweenTimeMonth = Math.floor(betweenTime / 60 / 24 / 30);
+  if (betweenTimeDay < 365) {
+    return `${betweenTimeMonth}달 전`;
   }
 
   return `${Math.floor(betweenTimeDay / 365)}년 전`;

@@ -9,8 +9,6 @@ import React from "react";
 import {
   MdOutlineMenu,
   MdOutlineSearch,
-  MdOutlineNotifications,
-  MdOutlineMail,
   MdOutlineDarkMode,
   MdOutlineLightMode,
   MdOutlinePerson,
@@ -20,11 +18,11 @@ import { useQueryClient } from "react-query";
 import { Login } from "./Login";
 import { Media } from "./Media";
 import Image from "next/image";
-import { useTheme as useNextTheme } from "next-themes";
 import { useRouter } from "next/router";
-import { useRecoilState } from "recoil";
-import { loginPopupState } from "state";
-import { breakpoints } from "utils";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { loginPopupState, sideBarOpenState } from "state";
+import { breakpoints, WithThemeToggle } from "utils";
+import { http } from "common/services";
 
 const HeaderContainer = styled.div`
   box-sizing: border-box;
@@ -40,7 +38,7 @@ const HeaderContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   border-bottom: solid 1px var(--outline);
-  z-index: 1;
+  z-index: 2;
   backdrop-filter: blur(6px);
 `;
 
@@ -62,6 +60,7 @@ const LogoLink = styled.a`
   height: 32px;
   cursor: pointer;
 `;
+
 const Logo = ({ children, ...props }: React.PropsWithChildren<LinkProps>) => (
   <Link {...props}>
     <LogoLink href={props.href.toString()}>{children}</LogoLink>
@@ -78,6 +77,38 @@ const SearchButton = styled(Button)({
   width: "200px",
 });
 
+const PopupContainer = styled(Box)({
+  position: "absolute",
+  top: "44px",
+  width: "150px",
+  right: 0,
+  fontSize: "14px",
+  boxShadow: "0px 0px 10px rgba(0,0,0,0.1)",
+  padding: "6px",
+  hr: {
+    margin: "8px 0px",
+  },
+  svg: {
+    display: "inline-block",
+    marginRight: "8px",
+    fontSize: "22px",
+  },
+  "& > *": {
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: "6px 8px",
+    borderRadius: "8px",
+    ":hover": {
+      backgroundColor: "var(--positive1)",
+    },
+  },
+  "& > *+*": {
+    marginTop: "4px",
+  },
+});
+
 const Popup = React.forwardRef<
   HTMLDivElement,
   {
@@ -87,53 +118,17 @@ const Popup = React.forwardRef<
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  const final = (_?: any) => {
-    toggle();
-  };
+  const final = (_?: any) => toggle();
 
-  const logout = () => {
-    (async () => {
-      document.cookie = "SESSION" + "=;expires=Thu, 01 Jan 1970 00:00:01 GMT;";
-      queryClient.setQueryData(["auth"], () => undefined);
-    })();
+  const logout = async () => {
+    try {
+      await http.get("/logout");
+    } catch (e) {}
+    queryClient.setQueryData(["auth"], () => undefined);
   };
 
   return (
-    <Box
-      column
-      ref={ref}
-      css={{
-        position: "absolute",
-        top: "44px",
-        width: "150px",
-        right: 0,
-        fontSize: "14px",
-        boxShadow: "0px 0px 10px rgba(0,0,0,0.1)",
-        padding: "6px",
-        hr: {
-          margin: "8px 0px",
-        },
-        svg: {
-          display: "inline-block",
-          marginRight: "8px",
-          fontSize: "22px",
-        },
-        "& > *": {
-          cursor: "pointer",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          padding: "6px 8px",
-          borderRadius: "8px",
-          ":hover": {
-            backgroundColor: "var(--positive1)",
-          },
-        },
-        "& > *+*": {
-          marginTop: "4px",
-        },
-      }}
-    >
+    <PopupContainer column ref={ref}>
       <div onClick={() => final(router.push("profile"))}>
         <MdOutlinePerson />
         <span>내 프로필</span>
@@ -142,67 +137,49 @@ const Popup = React.forwardRef<
         <MdOutlineLogout />
         <span>로그아웃</span>
       </div>
-    </Box>
+    </PopupContainer>
   );
 });
 Popup.displayName = "Popup";
 
-const customAnimation = (ms: number) => {
-  const css = document.createElement("style");
-  css.appendChild(
-    document.createTextNode(
-      `* { transition-duration: 250ms; transition-property: background-color, outline-color, border-color; -webkit-transition-duration: 250ms; -webkit-transition-property: background-color, outline-color, border-color; }`
-    )
-  );
-  document.head.appendChild(css);
-  return () => {
-    (() => window.getComputedStyle(document.body))();
-    setTimeout(() => {
-      document.head.removeChild(css);
-    }, ms);
-  };
-};
+const HeaderBackground = styled.div`
+  position: fixed;
+  width: 100%;
+  height: 59px;
+  background-color: var(--positive);
+  z-index: -1;
+`;
 
-export const Header = ({ toggleSideBar }: { toggleSideBar?: () => void }) => {
+const HeaderOverlay = styled.div`
+  position: fixed;
+  width: 100%;
+  height: 59px;
+  background-color: var(--positive);
+  opacity: 0.75;
+  z-index: 1;
+`;
+
+const VerticalDivider = styled.div`
+  width: 1px;
+  height: 36px;
+  background-color: var(--outline);
+`;
+
+export const Header = React.memo(() => {
+  const router = useRouter();
+  const auth = useAuth();
+
+  const setSidebarOpen = useSetRecoilState(sideBarOpenState);
   const [loginPopup, setLoginPopup] = useRecoilState(loginPopupState);
   const [messagePopup, toggleMessagePopup] = useToggle();
 
   const messageRef = useOuterClick<HTMLDivElement>(() => toggleMessagePopup());
 
-  const auth = useAuth();
-
-  const { theme: nextTheme, setTheme: setNextTheme } = useNextTheme();
-
-  const setCustomNextTheme = () => {
-    const removeAnimation = customAnimation(250);
-    setNextTheme(nextTheme === "light" ? "dark" : "light");
-    removeAnimation();
-  };
-
-  const router = useRouter();
-
   return (
     <>
-      <div // 배경
-        css={{
-          position: "fixed",
-          width: "100%",
-          height: "59px",
-          backgroundColor: "var(--positive)",
-          zIndex: -1,
-        }}
-      />
-      <div // 오버레이
-        css={{
-          position: "fixed",
-          width: "100%",
-          height: "59px",
-          backgroundColor: "var(--positive)",
-          opacity: 0.75,
-          zIndex: 1,
-        }}
-      />
-      <HeaderContainer css={{ zIndex: 2 }}>
+      <HeaderBackground />
+      <HeaderOverlay />
+      <HeaderContainer>
         <Flex
           css={{
             alignItems: "center",
@@ -212,7 +189,7 @@ export const Header = ({ toggleSideBar }: { toggleSideBar?: () => void }) => {
         >
           <Media css={{ display: "flex", gap: "12px" }} at="sm">
             <Button
-              onClick={toggleSideBar}
+              onClick={() => setSidebarOpen(true)}
               variant="transparent"
               icon
               css={{
@@ -223,13 +200,7 @@ export const Header = ({ toggleSideBar }: { toggleSideBar?: () => void }) => {
             >
               <MdOutlineMenu />
             </Button>
-            <div
-              css={{
-                width: "1px",
-                height: "36px",
-                backgroundColor: "var(--outline)",
-              }}
-            />
+            <VerticalDivider />
           </Media>
           <Logo href="/">
             <Image
@@ -246,49 +217,24 @@ export const Header = ({ toggleSideBar }: { toggleSideBar?: () => void }) => {
               <MdOutlineSearch />
               프로젝트 찾아보기
             </SearchButton>
-            {/* 
             <div css={{ position: "relative" }}>
-              <Button
-                icon
-                onClick={
-                  notificationPopup
-                    ? undefined
-                    : () => toggleNotificationPopup()
-                }
-                css={{ width: "36px" }}
-              >
-                <MdOutlineNotifications css={HeaderIconStyle} />
-              </Button>
-              {notificationPopup && <Popup ref={notificationRef} />}
-            </div>
-            <div css={{ position: "relative" }}>
-              <Button
-                icon
-                onClick={messagePopup ? undefined : () => toggleMessagePopup()}
-                css={{ width: "36px" }}
-              >
-                <MdOutlineMail css={HeaderIconStyle} />
-              </Button>
-              {messagePopup && <Popup ref={messageRef} />}
-            </div> */}
-            <div css={{ position: "relative" }}>
-              <Button icon onClick={setCustomNextTheme} css={{ width: "36px" }}>
-                {nextTheme === "light" ? (
-                  <MdOutlineLightMode css={HeaderIconStyle} />
-                ) : (
-                  <MdOutlineDarkMode css={HeaderIconStyle} />
+              <WithThemeToggle>
+                {({ theme, toggleTheme }) => (
+                  <Button icon onClick={toggleTheme} css={{ width: "36px" }}>
+                    {theme === "light" ? (
+                      <MdOutlineLightMode css={HeaderIconStyle} />
+                    ) : (
+                      <MdOutlineDarkMode css={HeaderIconStyle} />
+                    )}
+                  </Button>
                 )}
-              </Button>
+              </WithThemeToggle>
             </div>
           </Media>
-
           {auth.success ? (
             <>
-              <div
+              <VerticalDivider
                 css={{
-                  height: "32px",
-                  width: "1px",
-                  backgroundColor: "var(--outline)",
                   marginLeft: "4px",
                 }}
               />
@@ -303,20 +249,20 @@ export const Header = ({ toggleSideBar }: { toggleSideBar?: () => void }) => {
                   position: "relative",
                 }}
               >
-                <span>{auth?.username}</span>
+                <span>{auth.username}</span>
                 <span
                   css={{
                     width: "32px",
                     height: "32px",
-                    borderRadius: "99999px",
+                    borderRadius: "16px",
                     overflow: "hidden",
                   }}
                 >
                   <Image
-                    src={auth?.profileImage!}
-                    height="32px"
-                    width="32px"
                     alt="profile-image"
+                    src={auth.profileImage}
+                    height={32}
+                    width={32}
                   />
                 </span>
                 {messagePopup && (
@@ -338,4 +284,5 @@ export const Header = ({ toggleSideBar }: { toggleSideBar?: () => void }) => {
       {loginPopup && <Login />}
     </>
   );
-};
+});
+Header.displayName = "Header";

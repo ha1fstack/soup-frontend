@@ -98,8 +98,8 @@ const Post = ({ image, post }: { image?: boolean; post: IPost }) => {
             >
               <ProfilePlaceholder value={post.userName} size={24} />
               <span>
-                {post.userName} · {timeString} · 조회 {post.views}건 · 스크랩{" "}
-                {post.fav}회
+                {post.userName} · {timeString} · 조회 {post.views} · 스크랩{" "}
+                {post.fav}
               </span>
             </Flex>
             <div
@@ -690,6 +690,7 @@ const Featured = () => {
       ).data;
     }
   );
+
   if (!data || isLoading || isError)
     return (
       <Flex
@@ -698,6 +699,7 @@ const Featured = () => {
         }}
       />
     );
+
   return (
     <Flex
       css={{

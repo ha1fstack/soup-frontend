@@ -29,6 +29,10 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
 
+/* -------------------------------------------------------------------------- */
+/*                                   styles                                   */
+/* -------------------------------------------------------------------------- */
+
 const GlobalStyle = css`
   :root {
     --negative: #23272b;
@@ -72,6 +76,10 @@ const GlobalStyle = css`
 
 const theme: Theme = {};
 
+/* -------------------------------------------------------------------------- */
+/*                                     app                                    */
+/* -------------------------------------------------------------------------- */
+
 function MyApp({
   Component,
   pageProps,
@@ -92,6 +100,7 @@ function MyApp({
     Component.getLayout ||
     ((page: React.ReactElement) => <Layout>{page}</Layout>);
 
+  // load dynamic api baseurl
   useLayoutEffect(() => {
     if (window)
       http.defaults.baseURL =
@@ -122,6 +131,10 @@ function MyApp({
     </>
   );
 }
+
+/* -------------------------------------------------------------------------- */
+/*                                     api                                    */
+/* -------------------------------------------------------------------------- */
 
 const AuthQuery = ({ initialAuth }: { initialAuth: any }) => {
   useAuth({

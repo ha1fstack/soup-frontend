@@ -1,16 +1,7 @@
-import { http } from "common/services";
-import { NextPageContext } from "next";
-import NextDocument, {
-  Html,
-  Head,
-  Main,
-  NextScript,
-  DocumentContext,
-} from "next/document";
+import { Html, Head, Main, NextScript } from "next/document";
 
 export default function Document() {
-  const setInitialAuth = `
-function getAuthCache() {
+  const setInitialAuth = `function getAuthCache() {
   if (window.sessionStorage.getItem("auth")) {
     try {
       return JSON.parse(window.sessionStorage.getItem("auth"));
@@ -20,8 +11,7 @@ function getAuthCache() {
   }
   return { success: false };
 };
-document.body.dataset.auth = getAuthCache();
-  `;
+document.body.dataset.auth = getAuthCache();`;
   return (
     <Html lang="ko">
       <Head>

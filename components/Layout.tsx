@@ -1,22 +1,18 @@
-import { css } from "@emotion/react";
+import { css, keyframes } from "@emotion/react";
 import styled from "@emotion/styled";
 import { useMatch } from "hooks/useMatch";
-import { useToggle } from "hooks/useToggle";
 import Link, { LinkProps } from "next/link";
 import { useRouter } from "next/router";
 import React, { useRef, useEffect } from "react";
 import { Dimmer, Header, Media, Portal } from "components";
-import { Button, Flex } from "common/components";
-import { NextComponentType } from "next";
-import { http } from "common/services";
-import { useQuery, QueryClient, dehydrate } from "react-query";
+import { Button } from "common/components";
 import useAuth from "hooks/useAuth";
-import { useSetRecoilState } from "recoil";
-import { loginPopupState } from "state";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { loginPopupState, sideBarOpenState } from "state";
 import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
 import { useTheme as useNextTheme } from "next-themes";
-import { json } from "stream/consumers";
 import { breakpoints } from "utils";
+import { WithThemeToggle } from "utils/renderProps";
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -37,7 +33,18 @@ const BodyContainer = styled.div`
   }
 `;
 
-const SideBarContainerWrapper = styled.div`
+const SlideAnimation = keyframes`
+  0% {
+    margin-left: -300px
+  }
+  100% {
+    margin-left: 0px
+  }
+`;
+
+const SideBarContainerWrapper = styled.div<{
+  animated?: boolean;
+}>`
   display: flex;
   flex-direction: column;
   z-index: 9999;
@@ -53,6 +60,11 @@ const SideBarContainerWrapper = styled.div`
     top: 0;
     height: 100vh;
   }
+  ${(animated) =>
+    animated &&
+    css`
+      animation: ${SlideAnimation} 0.1s ease-out;
+    `}
 `;
 
 const SideBarContentWrapper = styled.ul`
@@ -64,9 +76,15 @@ const SideBarContentWrapper = styled.ul`
   }
 `;
 
-const SideBarContainer: NextComponentType = ({ children }) => {
+const SideBarContainer = ({
+  children,
+  animated,
+}: {
+  children?: React.ReactNode;
+  animated?: boolean;
+}) => {
   return (
-    <SideBarContainerWrapper>
+    <SideBarContainerWrapper animated={animated}>
       <SideBarContentWrapper>{children}</SideBarContentWrapper>
       <footer>
         <div css={{ fontSize: "14px", color: "var(--negative2)" }}>
@@ -167,45 +185,25 @@ const HeaderIconStyle = css({
   margin: "-9px",
 });
 
-const customAnimation = (ms: number) => {
-  const css = document.createElement("style");
-  css.appendChild(
-    document.createTextNode(
-      `* { transition-duration: 250ms; transition-property: background-color, outline-color, border-color; -webkit-transition-duration: 250ms; -webkit-transition-property: background-color, outline-color, border-color; }`
-    )
-  );
-  document.head.appendChild(css);
-  return () => {
-    (() => window.getComputedStyle(document.body))();
-    setTimeout(() => {
-      document.head.removeChild(css);
-    }, ms);
-  };
-};
-
 const SideBarNavigation = () => {
-  const { theme: nextTheme, setTheme: setNextTheme } = useNextTheme();
-
-  const setCustomNextTheme = () => {
-    const removeAnimation = customAnimation(250);
-    setNextTheme(nextTheme === "light" ? "dark" : "light");
-    removeAnimation();
-  };
-
   return (
     <>
       <Media at="sm">
-        <Button
-          icon
-          onClick={setCustomNextTheme}
-          css={{ width: "36px", marginBottom: "16px" }}
-        >
-          {nextTheme === "light" ? (
-            <MdOutlineLightMode css={HeaderIconStyle} />
-          ) : (
-            <MdOutlineDarkMode css={HeaderIconStyle} />
+        <WithThemeToggle>
+          {({ theme, toggleTheme }) => (
+            <Button
+              icon
+              onClick={toggleTheme}
+              css={{ width: "36px", marginBottom: "16px" }}
+            >
+              {theme === "light" ? (
+                <MdOutlineLightMode css={HeaderIconStyle} />
+              ) : (
+                <MdOutlineDarkMode css={HeaderIconStyle} />
+              )}
+            </Button>
           )}
-        </Button>
+        </WithThemeToggle>
       </Media>
       <SideBarElement href="/" selected>
         홈
@@ -221,8 +219,8 @@ const SideBarNavigation = () => {
       <SideBarElement authorized href="/profile">
         내 프로필
       </SideBarElement>
-      <SideBarElement href="">새소식</SideBarElement>
-      <SideBarElement href="">쪽지</SideBarElement>
+      {/* <SideBarElement href="">새소식</SideBarElement>
+      <SideBarElement href="">쪽지</SideBarElement> */}
     </>
   );
 };
@@ -240,42 +238,36 @@ const SideBar = ({
 };
 
 const MobileSideBar = ({
-  show,
-  toggle,
   ...props
-}: { show: boolean; toggle: (set?: boolean) => void } & React.ComponentProps<
-  typeof SideBarContainer
->) => {
+}: {} & React.ComponentProps<typeof SideBarContainer>) => {
   const router = useRouter();
+
+  const [sideBarOpen, setSideBarOpen] = useRecoilState(sideBarOpenState);
 
   const initial = useRef(true);
   useEffect(() => {
     if (initial.current) initial.current = false;
-    else if (router.pathname) toggle(false);
-  }, [router.pathname, toggle]);
+    else if (router.pathname) setSideBarOpen(false);
+  }, [router.pathname, setSideBarOpen]);
 
-  if (!show) return null;
+  if (!sideBarOpen) return null;
   return (
     <Portal at="#portal">
-      <SideBarContainer {...props}>
+      <SideBarContainer animated {...props}>
         <SideBarNavigation />
       </SideBarContainer>
-      <Dimmer onClick={() => toggle()} css={{ zIndex: 9998 }} />
+      <Dimmer onClick={() => setSideBarOpen(false)} css={{ zIndex: 9998 }} />
     </Portal>
   );
 };
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
-  const [showSidebar, toggleShowSideBar] = useToggle();
-
-  const auth = useAuth();
-
   return (
     <>
       <PageContainer>
-        <Header toggleSideBar={toggleShowSideBar} />
+        <Header />
         <Media at="sm">
-          <MobileSideBar show={showSidebar} toggle={toggleShowSideBar} />
+          <MobileSideBar />
         </Media>
         <Media greaterThan="sm">
           <SideBar />
