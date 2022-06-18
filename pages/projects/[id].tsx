@@ -1,3 +1,4 @@
+import ErrorPage from "next/error";
 import Image from "next/image";
 import {
   Flex,
@@ -23,6 +24,8 @@ import {
 import useAuth from "hooks/useAuth";
 import { IProjectData } from "types";
 import { getDisplayTag, getDisplayColor } from "utils/tagDictionary";
+import { NextPage } from "next";
+import { NotFound } from "common/components/NotFound";
 
 const fetchProject = async (id: string) => {
   const res = await http.get<IProjectData>(`/projects/${id}`);
@@ -34,7 +37,7 @@ const deleteProject = async (id: string) => {
   return res.data;
 };
 
-const Page = () => {
+const Page: NextPage = () => {
   const router = useRouter();
 
   const auth = useAuth();
@@ -58,7 +61,9 @@ const Page = () => {
     router.push(`/projects/edit/${id}`);
   };
 
-  if (!data || isLoading || isError) return null;
+  if (isLoading || isError) return null;
+  if (!data) return <NotFound />;
+
   const ownership = auth.success && auth.user_id === data.userId;
 
   return (

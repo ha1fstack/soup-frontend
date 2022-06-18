@@ -15,19 +15,9 @@ import { dehydrate, QueryClient, useQuery } from "react-query";
 import { http } from "common/services";
 import { Pagination } from "common/components/Pagination";
 import { SourceDictionary, timeDiffString } from "utils";
-import {
-  ComponentProps,
-  ComponentPropsWithRef,
-  PropsWithoutRef,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import { keyframes, useTheme } from "@emotion/react";
+import { useEffect, useLayoutEffect, useMemo, useState } from "react";
+import { keyframes } from "@emotion/react";
 import { ChildrenContainer } from "components";
-import styled from "@emotion/styled";
 import React from "react";
 import {
   MdOutlineCheck,
@@ -49,14 +39,9 @@ import {
   TagGroup,
   TagList,
 } from "utils/tagDictionary";
+import Link from "next/link";
 
 const Post = ({ image, post }: { image?: boolean; post: IPost }) => {
-  const router = useRouter();
-  const handleArticleClick = (e: React.SyntheticEvent, id: number) => {
-    e.preventDefault();
-    router.push(`/projects/${id}`);
-  };
-
   const timeString = useMemo(() => timeDiffString(post.date), [post]);
 
   return (
@@ -82,53 +67,50 @@ const Post = ({ image, post }: { image?: boolean; post: IPost }) => {
             lineHeight: "1.2em",
           }}
         >
-          <div
-            css={{
-              cursor: "pointer",
-            }}
-            onClick={(e) => handleArticleClick(e, post.id)}
-          >
-            <Flex
-              css={{
-                alignItems: "center",
-                fontSize: "14px",
-                marginBottom: "16px",
-                gap: "8px",
-              }}
-            >
-              <ProfilePlaceholder value={post.userName} size={24} />
-              <span>
-                {post.userName} · {timeString} · 조회 {post.views} · 스크랩{" "}
-                {post.fav}
-              </span>
-            </Flex>
-            <div
-              css={{
-                fontWeight: "700",
-                fontSize: "18px",
-                overflow: "hidden",
-                display: "-webkit-box",
-                WebkitBoxOrient: "vertical",
-                WebkitLineClamp: 2,
-                marginBottom: "12px",
-              }}
-            >
-              {post.postName}
-            </div>
-            <div
-              css={{
-                overflow: "hidden",
-                fontSize: "16px",
-                lineHeight: 1.5,
-                display: "-webkit-box",
-                WebkitBoxOrient: "vertical",
-                WebkitLineClamp: 2,
-                marginBottom: "16px",
-              }}
-            >
-              {post.content}
-            </div>
-          </div>
+          <Link href={`/projects/${post.id}`}>
+            <a>
+              <Flex
+                css={{
+                  alignItems: "center",
+                  fontSize: "14px",
+                  marginBottom: "16px",
+                  gap: "8px",
+                }}
+              >
+                <ProfilePlaceholder value={post.userName} size={24} />
+                <span>
+                  {post.userName} · {timeString} · 조회 {post.views} · 스크랩{" "}
+                  {post.fav}
+                </span>
+              </Flex>
+              <div
+                css={{
+                  fontWeight: "700",
+                  fontSize: "18px",
+                  overflow: "hidden",
+                  display: "-webkit-box",
+                  WebkitBoxOrient: "vertical",
+                  WebkitLineClamp: 2,
+                  marginBottom: "12px",
+                }}
+              >
+                {post.postName}
+              </div>
+              <div
+                css={{
+                  overflow: "hidden",
+                  fontSize: "16px",
+                  lineHeight: 1.5,
+                  display: "-webkit-box",
+                  WebkitBoxOrient: "vertical",
+                  WebkitLineClamp: 2,
+                  marginBottom: "16px",
+                }}
+              >
+                {post.content}
+              </div>
+            </a>
+          </Link>
         </div>
         {image ? (
           <div
@@ -584,34 +566,30 @@ const FeaturedHeader = ({ content }: { content: string }) => (
 );
 
 const FeaturedItem = ({ userName, title, id }: IFeaturedItem) => {
-  const router = useRouter();
   return (
-    <Flex
-      onClick={() => router.push(`/projects/${id}`)}
-      column
-      css={{ gap: "8px", cursor: "pointer" }}
-    >
-      <Flex
-        css={{
-          alignItems: "center",
-          fontSize: "13px",
-          gap: "8px",
-          fontWeight: "500",
-        }}
-      >
-        <ProfilePlaceholder size={20} value={userName} />
-        <span css={{ lineHeight: "initial" }}>{userName}</span>
+    <Link passHref href={`/projects/${id}`}>
+      <Flex as="a" column css={{ gap: "8px", cursor: "pointer" }}>
+        <Flex
+          css={{
+            alignItems: "center",
+            fontSize: "13px",
+            gap: "8px",
+          }}
+        >
+          <ProfilePlaceholder size={20} value={userName} />
+          <span css={{ lineHeight: "initial" }}>{userName}</span>
+        </Flex>
+        <p
+          css={{
+            fontSize: "14px",
+            fontWeight: "600",
+            ...ellipsis(undefined, 2),
+          }}
+        >
+          {title}
+        </p>
       </Flex>
-      <p
-        css={{
-          fontSize: "14px",
-          fontWeight: "700",
-          ...ellipsis(undefined, 2),
-        }}
-      >
-        {title}
-      </p>
-    </Flex>
+    </Link>
   );
 };
 

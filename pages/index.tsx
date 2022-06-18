@@ -36,6 +36,7 @@ import { getDisplayTag, ITag } from "utils/tagDictionary";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperType, { Autoplay } from "swiper";
 import React from "react";
+import Link from "next/link";
 
 /* -------------------------------------------------------------------------- */
 /*                                    types                                   */
@@ -96,8 +97,6 @@ const FeaturedSectionStyle = css({
 /* -------------------------------------------------------------------------- */
 
 const HotItem = ({ post }: { post: IPostPreviewContent }) => {
-  const router = useRouter();
-
   const styles = {
     Wrapper: css`
       gap: 16px;
@@ -117,22 +116,20 @@ const HotItem = ({ post }: { post: IPostPreviewContent }) => {
   };
 
   return (
-    <Flex
-      column
-      onClick={() => router.push(`/projects/${post.id}`)}
-      css={styles.Wrapper}
-    >
-      <Image
-        alt="hot1"
-        src="https://i.imgur.com/hVe2ScX.png"
-        width={320}
-        height={180}
-      />
-      <Flex column css={{ gap: "8px" }}>
-        <p css={styles.PostName}>{post.postName}</p>
-        <p css={styles.PostContent}>{post.content}</p>
+    <Link passHref href={`/projects/${post.id}`}>
+      <Flex as="a" column css={styles.Wrapper}>
+        <Image
+          alt="hot1"
+          src="https://i.imgur.com/hVe2ScX.png"
+          width={320}
+          height={180}
+        />
+        <Flex column css={{ gap: "8px" }}>
+          <p css={styles.PostName}>{post.postName}</p>
+          <p css={styles.PostContent}>{post.content}</p>
+        </Flex>
       </Flex>
-    </Flex>
+    </Link>
   );
 };
 
@@ -140,41 +137,40 @@ const NewItem = ({ post }: { post: IPostPreviewContent }) => {
   const router = useRouter();
 
   return (
-    <Flex
-      onClick={() => router.push(`/projects/${post.id}`)}
-      css={{ gap: "16px", cursor: "pointer" }}
-    >
-      <span css={{ flex: "0 0 auto", height: "75px" }}>
-        <Image
-          alt="hot1"
-          src="https://i.imgur.com/oEdONmz.jpeg"
-          width={100}
-          height={75}
-        />
-      </span>
-      <Flex
-        column
-        css={{ flex: "1", width: 0, gap: "4px", overflow: "hidden" }}
-      >
-        <p
-          css={{
-            fontSize: "16px",
-            fontWeight: "600",
-            ...ellipsis(),
-          }}
+    <Link passHref href={`/projects/${post.id}`}>
+      <Flex as="a" css={{ gap: "16px", cursor: "pointer" }}>
+        <span css={{ flex: "0 0 auto", height: "75px" }}>
+          <Image
+            alt="hot1"
+            src="https://i.imgur.com/oEdONmz.jpeg"
+            width={100}
+            height={75}
+          />
+        </span>
+        <Flex
+          column
+          css={{ flex: "1", width: 0, gap: "4px", overflow: "hidden" }}
         >
-          {post.postName}
-        </p>
-        <p
-          css={{
-            fontSize: "13px",
-            ...ellipsis(undefined, 2),
-          }}
-        >
-          {post.content}
-        </p>
+          <p
+            css={{
+              fontSize: "16px",
+              fontWeight: "600",
+              ...ellipsis(),
+            }}
+          >
+            {post.postName}
+          </p>
+          <p
+            css={{
+              fontSize: "13px",
+              ...ellipsis(undefined, 2),
+            }}
+          >
+            {post.content}
+          </p>
+        </Flex>
       </Flex>
-    </Flex>
+    </Link>
   );
 };
 
@@ -182,51 +178,53 @@ const PostItem = ({ post }: { post: IPostPreviewContent }) => {
   const router = useRouter();
 
   return (
-    <Flex
-      onClick={() => router.push(`/projects/${post.id}`)}
-      css={{ gap: "16px", alignItems: "stretch", cursor: "pointer" }}
-    >
+    <Link passHref href={`/projects/${post.id}`}>
       <Flex
-        column
-        css={{
-          gap: "16px",
-          alignItems: "center",
-          flex: "0 0 auto",
-        }}
+        as="a"
+        css={{ gap: "16px", alignItems: "stretch", cursor: "pointer" }}
       >
-        <ProfilePlaceholder size={32} value={post.userName} />
-      </Flex>
-      <Flex
-        column
-        css={{ gap: "4px", flex: "1 1 auto", overflow: "hidden", width: 0 }}
-      >
-        <p
+        <Flex
+          column
           css={{
-            fontSize: "16px",
-            fontWeight: "600",
-            ...ellipsis(),
+            gap: "16px",
+            alignItems: "center",
+            flex: "0 0 auto",
           }}
         >
-          {post.postName}
-        </p>
-        <p
-          css={{
-            fontSize: "14px",
-            whiteSpace: "pre-line",
-            ...ellipsis(undefined, 3),
-          }}
+          <ProfilePlaceholder size={32} value={post.userName} />
+        </Flex>
+        <Flex
+          column
+          css={{ gap: "4px", flex: "1 1 auto", overflow: "hidden", width: 0 }}
         >
-          {post.content}
-        </p>
-        <Flex css={{ gap: "12px", marginTop: "4px" }}>
-          {post.stacks.map((stack) => (
-            <Label size="smaller" key={stack}>
-              {getDisplayTag(stack)}
-            </Label>
-          ))}
+          <p
+            css={{
+              fontSize: "16px",
+              fontWeight: "600",
+              ...ellipsis(),
+            }}
+          >
+            {post.postName}
+          </p>
+          <p
+            css={{
+              fontSize: "14px",
+              whiteSpace: "pre-line",
+              ...ellipsis(undefined, 3),
+            }}
+          >
+            {post.content}
+          </p>
+          <Flex css={{ gap: "12px", marginTop: "4px" }}>
+            {post.stacks.map((stack) => (
+              <Label size="smaller" key={stack}>
+                {getDisplayTag(stack)}
+              </Label>
+            ))}
+          </Flex>
         </Flex>
       </Flex>
-    </Flex>
+    </Link>
   );
 };
 
@@ -342,7 +340,6 @@ const Lounge = () => {
   };
 
   const { data, isLoading, isError } = useQuery("lounge", fetchLounge);
-  const router = useRouter();
 
   if (!data || isLoading || isError) return null;
 
@@ -351,19 +348,16 @@ const Lounge = () => {
       <p css={styles.HeaderWrapper}>
         <span>라운지</span>
       </p>
-      <Box
-        onClick={() => router.push("/lounge")}
-        responsive
-        column
-        css={styles.ContentWrapper}
-      >
-        {data.map((post, i) => (
-          <Fragment key={post.lounge_id}>
-            {i !== 0 && <Hr />}
-            <LoungeItem post={post} />
-          </Fragment>
-        ))}
-      </Box>
+      <Link passHref href="/lounge">
+        <Box as="a" responsive column css={styles.ContentWrapper}>
+          {data.map((post, i) => (
+            <Fragment key={post.lounge_id}>
+              {i !== 0 && <Hr />}
+              <LoungeItem post={post} />
+            </Fragment>
+          ))}
+        </Box>
+      </Link>
     </Flex>
   );
 };

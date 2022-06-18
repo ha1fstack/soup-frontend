@@ -129,10 +129,12 @@ const Popup = React.forwardRef<
 
   return (
     <PopupContainer column ref={ref}>
-      <div onClick={() => final(router.push("profile"))}>
-        <MdOutlinePerson />
-        <span>내 프로필</span>
-      </div>
+      <Link href="/profile">
+        <a onClick={final}>
+          <MdOutlinePerson />
+          <span>내 프로필</span>
+        </a>
+      </Link>
       <div onClick={() => final(logout())}>
         <MdOutlineLogout />
         <span>로그아웃</span>
@@ -213,10 +215,12 @@ export const Header = React.memo(() => {
         </Flex>
         <HeaderMenuContainer>
           <Media css={{ display: "flex", gap: "12px" }} greaterThan="sm">
-            <SearchButton onClick={() => router.push("/projects")}>
-              <MdOutlineSearch />
-              프로젝트 찾아보기
-            </SearchButton>
+            <Link passHref href="/projects">
+              <SearchButton as="a">
+                <MdOutlineSearch />
+                프로젝트 찾아보기
+              </SearchButton>
+            </Link>
             <div css={{ position: "relative" }}>
               <WithThemeToggle>
                 {({ theme, toggleTheme }) => (
