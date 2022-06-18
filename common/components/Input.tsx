@@ -68,7 +68,7 @@ export const TextArea = styled(TextareaAutosize)<{
           border-radius: 8px;
         `}
 
-  ${({ variant, theme }) =>
+  ${({ variant }) =>
     variant
       ? LabelVariant[variant]
       : css`

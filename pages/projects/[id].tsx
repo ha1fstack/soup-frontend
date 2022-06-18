@@ -59,7 +59,7 @@ const Page = () => {
   };
 
   if (!data || isLoading || isError) return null;
-  const ownership = auth.user_id === data.userId;
+  const ownership = auth.success && auth.user_id === data.userId;
 
   return (
     <ChildrenContainer width={840}>

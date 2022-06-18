@@ -121,6 +121,8 @@ const Info = () => {
   const [isEdit, toggleIsEdit] = useToggle();
   const auth = useAuth();
 
+  if (!auth.success) return null;
+
   return (
     <Box
       css={{

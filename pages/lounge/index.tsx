@@ -1,9 +1,7 @@
 import { css } from "@emotion/react";
-import styled from "@emotion/styled";
 import {
   Flex,
   Box,
-  TextArea,
   Button,
   SectionHeader,
   SectionBody,
@@ -12,11 +10,12 @@ import {
 import { http } from "common/services";
 import { ChildrenContainer } from "components";
 import useAuth from "hooks/useAuth";
+import { GetServerSideProps } from "next";
 import Image from "next/image";
 import { Fragment, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { MdOutlineFavorite, MdOutlineFavoriteBorder } from "react-icons/md";
-import { useQuery, useQueryClient } from "react-query";
+import { dehydrate, QueryClient, useQuery, useQueryClient } from "react-query";
 import ReactTextareaAutosize from "react-textarea-autosize";
 import { timeDiffString } from "utils";
 
@@ -30,6 +29,10 @@ interface ILoungePost {
   username: string;
   user_id: number;
 }
+
+/* -------------------------------------------------------------------------- */
+/*                                 components                                 */
+/* -------------------------------------------------------------------------- */
 
 const LoungePost = ({ post }: { post: ILoungePost }) => {
   const queryClient = useQueryClient();
@@ -132,6 +135,7 @@ const LoungeEditor = () => {
       marginTop: "10px",
       flex: "1 0 auto",
       resize: "none",
+      borderWidth: "0px",
       ":focus": {
         outline: "0px",
       },
@@ -246,9 +250,7 @@ const LoungeEditor = () => {
 const Lounge = () => {
   const auth = useAuth();
 
-  let { data } = useQuery<ILoungePost[]>("lounge", async () => {
-    return (await http.get("/lounge")).data;
-  });
+  let { data } = useQuery<ILoungePost[]>("lounge", fetchLounge);
 
   const LoungeInfoMessage = () => (
     <Box variant="primary" css={{ lineHeight: "initial" }}>
@@ -279,6 +281,29 @@ const Lounge = () => {
       </SectionBody>
     </ChildrenContainer>
   );
+};
+
+/* -------------------------------------------------------------------------- */
+/*                                     api                                    */
+/* -------------------------------------------------------------------------- */
+
+const fetchLounge = async () => {
+  const res = await http.get("/lounge");
+  return res.data;
+};
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  const queryClient = new QueryClient();
+
+  const res = await Promise.all([
+    queryClient.prefetchQuery("lounge", fetchLounge),
+  ]);
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
 };
 
 export default Lounge;

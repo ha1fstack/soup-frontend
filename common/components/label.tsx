@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 
 export const LabelVariant = (theme: Theme) => ({
   default: css`
-    //border: 1px solid var(--outline);
+    border: 0px;
     background-color: var(--positive1);
   `,
   primary: css`

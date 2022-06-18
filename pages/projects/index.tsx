@@ -199,63 +199,6 @@ const Post = ({ image, post }: { image?: boolean; post: IPost }) => {
               {getDisplayTag(stack)}
             </Label>
           ))}
-          {/* <Label
-            css={{
-              backgroundColor: "var(--positive1)",
-            }}
-            variant="background"
-            size="small"
-          >
-            {SOURCE[post.source]}
-          </Label>
-          <Label
-            css={{ backgroundColor: "var(--positive1)" }}
-            variant="background"
-            size="small"
-          >
-            <div
-              css={{
-                width: "6px",
-                height: "6px",
-                borderRadius: "3px",
-                backgroundColor: "#007acc",
-                marginRight: "6px",
-              }}
-            />
-            Typescript
-          </Label>
-          <Label
-            css={{ backgroundColor: "var(--positive1)" }}
-            variant="background"
-            size="small"
-          >
-            <div
-              css={{
-                width: "6px",
-                height: "6px",
-                borderRadius: "3px",
-                backgroundColor: "#539e43",
-                marginRight: "6px",
-              }}
-            />
-            node.js
-          </Label>
-          <Label
-            css={{ backgroundColor: "var(--positive1)" }}
-            variant="background"
-            size="small"
-          >
-            <div
-              css={{
-                width: "6px",
-                height: "6px",
-                borderRadius: "3px",
-                backgroundColor: "#61dafb",
-                marginRight: "6px",
-              }}
-            />
-            React
-          </Label> */}
         </div>
       </div>
     </Box>

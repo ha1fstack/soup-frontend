@@ -1,12 +1,7 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import { MouseEventHandler } from "react";
-import {
-  MdOutlineChevronLeft,
-  MdOutlineChevronRight,
-  MdOutlineFirstPage,
-  MdOutlineLastPage,
-} from "react-icons/md";
+import React from "react";
+import { useMemo } from "react";
 import { Flex } from "./Box";
 
 const Container = styled(Flex)`
@@ -36,7 +31,8 @@ const Item = styled.button<{
   :disabled {
     color: #d3d5d9;
   }
-  ${({ current, theme }) =>
+  border-width: 0px;
+  ${({ current }) =>
     current &&
     css`
       color: var(--negative);
@@ -45,35 +41,35 @@ const Item = styled.button<{
     `}
 `;
 
-export const Pagination = ({
-  current,
-  end,
-  onClick,
-  className,
-}: {
-  current: number;
-  end: number;
-  onClick: (i: number) => void;
-  className?: string | undefined;
-}) => {
-  return (
-    <Container className={className}>
-      {/* <Item onClick={() => onClick(Math.max(current - 9, 1))}>
-        <MdOutlineFirstPage />
-      </Item> */}
-      {/* <Item disabled={current <= 1} onClick={() => onClick(current - 1)}>
-        <MdOutlineChevronLeft />
-      </Item> */}
-      {Array.from(Array(9).keys())
-        .slice(0, end ? (end > 9 ? 9 : end) : 9)
-        .map(
-          (x) =>
-            x +
-            (end > 9
-              ? Math.max(0, current - 5) + Math.min(0, end - current - 4) + 1
-              : 1)
-        )
-        .map((item) => (
+export const Pagination = React.memo(
+  ({
+    current,
+    end,
+    onClick,
+    className,
+  }: {
+    current: number;
+    end: number;
+    onClick: (i: number) => void;
+    className?: string | undefined;
+  }) => {
+    const pages = useMemo(
+      () =>
+        Array.from(Array(9).keys())
+          .slice(0, end ? (end > 9 ? 9 : end) : 9)
+          .map(
+            (x) =>
+              x +
+              (end > 9
+                ? Math.max(0, current - 5) + Math.min(0, end - current - 4) + 1
+                : 1)
+          ),
+      [current, end]
+    );
+
+    return (
+      <Container className={className}>
+        {pages.map((item) => (
           <Item
             onClick={() => onClick(item)}
             key={item}
@@ -82,12 +78,9 @@ export const Pagination = ({
             {item}
           </Item>
         ))}
-      {/* <Item disabled={current >= end} onClick={() => onClick(current + 1)}>
-        <MdOutlineChevronRight />
-      </Item> */}
-      {/* <Item onClick={() => onClick(Math.min(current + 9, end))}>
-        <MdOutlineLastPage />
-      </Item> */}
-    </Container>
-  );
-};
+      </Container>
+    );
+  }
+);
+
+Pagination.displayName = "Pagination";
