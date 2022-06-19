@@ -1,5 +1,3 @@
-import ErrorPage from "next/error";
-import Image from "next/image";
 import {
   Flex,
   Box,
@@ -12,9 +10,8 @@ import {
   Hr,
 } from "common/components";
 import { ChildrenContainer, Viewer } from "components";
-import { useQuery } from "react-query";
+import { dehydrate, QueryClient, useQuery } from "react-query";
 import { http } from "common/services";
-import { JSONContent } from "@tiptap/react";
 import { useRouter } from "next/router";
 import {
   MdOutlineDelete,
@@ -24,11 +21,13 @@ import {
 import useAuth from "hooks/useAuth";
 import { IProjectData } from "types";
 import { getDisplayTag, getDisplayColor } from "utils/tagDictionary";
-import { NextPage } from "next";
-import { NotFound } from "common/components/NotFound";
+import { GetServerSideProps, NextPage } from "next";
+import { NotFound } from "components/NotFound";
 
 const fetchProject = async (id: string) => {
+  console.log(1);
   const res = await http.get<IProjectData>(`/projects/${id}`);
+  console.log(2);
   return res.data;
 };
 
@@ -221,6 +220,31 @@ const Page: NextPage = () => {
       </SectionBody>
     </ChildrenContainer>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const queryClient = new QueryClient();
+  const { id } = context.query as {
+    id: string;
+  };
+
+  try {
+    await queryClient.fetchQuery(["project", id], () => fetchProject(id));
+  } catch (e) {
+    return {
+      props: {
+        error: {
+          status: 500,
+        },
+      },
+    };
+  }
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
 };
 
 export default Page;

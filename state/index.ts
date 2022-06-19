@@ -1,11 +1,5 @@
-import { atom } from "recoil";
+import { atom } from "jotai";
 
-export const loginPopupState = atom<boolean>({
-  key: "loginPopupState",
-  default: false,
-});
+export const loginPopupState = atom<boolean>(false);
 
-export const sideBarOpenState = atom<boolean>({
-  key: "sideBarOpenState",
-  default: false,
-});
+export const sideBarOpenState = atom<boolean>(false);

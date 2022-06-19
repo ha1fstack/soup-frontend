@@ -1,4 +1,6 @@
 import { JSONContent } from "@tiptap/react";
+import { NextPage } from "next";
+import { AppProps } from "next/app";
 import { ITag } from "utils/tagDictionary";
 
 export interface IPageable<T> {
@@ -59,3 +61,23 @@ export type IProjectData =
   | ({
       type: "prosemirror";
     } & IProjectContentData<JSONContent>);
+
+export type CustomNextPage = NextPage & {
+  getLayout?: (page: React.ReactElement) => React.ReactNode;
+  authorized?: boolean;
+};
+
+export type CustomAppProps = AppProps & {
+  Component: CustomNextPage;
+};
+
+export type IAuthData =
+  | {
+      success: true;
+      user_id: number;
+      profileImage: string;
+      username: string;
+    }
+  | {
+      success: false;
+    };

@@ -7,12 +7,11 @@ import React, { useRef, useEffect } from "react";
 import { Dimmer, Header, Media, Portal } from "components";
 import { Button } from "common/components";
 import useAuth from "hooks/useAuth";
-import { useRecoilState, useSetRecoilState } from "recoil";
 import { loginPopupState, sideBarOpenState } from "state";
 import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
-import { useTheme as useNextTheme } from "next-themes";
 import { breakpoints } from "utils";
 import { WithThemeToggle } from "utils/renderProps";
+import { useAtom, useSetAtom } from "jotai";
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -129,7 +128,7 @@ const SideBarElement = ({
   ...props
 }: ISideBarProps & React.PropsWithChildren<LinkProps>) => {
   const match = useMatch(props.href, exact);
-  const setLoginPopup = useSetRecoilState(loginPopupState);
+  const setLoginPopup = useSetAtom(loginPopupState);
   const auth = useAuth();
 
   const LinkWrapper =
@@ -225,41 +224,45 @@ const SideBarNavigation = () => {
   );
 };
 
-const SideBar = ({
-  ...props
-}: React.ComponentProps<typeof SideBarContainer>) => {
-  return (
-    <>
-      <SideBarContainer {...props}>
-        <SideBarNavigation />
-      </SideBarContainer>
-    </>
-  );
-};
+const SideBar = React.memo(
+  ({ ...props }: React.ComponentProps<typeof SideBarContainer>) => {
+    return (
+      <>
+        <SideBarContainer {...props}>
+          <SideBarNavigation />
+        </SideBarContainer>
+      </>
+    );
+  }
+);
+SideBar.displayName = "SideBar";
 
-const MobileSideBar = ({
-  ...props
-}: {} & React.ComponentProps<typeof SideBarContainer>) => {
-  const router = useRouter();
+const MobileSideBar = React.memo(
+  ({ ...props }: {} & React.ComponentProps<typeof SideBarContainer>) => {
+    const router = useRouter();
 
-  const [sideBarOpen, setSideBarOpen] = useRecoilState(sideBarOpenState);
+    const [sideBarOpen, setSideBarOpen] = useAtom(sideBarOpenState);
 
-  const initial = useRef(true);
-  useEffect(() => {
-    if (initial.current) initial.current = false;
-    else if (router.pathname) setSideBarOpen(false);
-  }, [router.pathname, setSideBarOpen]);
+    const initial = useRef(true);
+    useEffect(() => {
+      if (initial.current) initial.current = false;
+      else if (router.pathname) setSideBarOpen(false);
+    }, [router.pathname, setSideBarOpen]);
 
-  if (!sideBarOpen) return null;
-  return (
-    <Portal at="#portal">
-      <SideBarContainer animated {...props}>
-        <SideBarNavigation />
-      </SideBarContainer>
-      <Dimmer onClick={() => setSideBarOpen(false)} css={{ zIndex: 9998 }} />
-    </Portal>
-  );
-};
+    if (!sideBarOpen) return null;
+    return (
+      <>
+        <Dimmer onClick={() => setSideBarOpen(false)} css={{ zIndex: 9998 }} />
+        <Portal at="#portal">
+          <SideBarContainer animated {...props}>
+            <SideBarNavigation />
+          </SideBarContainer>
+        </Portal>
+      </>
+    );
+  }
+);
+MobileSideBar.displayName = "MobileSideBar";
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
   return (

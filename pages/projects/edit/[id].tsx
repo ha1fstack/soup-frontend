@@ -9,20 +9,19 @@ import {
 } from "common/components";
 import { http } from "common/services";
 import { ChildrenContainer, Editor } from "components";
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import { useLayoutEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { QueryClient, dehydrate, useQuery, useQueryClient } from "react-query";
-import { IPageable, IPost, IProjectData } from "types";
-import Project from "..";
+import { CustomNextPage, IProjectData } from "types";
 
 export interface IArticleData {
   title: string;
   content: JSONContent;
 }
 
-const Edit = () => {
+const Edit: CustomNextPage = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -120,5 +119,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
   };
 };
+
+Edit.authorized = true;
 
 export default Edit;

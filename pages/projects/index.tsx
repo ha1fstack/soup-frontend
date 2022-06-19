@@ -27,7 +27,6 @@ import {
 } from "react-icons/md";
 import { useToggle } from "hooks/useToggle";
 import { useCallback } from "react";
-import { atom, useRecoilState } from "recoil";
 import useClientRender from "hooks/useClientRender";
 import { ellipsis } from "polished";
 import { IPageable, IPost } from "types";
@@ -40,6 +39,7 @@ import {
   TagList,
 } from "utils/tagDictionary";
 import Link from "next/link";
+import { atom, useAtom } from "jotai";
 
 const Post = ({ image, post }: { image?: boolean; post: IPost }) => {
   const timeString = useMemo(() => timeDiffString(post.date), [post]);
@@ -347,17 +347,14 @@ const useSearchMenu = (initial: ITagCategory) => {
   return [currentMenu, setState] as [typeof currentMenu, typeof setState];
 };
 
-const filterState = atom<ITag[]>({
-  key: "filterState",
-  default: [],
-});
+const filterState = atom<ITag[]>([]);
 
 function isValidTag(arg: any): arg is ITag {
   return TagList.includes(arg);
 }
 
 const useFilter = () => {
-  const [filter, setFilter] = useRecoilState(filterState);
+  const [filter, setFilter] = useAtom(filterState);
   const resetFilter = useCallback(() => setFilter([]), [setFilter]);
   const router = useRouter();
   const addFilter = useCallback(

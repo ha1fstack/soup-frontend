@@ -15,6 +15,7 @@ import { MdOutlineEdit } from "react-icons/md";
 import useAuth from "hooks/useAuth";
 import { useQuery } from "react-query";
 import { http } from "common/services";
+import { CustomNextPage } from "types";
 
 const DetailsRow = ({
   item,
@@ -221,7 +222,7 @@ const Info = () => {
   );
 };
 
-const Profile = () => {
+const Profile: CustomNextPage = () => {
   return (
     <ChildrenContainer>
       <SectionHeader>
@@ -260,6 +261,8 @@ const Profile = () => {
     </ChildrenContainer>
   );
 };
+
+Profile.authorized = true;
 
 const FavoriteLounge = () => {
   const { data, isLoading, isError } = useQuery("FavoriteLounge", async () => {

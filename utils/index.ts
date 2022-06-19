@@ -1,5 +1,7 @@
 export * from "./createBreakpoints";
 export * from "./dictionary";
+export * from "./env";
+export * from "./errorHandler";
 export * from "./helper";
 export * from "./renderProps";
 export * from "./tagDictionary";

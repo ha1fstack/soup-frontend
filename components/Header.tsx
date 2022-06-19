@@ -19,10 +19,10 @@ import { Login } from "./Login";
 import { Media } from "./Media";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useRecoilState, useSetRecoilState } from "recoil";
 import { loginPopupState, sideBarOpenState } from "state";
 import { breakpoints, WithThemeToggle } from "utils";
 import { http } from "common/services";
+import { useAtom, useSetAtom } from "jotai";
 
 const HeaderContainer = styled.div`
   box-sizing: border-box;
@@ -168,11 +168,10 @@ const VerticalDivider = styled.div`
 `;
 
 export const Header = React.memo(() => {
-  const router = useRouter();
   const auth = useAuth();
 
-  const setSidebarOpen = useSetRecoilState(sideBarOpenState);
-  const [loginPopup, setLoginPopup] = useRecoilState(loginPopupState);
+  const setSidebarOpen = useSetAtom(sideBarOpenState);
+  const [loginPopup, setLoginPopup] = useAtom(loginPopupState);
   const [messagePopup, toggleMessagePopup] = useToggle();
 
   const messageRef = useOuterClick<HTMLDivElement>(() => toggleMessagePopup());

@@ -9,8 +9,12 @@ import {
 } from "common/components";
 import { http } from "common/services";
 import { ChildrenContainer, Editor } from "components";
+import useAuth from "hooks/useAuth";
+import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
+import { ComponentProps, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { CustomNextPage } from "types";
 
 export interface IArticleData {
   title: string;
@@ -112,7 +116,7 @@ const mock = {
   ],
 };
 
-const Write = () => {
+const Write: CustomNextPage = () => {
   const {
     register,
     handleSubmit,
@@ -174,5 +178,7 @@ const Write = () => {
     </ChildrenContainer>
   );
 };
+
+Write.authorized = true;
 
 export default Write;

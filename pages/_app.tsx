@@ -1,32 +1,42 @@
 import { css, Global, Theme, ThemeProvider } from "@emotion/react";
-import { MediaContextProvider, Layout } from "components";
+import { MediaContextProvider, Layout, Error, Login } from "components";
 import NextApp, { AppContext, AppProps } from "next/app";
 import Head from "next/head";
-import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
-import { RecoilRoot } from "recoil";
+import {
+  Hydrate,
+  QueryClient,
+  QueryClientProvider,
+  setLogger,
+} from "react-query";
 
 import "common/styles/reset.css";
 import "common/styles/globals.css";
 import "swiper/css";
 
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { NextPage } from "next";
 import useAuth, { fetchAuth } from "hooks/useAuth";
 
 import { ThemeProvider as NextThemeProvider } from "next-themes";
 import { http } from "common/services";
 import React from "react";
+import { Atom, Provider, useAtomValue } from "jotai";
+import { isDevEnv } from "utils";
+import { CustomAppProps, IAuthData } from "types";
+import { useRouter } from "next/router";
+import { loginPopupState } from "state";
+import { useHydrateAtoms } from "jotai/utils";
+
+// suppress react query logging
+if (isDevEnv)
+  setLogger({
+    log: () => {},
+    warn: () => {},
+    error: () => {},
+  });
 
 // suppress useLayoutEffect (and its warnings) when not running in a browser
 if (typeof window === "undefined") React.useLayoutEffect = () => {};
-
-type NextPageWithLayout = NextPage & {
-  getLayout?: (page: React.ReactElement) => React.ReactNode;
-};
-
-type AppPropsWithLayout = AppProps & {
-  Component: NextPageWithLayout;
-};
 
 /* -------------------------------------------------------------------------- */
 /*                                   styles                                   */
@@ -79,11 +89,45 @@ const theme: Theme = {};
 /*                                     app                                    */
 /* -------------------------------------------------------------------------- */
 
+const AuthProvider = ({ children }: React.PropsWithChildren<{}>) => {
+  return React.createElement(React.Fragment, {}, children);
+};
+
+export const WithAuth = ({
+  authorized = false,
+  children,
+}: {
+  authorized?: boolean;
+  children(forbidden: boolean): JSX.Element;
+}) => {
+  const auth = useAuth();
+  const forbidden = authorized && !auth.success;
+
+  const router = useRouter();
+  useEffect(() => {
+    if (forbidden)
+      router.push(
+        {
+          pathname: "/login",
+          query: {
+            redirect: router.asPath,
+          },
+        },
+        undefined,
+        {
+          shallow: true,
+        }
+      );
+  }, [forbidden, router]);
+
+  return children(forbidden);
+};
+
 export default function App({
   Component,
   pageProps,
   initialAuth,
-}: AppPropsWithLayout & { initialAuth: any }) {
+}: CustomAppProps & { initialAuth: IAuthData }) {
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -106,27 +150,37 @@ export default function App({
         window.location.protocol + "//" + window.location.host + "/api";
   }, []);
 
+  const page = (
+    <WithAuth authorized={Component.authorized}>
+      {(forbidden) => {
+        if (pageProps.error) return <Error status={pageProps.error.status} />;
+        if (forbidden) return <></>;
+        return <Component {...pageProps} />;
+      }}
+    </WithAuth>
+  );
+
   return (
     <>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>SouP</title>
       </Head>
-      <RecoilRoot>
+      <Provider>
         <QueryClientProvider client={queryClient}>
           <Hydrate state={pageProps.dehydratedState}>
-            <AuthQuery initialAuth={initialAuth} />
-            <Global styles={GlobalStyle} />
-            <NextThemeProvider defaultTheme="system">
-              <ThemeProvider theme={theme}>
-                <MediaContextProvider>
-                  {getLayout(<Component {...pageProps} />)}
-                </MediaContextProvider>
-              </ThemeProvider>
-            </NextThemeProvider>
+            <AuthProvider>
+              <AuthQuery initialAuth={initialAuth} />
+              <Global styles={GlobalStyle} />
+              <NextThemeProvider defaultTheme="system">
+                <ThemeProvider theme={theme}>
+                  <MediaContextProvider>{getLayout(page)}</MediaContextProvider>
+                </ThemeProvider>
+              </NextThemeProvider>
+            </AuthProvider>
           </Hydrate>
         </QueryClientProvider>
-      </RecoilRoot>
+      </Provider>
     </>
   );
 }
@@ -145,10 +199,8 @@ const AuthQuery = ({ initialAuth }: { initialAuth: any }) => {
 App.getInitialProps = async (context: AppContext) => {
   const initialProps = await NextApp.getInitialProps(context);
 
-  if (context.ctx.req?.url && context.ctx.req.url.startsWith("/_next/data"))
+  if (context.ctx.req?.url && context.ctx.req.url.startsWith("/_next/"))
     return initialProps;
-
-  console.log(context.ctx.asPath);
 
   const cookie = context.ctx.req?.headers.cookie;
   const res = await fetchAuth(cookie);
