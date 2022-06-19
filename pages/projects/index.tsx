@@ -14,7 +14,7 @@ import { useRouter } from "next/router";
 import { dehydrate, QueryClient, useQuery } from "react-query";
 import { http } from "common/services";
 import { Pagination } from "common/components/Pagination";
-import { SourceDictionary, timeDiffString } from "utils";
+import { injectSession, SourceDictionary, timeDiffString } from "utils";
 import { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { keyframes } from "@emotion/react";
 import { ChildrenContainer } from "components";
@@ -649,6 +649,7 @@ const Project: NextPage = () => {
   const currentPage = parseInt(router.query.page as string) || 1;
   const { data, isLoading, isError } = useQuery("projects", () =>
     fetchProjects(
+      undefined,
       currentPage,
       router.query.stacks
         ? ((Array.isArray(router.query.stacks)
@@ -716,9 +717,9 @@ const Project: NextPage = () => {
   );
 };
 
-const fetchProjects = async (page = 1, stacks?: ITag[]) => {
+const fetchProjects = async (_http = http, page = 1, stacks?: ITag[]) => {
   console.log(`link: /projects?page=${page}`);
-  const res = await http.get<IPageable<IPost[]>>(`/projects`, {
+  const res = await _http.get<IPageable<IPost[]>>(`/projects`, {
     params: {
       page,
       stacks: stacks?.join(","),
@@ -727,24 +728,27 @@ const fetchProjects = async (page = 1, stacks?: ITag[]) => {
   return res.data;
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const queryClient = new QueryClient();
+export const getServerSideProps: GetServerSideProps = injectSession(
+  async ({ http, context }) => {
+    const queryClient = new QueryClient();
 
-  await queryClient.prefetchQuery("projects", () =>
-    fetchProjects(
-      parseInt(context.query.page as string) || 1,
-      context.query.stacks
-        ? ((Array.isArray(context.query.stacks)
-            ? context.query.stacks
-            : context.query.stacks.split(",")) as ITag[])
-        : undefined
-    )
-  );
+    await queryClient.prefetchQuery("projects", () =>
+      fetchProjects(
+        http,
+        parseInt(context.query.page as string) || 1,
+        context.query.stacks
+          ? ((Array.isArray(context.query.stacks)
+              ? context.query.stacks
+              : context.query.stacks.split(",")) as ITag[])
+          : undefined
+      )
+    );
 
-  return {
-    props: {
-      dehydratedState: dehydrate(queryClient),
-    },
-  };
-};
+    return {
+      props: {
+        dehydratedState: dehydrate(queryClient),
+      },
+    };
+  }
+);
 export default Project;

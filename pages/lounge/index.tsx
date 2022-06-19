@@ -18,7 +18,7 @@ import { MdOutlineFavorite, MdOutlineFavoriteBorder } from "react-icons/md";
 import { dehydrate, QueryClient, useQuery, useQueryClient } from "react-query";
 import ReactTextareaAutosize from "react-textarea-autosize";
 import { ILoungePost } from "types";
-import { timeDiffString } from "utils";
+import { injectSession, timeDiffString } from "utils";
 
 /* -------------------------------------------------------------------------- */
 /*                                 components                                 */
@@ -28,7 +28,7 @@ const LoungePost = ({ post }: { post: ILoungePost }) => {
   const queryClient = useQueryClient();
   const auth = useAuth();
 
-  const handleFavVote = async ({ user_id, isfav, lounge_id }: ILoungePost) => {
+  const handleFav = async ({ user_id, isfav, lounge_id }: ILoungePost) => {
     if (!auth.success || user_id === auth.user_id) return;
     const res = await http.post("/lounge/fav", {
       id: lounge_id,
@@ -61,7 +61,7 @@ const LoungePost = ({ post }: { post: ILoungePost }) => {
         alignItems: "center",
         color: "var(--negative2)",
       }}
-      onClick={() => handleFavVote(post)}
+      onClick={() => handleFav(post)}
     >
       <span css={{ fontSize: "12px" }}>{post.fav}</span>
       {post.isfav || false ? (
@@ -226,16 +226,16 @@ const LoungeEditor = () => {
   );
 };
 
+const LoungeInfoMessage = () => (
+  <Box variant="primary" css={{ lineHeight: "initial" }}>
+    로그인 후 라운지에 이야기를 작성해 보세요.
+  </Box>
+);
+
 const Lounge = () => {
   const auth = useAuth();
 
-  let { data } = useQuery<ILoungePost[]>("lounge", fetchLounge);
-
-  const LoungeInfoMessage = () => (
-    <Box variant="primary" css={{ lineHeight: "initial" }}>
-      로그인 후 라운지에 이야기를 작성해 보세요.
-    </Box>
-  );
+  let { data } = useQuery<ILoungePost[]>("lounge", () => fetchLounge());
 
   return (
     <ChildrenContainer width={840}>
@@ -266,23 +266,50 @@ const Lounge = () => {
 /*                                     api                                    */
 /* -------------------------------------------------------------------------- */
 
-const fetchLounge = async () => {
-  const res = await http.get("/lounge");
+// function Query<TQueryFnData = unknown, TQueryKey extends QueryKey = QueryKey>(
+//   this: {
+//     http: AxiosInstance;
+//   },
+//   queryKey: TQueryKey,
+//   queryFn:
+// ) {
+//   return (this.http) => {
+
+//   };
+// }
+
+// const makeQuery = <
+//   TQueryFnData = unknown,
+//   TQueryKey extends QueryKey = QueryKey
+// >({
+//   queryKey,
+//   queryFn,
+// }: {
+//   queryKey: TQueryKey;
+//   queryFn: QueryFunction<TQueryFnData, TQueryKey>;
+// }) => {
+//   return new Query(queryKey, queryFn)
+// };
+
+const fetchLounge = async (_http = http) => {
+  const res = await _http.get("/lounge");
   return res.data;
 };
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const queryClient = new QueryClient();
+export const getServerSideProps: GetServerSideProps = injectSession(
+  async ({ http }) => {
+    const queryClient = new QueryClient();
 
-  const res = await Promise.all([
-    queryClient.prefetchQuery("lounge", fetchLounge),
-  ]);
+    const res = await Promise.all([
+      queryClient.prefetchQuery("lounge", () => fetchLounge(http)),
+    ]);
 
-  return {
-    props: {
-      dehydratedState: dehydrate(queryClient),
-    },
-  };
-};
+    return {
+      props: {
+        dehydratedState: dehydrate(queryClient),
+      },
+    };
+  }
+);
 
 export default Lounge;

@@ -124,7 +124,8 @@ const Popup = React.forwardRef<
     try {
       await http.get("/logout");
     } catch (e) {}
-    queryClient.setQueryData(["auth"], () => undefined);
+    queryClient.invalidateQueries();
+    //queryClient.setQueryData(["auth"], () => undefined);
   };
 
   return (
