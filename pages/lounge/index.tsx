@@ -17,18 +17,8 @@ import { useForm } from "react-hook-form";
 import { MdOutlineFavorite, MdOutlineFavoriteBorder } from "react-icons/md";
 import { dehydrate, QueryClient, useQuery, useQueryClient } from "react-query";
 import ReactTextareaAutosize from "react-textarea-autosize";
+import { ILoungePost } from "types";
 import { timeDiffString } from "utils";
-
-interface ILoungePost {
-  content: string;
-  date: string;
-  lounge_id: number;
-  fav: number;
-  isfav: boolean;
-  picture: string;
-  username: string;
-  user_id: number;
-}
 
 /* -------------------------------------------------------------------------- */
 /*                                 components                                 */
@@ -115,17 +105,6 @@ const LoungePost = ({ post }: { post: ILoungePost }) => {
     </Flex>
   );
 };
-
-interface ILoungePost {
-  date: string;
-  user_id: number;
-  fav: number;
-  lounge_id: number;
-  isfav: boolean;
-  picture: string;
-  content: string;
-  username: string;
-}
 
 const LoungeEditor = () => {
   const styles = {

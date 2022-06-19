@@ -37,36 +37,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperType, { Autoplay } from "swiper";
 import React from "react";
 import Link from "next/link";
-
-/* -------------------------------------------------------------------------- */
-/*                                    types                                   */
-/* -------------------------------------------------------------------------- */
-
-interface IPostPreviewContent {
-  id: number;
-  postName: string;
-  content: string;
-  userName: string;
-  date: string;
-  link: "https://okky.kr/article/1221052";
-  stacks: ITag[];
-  views: number;
-  talk: string;
-  source: string;
-  fav: number;
-  isfav: boolean;
-}
-
-interface ILoungePost {
-  date: string;
-  user_id: number;
-  fav: number;
-  lounge_id: number;
-  isfav: boolean;
-  picture: string;
-  content: string;
-  username: string;
-}
+import { IPostPreviewContent, ILoungePost } from "types";
 
 /* -------------------------------------------------------------------------- */
 /*                                    utils                                   */

@@ -12,6 +12,7 @@ import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
 import { breakpoints } from "utils";
 import { WithThemeToggle } from "utils/renderProps";
 import { useAtom, useSetAtom } from "jotai";
+import { ISideBarProps } from "types";
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -94,11 +95,6 @@ const SideBarContainer = ({
   );
 };
 
-interface ISideBarProps {
-  exact?: boolean;
-  selected?: boolean;
-  authorized?: boolean;
-}
 const SideBarLink = styled.a<ISideBarProps>`
   display: block;
   cursor: pointer;

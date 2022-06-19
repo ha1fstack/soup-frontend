@@ -29,7 +29,7 @@ import { useToggle } from "hooks/useToggle";
 import { useCallback } from "react";
 import useClientRender from "hooks/useClientRender";
 import { ellipsis } from "polished";
-import { IPageable, IPost } from "types";
+import { IFeaturedItem, IPageable, IPost } from "types";
 import {
   getDisplayColor,
   getDisplayTag,
@@ -589,12 +589,6 @@ const FeaturedItem = ({ userName, title, id }: IFeaturedItem) => {
     </Link>
   );
 };
-
-interface IFeaturedItem {
-  title: string;
-  userName: string;
-  id: number;
-}
 
 const Featured = () => {
   const { data, isLoading, isError } = useQuery(

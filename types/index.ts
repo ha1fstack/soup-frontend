@@ -81,3 +81,46 @@ export type IAuthData =
   | {
       success: false;
     };
+
+export interface ISideBarProps {
+  exact?: boolean;
+  selected?: boolean;
+  authorized?: boolean;
+}
+
+export interface IPostPreviewContent {
+  id: number;
+  postName: string;
+  content: string;
+  userName: string;
+  date: string;
+  link: "https://okky.kr/article/1221052";
+  stacks: ITag[];
+  views: number;
+  talk: string;
+  source: string;
+  fav: number;
+  isfav: boolean;
+}
+
+export interface ILoungePost {
+  date: string;
+  user_id: number;
+  fav: number;
+  lounge_id: number;
+  isfav: boolean;
+  picture: string;
+  content: string;
+  username: string;
+}
+
+export interface IArticleData {
+  title: string;
+  content: JSONContent;
+}
+
+export interface IFeaturedItem {
+  title: string;
+  userName: string;
+  id: number;
+}

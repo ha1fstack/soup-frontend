@@ -14,12 +14,7 @@ import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import { ComponentProps, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { CustomNextPage } from "types";
-
-export interface IArticleData {
-  title: string;
-  content: JSONContent;
-}
+import { CustomNextPage, IArticleData } from "types";
 
 const mock = {
   type: "doc",
