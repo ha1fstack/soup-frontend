@@ -6,6 +6,7 @@ const nextConfig = {
   },
   experimental: {
     scrollRestoration: "manual",
+    outputStandalone: true,
   },
   async rewrites() {
     return [
