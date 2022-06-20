@@ -32,6 +32,7 @@
     "usehooks-ts": "^2.5.1"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "@types/node": "17.0.23",
     "@types/react": "^17.0.44",
     "@types/react-dom": "^17.0.15",

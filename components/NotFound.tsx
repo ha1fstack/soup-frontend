@@ -7,5 +7,5 @@ export const NotFound = () => {
   useLayoutEffect(() => {
     router.push("/404", router.asPath, { shallow: true });
   }, [router]);
-  return <Error404 />;
+  return <></>;
 };

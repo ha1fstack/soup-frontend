@@ -90,20 +90,19 @@ const ArticleHeader = ({ data }: { data: IProjectContentData<unknown> }) => {
   const queryClient = useQueryClient();
 
   const handleFav = async () => {
-    const res = (
-      await http.post("/projects/fav", {
-        id: data.id,
-        mode: !data.isfav,
-      })
-    ).data;
+    const { data: res } = await http.post("/projects/fav", {
+      id: data.id,
+      mode: !data.isfav,
+    });
+
     if (res.success)
       queryClient.setQueryData<IProjectData | undefined>(
         ["project", id],
         (post) =>
           post && {
             ...post,
-            isfav: data.isfav,
-            fav: data.isfav ? post.fav + 1 : post.fav - 1,
+            isfav: res.isfav,
+            fav: res.isfav ? post.fav + 1 : post.fav - 1,
           }
       );
   };
@@ -216,8 +215,6 @@ const Article = () => {
   if (isLoading || isError) return null;
   if (!data) return <NotFound />;
 
-  console.log(data);
-
   return (
     <Box
       responsive
@@ -267,9 +264,7 @@ const Page: NextPage = () => {
 };
 
 const fetchProject = async (_http = http, id: string) => {
-  console.log(1);
   const res = await _http.get<IProjectData>(`/projects/${id}`);
-  console.log(2);
   return res.data;
 };
 
@@ -277,5 +272,31 @@ const deleteProject = async (_http = http, id: string) => {
   const res = await _http.post<IProjectData>(`/projects/delete`, { id });
   return res.data;
 };
+
+export const getServerSideProps: GetServerSideProps = injectSession(
+  async ({ http, context }) => {
+    const queryClient = new QueryClient();
+    const { id } = context.query as {
+      id: string;
+    };
+
+    const res = await queryClient.fetchQuery(["project", id], () =>
+      fetchProject(http, id)
+    );
+    // replace with 404 error thrown
+    if (!res)
+      return {
+        props: {
+          error: 404,
+        },
+      };
+
+    return {
+      props: {
+        dehydratedState: dehydrate(queryClient),
+      },
+    };
+  }
+);
 
 export default Page;

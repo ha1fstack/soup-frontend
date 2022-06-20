@@ -15,11 +15,15 @@ export const injectSession =
   (context: Parameters<GetServerSideProps>[0]) => {
     const Cookie = context.req.headers.cookie;
     const ssHttp = axios.create({
-      ...http.defaults,
+      baseURL: "http://localhost:8080",
       headers: { ...(Cookie && { Cookie }) },
     });
     return getServerSideProps({
       context,
       http: ssHttp,
-    });
+    })
+      .then((result) => result)
+      .catch((_) => ({
+        props: { error: 500 },
+      }));
   };

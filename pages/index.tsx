@@ -266,7 +266,7 @@ const Projects = () => {
 
   if (!data || isLoading || isError)
     return <Flex column css={{ flex: "3 1 480px" }} />;
-  console.log(data);
+
   return (
     <Flex column css={styles.Wrapper}>
       <p css={styles.HeaderWrapper}>
@@ -608,8 +608,6 @@ export const getServerSideProps: GetServerSideProps = async () => {
     queryClient.prefetchQuery("front/featured", fetchFrontFeatured),
     // queryClient.prefetchQuery("front/projects", fetchFrontProjects),
   ]);
-
-  console.log(res);
 
   return {
     props: {

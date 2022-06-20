@@ -124,7 +124,6 @@ const Write: CustomNextPage = () => {
   const router = useRouter();
 
   const onSubmit: SubmitHandler<IArticleData> = async (data) => {
-    console.log(data);
     const res = await http.post<{ success: boolean }>("/projects/build", data);
     if (res.data.success) {
       router.push("/projects");

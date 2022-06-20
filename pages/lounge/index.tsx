@@ -30,12 +30,11 @@ const LoungePost = ({ post }: { post: ILoungePost }) => {
 
   const handleFav = async ({ user_id, isfav, lounge_id }: ILoungePost) => {
     if (!auth.success || user_id === auth.user_id) return;
-    const res = await http.post("/lounge/fav", {
+    const { data: res } = await http.post("/lounge/fav", {
       id: lounge_id,
       mode: !isfav,
     });
-    const data = res.data;
-    if (data.success)
+    if (res.success)
       queryClient.setQueryData<ILoungePost[] | undefined>(
         "lounge",
         (postList) =>
@@ -43,8 +42,8 @@ const LoungePost = ({ post }: { post: ILoungePost }) => {
             if (p.lounge_id === lounge_id)
               return {
                 ...p,
-                isfav: data.isfav,
-                fav: data.isfav ? p.fav + 1 : p.fav - 1,
+                isfav: res.isfav,
+                fav: res.isfav ? p.fav + 1 : p.fav - 1,
               };
             return p;
           })

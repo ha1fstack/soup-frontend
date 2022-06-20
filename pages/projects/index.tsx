@@ -363,7 +363,6 @@ const useFilter = () => {
       const result = [...filter, x];
       if (filter.length >= 3 || filter.includes(x)) return;
       setFilter(result);
-      console.log("push");
       router.push(
         {
           query: {
@@ -383,7 +382,6 @@ const useFilter = () => {
     let stacks = router.query["stacks"];
     if (!stacks) return;
     if (Array.isArray(stacks)) stacks = stacks.join(",");
-    console.log("stacks:", stacks);
     setFilter(stacks.split(",").filter((stack) => isValidTag(stack)) as ITag[]);
   }, [router.query, setFilter]);
   const removeFilter = useCallback(
@@ -718,7 +716,6 @@ const Project: NextPage = () => {
 };
 
 const fetchProjects = async (_http = http, page = 1, stacks?: ITag[]) => {
-  console.log(`link: /projects?page=${page}`);
   const res = await _http.get<IPageable<IPost[]>>(`/projects`, {
     params: {
       page,

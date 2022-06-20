@@ -26,6 +26,7 @@ import { CustomAppProps, IAuthData } from "types";
 import { useRouter } from "next/router";
 import { loginPopupState } from "state";
 import { useHydrateAtoms } from "jotai/utils";
+import axios from "axios";
 
 // suppress react query logging
 if (isDevEnv)
@@ -98,7 +99,13 @@ export const WithAuth = ({
   children,
 }: {
   authorized?: boolean;
-  children(forbidden: boolean): JSX.Element;
+  children({
+    auth,
+    forbidden,
+  }: {
+    auth: IAuthData;
+    forbidden: boolean;
+  }): JSX.Element;
 }) => {
   const auth = useAuth();
   const forbidden = authorized && !auth.success;
@@ -120,7 +127,7 @@ export const WithAuth = ({
       );
   }, [forbidden, router]);
 
-  return children(forbidden);
+  return children({ auth, forbidden });
 };
 
 export default function App({
@@ -134,6 +141,7 @@ export default function App({
         defaultOptions: {
           queries: {
             staleTime: Infinity,
+            ...(isDevEnv && { retry: 0 }),
           },
         },
       })
@@ -152,8 +160,9 @@ export default function App({
 
   const page = (
     <WithAuth authorized={Component.authorized}>
-      {(forbidden) => {
-        if (pageProps.error) return <Error status={pageProps.error.status} />;
+      {({ auth, forbidden }) => {
+        if (!auth) return <Error status={500} />;
+        if (pageProps.error) return <Error status={pageProps.error} />;
         if (forbidden) return <></>;
         return <Component {...pageProps} />;
       }}
@@ -197,17 +206,33 @@ const AuthQuery = ({ initialAuth }: { initialAuth: any }) => {
 };
 
 App.getInitialProps = async (context: AppContext) => {
+  const {
+    ctx: { req, res },
+  } = context;
+
   const initialProps = await NextApp.getInitialProps(context);
 
-  if (context.ctx.req?.url && context.ctx.req.url.startsWith("/_next/"))
+  try {
+    if (req?.url && req.url.startsWith("/_next/")) return initialProps;
+
+    const cookie = req?.headers.cookie;
+
+    const ssHttp = axios.create({
+      baseURL: "http://localhost:8080",
+      headers: { ...(cookie && { cookie }) },
+    });
+
+    const initialAuth = (
+      await ssHttp.get("/auth", {
+        headers: { ...(cookie && { cookie }) },
+      })
+    ).data;
+
+    return {
+      ...initialProps,
+      initialAuth,
+    };
+  } catch (e) {
     return initialProps;
-
-  const cookie = context.ctx.req?.headers.cookie;
-  const res = await fetchAuth(cookie);
-  const initialAuth = res;
-
-  return {
-    ...initialProps,
-    initialAuth,
-  };
+  }
 };
