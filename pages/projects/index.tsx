@@ -72,7 +72,7 @@ const Post = ({ image, post }: { image?: boolean; post: IPost }) => {
               <Flex
                 css={{
                   alignItems: "center",
-                  fontSize: "14px",
+                  fontSize: "var(--font-paragraph-small)",
                   marginBottom: "16px",
                   gap: "8px",
                 }}
@@ -86,7 +86,7 @@ const Post = ({ image, post }: { image?: boolean; post: IPost }) => {
               <div
                 css={{
                   fontWeight: "700",
-                  fontSize: "18px",
+                  fontSize: "var(--font-title-normal)",
                   overflow: "hidden",
                   display: "-webkit-box",
                   WebkitBoxOrient: "vertical",
@@ -99,7 +99,7 @@ const Post = ({ image, post }: { image?: boolean; post: IPost }) => {
               <div
                 css={{
                   overflow: "hidden",
-                  fontSize: "16px",
+                  fontSize: "var(--font-paragraph-normal)",
                   lineHeight: 1.5,
                   display: "-webkit-box",
                   WebkitBoxOrient: "vertical",
@@ -330,7 +330,7 @@ const Slider = ({ toggle }: { toggle: (set?: boolean) => void }) => {
           }}
           onClick={() => toggle()}
         >
-          <MdOutlineSearch css={{ fontSize: "18px" }} />
+          <MdOutlineSearch css={{ fontSize: "var(--font-title-normal)" }} />
         </Button>
       </div>
     </>
@@ -423,7 +423,7 @@ const Search = ({ toggle }: { toggle: (set?: boolean) => void }) => {
           }}
           onClick={() => toggle()}
         >
-          <MdOutlineCheck css={{ fontSize: "18px" }} />
+          <MdOutlineCheck css={{ fontSize: "var(--font-title-normal)" }} />
         </Button>
         <Flex
           css={{
@@ -501,11 +501,11 @@ const FilterList = () => {
         css={{
           display: "flex",
           gap: "12px",
-          "& > *": { fontSize: "14px" },
+          "& > *": { fontSize: "var(--font-paragraph-small)" },
         }}
       >
         <Label css={{ padding: "0px 8px" }}>
-          <MdOutlineLabel css={{ fontSize: "18px" }} />
+          <MdOutlineLabel css={{ fontSize: "var(--font-title-normal)" }} />
           {!filter.length && (
             <span css={{ marginLeft: "4px" }}>
               태그를 3개까지 추가해 검색해보세요...
@@ -513,13 +513,16 @@ const FilterList = () => {
           )}
         </Label>
         {filter.map((stack, i) => (
-          <Label css={{ border: 0, fontSize: "16px" }} key={stack}>
+          <Label
+            css={{ border: 0, fontSize: "var(--font-paragraph-normal)" }}
+            key={stack}
+          >
             {getDisplayTag(stack)}
             <Button
               css={{
                 width: "16px",
                 height: "16px",
-                borderRadius: "18px",
+                borderRadius: "var(--font-title-normal)",
                 padding: 0,
                 margin: "0px -4px 0px 6px",
                 fontSize: "11px",
@@ -540,7 +543,7 @@ const FeaturedHeader = ({ content }: { content: string }) => (
   <Flex
     css={{
       alignItems: "center",
-      fontSize: "14px",
+      fontSize: "var(--font-paragraph-small)",
       fontWeight: "600",
       lineHeight: "initial",
       marginBottom: "24px",
@@ -576,7 +579,7 @@ const FeaturedItem = ({ userName, title, id }: IFeaturedItem) => {
         </Flex>
         <p
           css={{
-            fontSize: "14px",
+            fontSize: "var(--font-paragraph-small)",
             fontWeight: "600",
             ...ellipsis(undefined, 2),
           }}

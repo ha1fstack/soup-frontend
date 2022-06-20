@@ -60,7 +60,9 @@ const ArticlePreview = ({
       </Flex>
       <p>{data.content}...</p>
       <ButtonLink href={data.link} target="_blank" variant="primary-outlined">
-        <MdOutlineOpenInNew css={{ fontSize: "16px" }} />
+        <MdOutlineOpenInNew
+          css={{ fontSize: "var(--font-paragraph-normal)" }}
+        />
         원문 보기
       </ButtonLink>
     </Box>
@@ -152,7 +154,7 @@ const ArticleHeader = ({ data }: { data: IProjectContentData<unknown> }) => {
           alignItems: "center",
           gap: "12px",
           marginTop: "16px",
-          fontSize: "14px",
+          fontSize: "var(--font-paragraph-small)",
         }}
       >
         <Flex
@@ -172,7 +174,7 @@ const ArticleHeader = ({ data }: { data: IProjectContentData<unknown> }) => {
           css={{
             alignItems: "center",
             gap: "12px",
-            fontSize: "18px",
+            fontSize: "var(--font-title-normal)",
             color: "var(--negative2)",
           }}
         >
@@ -192,7 +194,9 @@ const ArticleHeader = ({ data }: { data: IProjectContentData<unknown> }) => {
                 onClick={handleFav}
               >
                 {data.isfav ? <MdOutlineStar /> : <MdOutlineStarBorder />}
-                <span css={{ fontSize: "14px" }}>{data.fav}</span>
+                <span css={{ fontSize: "var(--font-paragraph-small)" }}>
+                  {data.fav}
+                </span>
               </HeaderButton>
             </>
           )}

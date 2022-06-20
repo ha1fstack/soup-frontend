@@ -76,7 +76,7 @@ const HotItem = ({ post }: { post: IPostPreviewContent }) => {
       cursor: pointer;
     `,
     PostName: css`
-      font-size: 16px;
+      font-size: var(--font-paragraph-normal);
       font-weight: 600;
       ${ellipsis(undefined, 2)}
     `,
@@ -124,7 +124,7 @@ const NewItem = ({ post }: { post: IPostPreviewContent }) => {
         >
           <p
             css={{
-              fontSize: "16px",
+              fontSize: "var(--font-paragraph-normal)",
               fontWeight: "600",
               ...ellipsis(),
             }}
@@ -170,7 +170,7 @@ const PostItem = ({ post }: { post: IPostPreviewContent }) => {
         >
           <p
             css={{
-              fontSize: "16px",
+              fontSize: "var(--font-paragraph-normal)",
               fontWeight: "600",
               ...ellipsis(),
             }}
@@ -179,7 +179,7 @@ const PostItem = ({ post }: { post: IPostPreviewContent }) => {
           </p>
           <p
             css={{
-              fontSize: "14px",
+              fontSize: "var(--font-paragraph-small)",
               whiteSpace: "pre-line",
               ...ellipsis(undefined, 3),
             }}
@@ -225,13 +225,13 @@ const LoungeItem = ({ post }: { post: ILoungePost }) => {
       </Flex>
       <Flex column css={{ gap: "4px", flex: "1 1 auto" }}>
         <Flex css={{ justifyContent: "space-between", alignItems: "center" }}>
-          <p css={{ fontSize: "14px" }}>
+          <p css={{ fontSize: "var(--font-paragraph-small)" }}>
             <b>{post.username}</b> · {timeDiffString(post.date)}
           </p>
         </Flex>
         <div
           css={{
-            fontSize: "14px",
+            fontSize: "var(--font-paragraph-small)",
             whiteSpace: "pre-line",
             ...ellipsis(undefined, 3),
           }}

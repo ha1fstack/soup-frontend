@@ -21,7 +21,7 @@ import { ThemeProvider as NextThemeProvider } from "next-themes";
 import { http } from "common/services";
 import React from "react";
 import { Atom, Provider, useAtomValue } from "jotai";
-import { isDevEnv } from "utils";
+import { breakpoints, isDevEnv } from "utils";
 import { CustomAppProps, IAuthData } from "types";
 import { useRouter } from "next/router";
 import { loginPopupState } from "state";
@@ -76,6 +76,17 @@ const GlobalStyle = css`
     --primary: #ff8a05;
     --primarylight: #1e2124;
     --primarylight2: #212428;
+  }
+
+  :root {
+    --font-paragraph-small: 14px;
+    --font-paragraph-normal: 16px;
+    --font-title-normal: 18px;
+    ${breakpoints.at("sm")} {
+      --font-paragraph-small: 13px;
+      --font-paragraph-normal: 14px;
+      --font-title-normal: 16px;
+    }
   }
 
   body {

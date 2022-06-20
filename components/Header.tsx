@@ -46,7 +46,7 @@ const HeaderMenuContainer = styled.header`
   display: flex;
   flex-direction: row;
   align-items: center;
-  font-size: 14px;
+  font-size: var(--font-paragraph-small);
   color: var(--negative2);
   & > :not(:last-child) {
     margin-right: 12px;
@@ -82,7 +82,7 @@ const PopupContainer = styled(Box)({
   top: "44px",
   width: "150px",
   right: 0,
-  fontSize: "14px",
+  fontSize: "var(--font-paragraph-small)",
   boxShadow: "0px 0px 10px rgba(0,0,0,0.1)",
   padding: "6px",
   hr: {

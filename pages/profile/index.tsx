@@ -58,12 +58,16 @@ const InfoEdit = ({ toggleIsEdit }: { toggleIsEdit: () => void }) => {
           />
         </div>
         <div css={{ marginLeft: "16px", flex: "1" }}>
-          <p css={{ fontSize: "18px", fontWeight: 700 }}>홍길동</p>
-          <p css={{ fontSize: "14px", fontWeight: 500 }}>gildong@example.com</p>
+          <p css={{ fontSize: "var(--font-title-normal)", fontWeight: 700 }}>
+            홍길동
+          </p>
+          <p css={{ fontSize: "var(--font-paragraph-small)", fontWeight: 500 }}>
+            gildong@example.com
+          </p>
         </div>
         <div>
           <Button onClick={() => toggleIsEdit()} variant="primary-outlined">
-            <MdOutlineEdit css={{ fontSize: "18px" }} />
+            <MdOutlineEdit css={{ fontSize: "var(--font-title-normal)" }} />
             저장하기
           </Button>
         </div>
@@ -77,7 +81,7 @@ const InfoEdit = ({ toggleIsEdit }: { toggleIsEdit: () => void }) => {
           "& > *+*": {
             marginTop: "18px",
           },
-          label: { fontSize: "14px", fontWeight: 500 },
+          label: { fontSize: "var(--font-paragraph-small)", fontWeight: 500 },
           "input, textarea": {
             marginTop: "4px",
             width: "100%",
@@ -160,14 +164,23 @@ const Info = () => {
               />
             </div>
             <div css={{ marginLeft: "16px", flex: "1" }}>
-              <p css={{ fontSize: "18px", fontWeight: 700 }}>{auth.username}</p>
-              <p css={{ fontSize: "14px", fontWeight: 500 }}>
+              <p
+                css={{ fontSize: "var(--font-title-normal)", fontWeight: 700 }}
+              >
+                {auth.username}
+              </p>
+              <p
+                css={{
+                  fontSize: "var(--font-paragraph-small)",
+                  fontWeight: 500,
+                }}
+              >
                 gildong@example.com
               </p>
             </div>
             <div>
               <Button onClick={() => toggleIsEdit()} variant="primary-outlined">
-                <MdOutlineEdit css={{ fontSize: "18px" }} />
+                <MdOutlineEdit css={{ fontSize: "var(--font-title-normal)" }} />
                 수정하기
               </Button>
             </div>

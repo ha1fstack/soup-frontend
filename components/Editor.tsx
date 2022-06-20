@@ -31,7 +31,7 @@ import {
 import { Youtube } from "tiptap/youtube";
 import { UseFormSetValue } from "react-hook-form";
 import { useEffect } from "react";
-import { IArticleData } from "pages/projects/write";
+import { IArticleData } from "types";
 
 const ButtonElem = styled.button<{
   active?: boolean;
@@ -51,7 +51,7 @@ const ButtonElem = styled.button<{
 `;
 
 const ButtonGroup = styled(Flex)`
-  font-size: 14px;
+  font-size: var(--font-paragraph-small);
   border-radius: 4px;
   // padding: 4px;
   // border: 1px solid var(--outline);

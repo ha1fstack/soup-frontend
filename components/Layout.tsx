@@ -28,8 +28,8 @@ const BodyContainer = styled.div`
   padding-right: 36px;
   padding-left: 36px;
   ${breakpoints.at("sm")} {
-    padding-right: 12px;
-    padding-left: 12px;
+    padding-right: 16px;
+    padding-left: 16px;
   }
 `;
 
@@ -87,7 +87,12 @@ const SideBarContainer = ({
     <SideBarContainerWrapper animated={animated}>
       <SideBarContentWrapper>{children}</SideBarContentWrapper>
       <footer>
-        <div css={{ fontSize: "14px", color: "var(--negative2)" }}>
+        <div
+          css={{
+            fontSize: "var(--font-paragraph-small)",
+            color: "var(--negative2)",
+          }}
+        >
           개인정보처리방침 <br /> © 2022 SouP
         </div>
       </footer>
@@ -166,11 +171,11 @@ export const ChildrenContainer = styled.div<{
     padding-left: 36px;
     width: calc(100% + 72px);
     ${breakpoints.at("sm")} {
-      margin-right: -12px;
-      margin-left: -12px;
-      padding-right: 12px;
-      padding-left: 12px;
-      width: calc(100% + 24px);
+      margin-right: -16px;
+      margin-left: -16px;
+      padding-right: 16px;
+      padding-left: 16px;
+      width: calc(100% + 32px);
     }
   }
 `;

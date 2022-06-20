@@ -64,9 +64,13 @@ const LoungePost = ({ post }: { post: ILoungePost }) => {
     >
       <span css={{ fontSize: "12px" }}>{post.fav}</span>
       {post.isfav || false ? (
-        <MdOutlineFavorite style={{ fontSize: "14px", margin: 0 }} />
+        <MdOutlineFavorite
+          style={{ fontSize: "var(--font-paragraph-small)", margin: 0 }}
+        />
       ) : (
-        <MdOutlineFavoriteBorder style={{ fontSize: "14px", margin: 0 }} />
+        <MdOutlineFavoriteBorder
+          style={{ fontSize: "var(--font-paragraph-small)", margin: 0 }}
+        />
       )}
     </Button>
   );
@@ -109,7 +113,7 @@ const LoungeEditor = () => {
   const styles = {
     TextArea: css({
       background: "transparent",
-      fontSize: "18px",
+      fontSize: "var(--font-title-normal)",
       marginTop: "10px",
       flex: "1 0 auto",
       resize: "none",
