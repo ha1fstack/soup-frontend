@@ -1,0 +1,43 @@
+name: Test build
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🗃️ Checkout
+        uses: actions/checkout@v2
+
+      - name: 📦️ Setup NodeJS 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: 💾 Cache NPM & Next.js
+        uses: actions/cache@v3
+        with:
+          # See here for caching with `yarn` https://github.com/actions/cache/blob/main/examples.md#node---yarn or you can leverage caching with actions/setup-node https://github.com/actions/setup-node
+          path: |
+            ~/.npm
+            ${{ github.workspace }}/soup-frontend/.next/cache
+          # Generate a new cache whenever packages or source files change.
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('soup-frontend/**/package-lock.json') }}-${{ hashFiles('soup-frontend/**.[jt]s', 'soup-frontend/**.[jt]sx') }}
+          # If source files changed but packages didn't, rebuild from a prior cache.
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('soup-frontend/**/package-lock.json') }}-
+
+      - name: 📦️ Install NPM modules for Next.js client
+        working-directory: ./soup-frontend
+        run: |
+          npm i
+
+      - name: 🔧 Build Next.js client
+        working-directory: ./soup-frontend
+        run: |
+          npx next build
