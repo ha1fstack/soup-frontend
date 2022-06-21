@@ -25,7 +25,7 @@
     "react-hook-form": "^7.30.0",
     "react-icons": "^4.3.1",
     "react-loading-skeleton": "^3.1.0",
-    "react-query": "^3.34.20",
+    "react-query": "^3.39.1",
     "react-textarea-autosize": "^8.3.3",
     "recoil": "^0.7.3-alpha.2",
     "swiper": "^8.2.4",
