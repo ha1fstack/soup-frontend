@@ -2,7 +2,8 @@ import styled from "@emotion/styled";
 import { Flex, Box, Button, SectionBody, Hr } from "common/components";
 import { http } from "common/services";
 import { createPageLayout } from "components";
-import useAuth from "hooks/useAuth";
+import { useAuth } from "lib/hooks";
+import { injectSession, timeDiffString } from "lib/utils";
 import { GetServerSideProps } from "next";
 import Image from "next/image";
 import React from "react";
@@ -12,7 +13,6 @@ import { MdOutlineFavorite, MdOutlineFavoriteBorder } from "react-icons/md";
 import { dehydrate, QueryClient, useQuery, useQueryClient } from "react-query";
 import ReactTextareaAutosize from "react-textarea-autosize";
 import { CustomNextPage, ILoungePost } from "types";
-import { injectSession, timeDiffString } from "utils";
 
 const Lounge: CustomNextPage = () => {
   const auth = useAuth();

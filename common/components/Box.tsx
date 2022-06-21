@@ -1,6 +1,6 @@
 import { css, Theme } from "@emotion/react";
 import styled from "@emotion/styled";
-import { breakpoints } from "utils";
+import { breakpoints } from "lib/utils";
 
 const BoxVariant = (theme: Theme) => ({
   primary: css`

@@ -9,9 +9,8 @@ import {
   Hr,
 } from "common/components";
 import { ChildrenContainer } from "components";
-import { useToggle } from "hooks/useToggle";
+import { useToggle, useAuth } from "lib/hooks";
 import { MdOutlineEdit } from "react-icons/md";
-import useAuth from "hooks/useAuth";
 import { useQuery } from "react-query";
 import { http } from "common/services";
 import { CustomNextPage } from "types";

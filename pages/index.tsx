@@ -8,14 +8,13 @@ import {
   Label,
   CarouselPagination,
 } from "common/components";
-import { GetServerSideProps, NextPage } from "next";
-import { useRouter } from "next/router";
+import { GetServerSideProps } from "next";
 import Image from "next/image";
 import { css } from "@emotion/react";
 import { dehydrate, QueryClient, useQuery } from "react-query";
 import { http } from "common/services";
 import { ellipsis } from "polished";
-import { ChildrenContainer, createPageLayout } from "components";
+import { createPageLayout } from "components";
 import {
   breakpoints,
   ISource,
@@ -23,7 +22,8 @@ import {
   SourceList,
   timeDiffString,
   toMatrix,
-} from "utils";
+  getDisplayTag,
+} from "lib/utils";
 import {
   Dispatch,
   Fragment,
@@ -32,7 +32,6 @@ import {
   useRef,
   useState,
 } from "react";
-import { getDisplayTag, ITag } from "utils/tagDictionary";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperType, { Autoplay } from "swiper";
 import React from "react";
@@ -255,8 +254,6 @@ const NewItem = ({ post }: { post: IPostPreviewContent }) => {
 };
 
 const PostItem = ({ post }: { post: IPostPreviewContent }) => {
-  const router = useRouter();
-
   return (
     <Link passHref href={`/projects/${post.id}`}>
       <Flex

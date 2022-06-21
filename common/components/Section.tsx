@@ -1,8 +1,5 @@
-import { css, Theme } from "@emotion/react";
-import { CSSInterpolation } from "@emotion/serialize";
 import styled from "@emotion/styled";
-import { Flex } from "common/components";
-import { breakpoints } from "utils";
+import { breakpoints } from "lib/utils";
 
 export const SectionHeader = Object.assign(
   styled.div`

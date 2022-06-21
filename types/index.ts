@@ -1,7 +1,7 @@
 import { JSONContent } from "@tiptap/react";
 import { NextPage } from "next";
 import { AppProps } from "next/app";
-import { ITag } from "utils/tagDictionary";
+import { ITag } from "lib/utils";
 
 export interface IPageable<T> {
   content: T;

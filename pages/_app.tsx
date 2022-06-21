@@ -14,13 +14,12 @@ import "common/styles/globals.css";
 import "swiper/css";
 
 import { useEffect, useLayoutEffect, useState } from "react";
-import useAuth from "hooks/useAuth";
-
+import { useAuth } from "lib/hooks";
 import { ThemeProvider as NextThemeProvider } from "next-themes";
 import { http } from "common/services";
 import React from "react";
 import { Provider } from "jotai";
-import { breakpoints, isDevEnv } from "utils";
+import { breakpoints, isDevEnv } from "lib/utils";
 import { CustomAppProps, IAuthData } from "types";
 import { useRouter } from "next/router";
 import axios from "axios";

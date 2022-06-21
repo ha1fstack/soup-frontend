@@ -1,9 +1,6 @@
-import { css, useTheme } from "@emotion/react";
+import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import { Button, Box, Flex, Hr } from "common/components";
-import useAuth from "hooks/useAuth";
-import { useOuterClick } from "hooks/useOuterClick";
-import { useToggle } from "hooks/useToggle";
+import { Button, Box, Flex } from "common/components";
 import Link, { LinkProps } from "next/link";
 import React from "react";
 import {
@@ -19,10 +16,11 @@ import { Login } from "./Login";
 import { Media } from "./Media";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { loginPopupState, sideBarOpenState } from "state";
-import { breakpoints, WithThemeToggle } from "utils";
 import { http } from "common/services";
 import { useAtom, useSetAtom } from "jotai";
+import { useAuth, useToggle, useOuterClick } from "lib/hooks";
+import { sideBarOpenState, loginPopupState } from "lib/states";
+import { breakpoints, WithThemeToggle } from "lib/utils";
 
 const HeaderContainer = styled.div`
   box-sizing: border-box;

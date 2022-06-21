@@ -4,10 +4,10 @@ import { http } from "common/services";
 import { Dimmer } from "components";
 import { useCallback, useEffect } from "react";
 import { useQueryClient } from "react-query";
-import { loginPopupState } from "state";
+import { loginPopupState } from "lib/states";
 import Image from "next/image";
 import { useSetAtom } from "jotai";
-import { isDevEnv } from "utils";
+import { isDevEnv } from "lib/utils";
 
 const Logo = styled.span`
   cursor: pointer;

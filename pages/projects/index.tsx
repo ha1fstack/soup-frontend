@@ -13,7 +13,7 @@ import { useRouter } from "next/router";
 import { dehydrate, QueryClient, useQuery } from "react-query";
 import { http } from "common/services";
 import { Pagination } from "common/components/Pagination";
-import { injectSession, SourceDictionary, timeDiffString } from "utils";
+import { injectSession, SourceDictionary, timeDiffString } from "lib/utils";
 import { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { keyframes } from "@emotion/react";
 import { createPageLayout } from "components";
@@ -24,21 +24,20 @@ import {
   MdOutlineLabel,
   MdOutlineSearch,
 } from "react-icons/md";
-import { useToggle } from "hooks/useToggle";
 import { useCallback } from "react";
-import useClientRender from "hooks/useClientRender";
 import { ellipsis } from "polished";
 import { CustomNextPage, IFeaturedItem, IPageable, IPost } from "types";
-import {
-  getDisplayColor,
-  getDisplayTag,
-  ITag,
-  ITagCategory,
-  TagGroup,
-  TagList,
-} from "utils/tagDictionary";
 import Link from "next/link";
 import { atom, useAtom } from "jotai";
+import { useClientRender, useToggle } from "lib/hooks";
+import {
+  ITag,
+  getDisplayColor,
+  getDisplayTag,
+  TagList,
+  ITagCategory,
+  TagGroup,
+} from "lib/utils";
 
 const Project: CustomNextPage = () => {
   return (

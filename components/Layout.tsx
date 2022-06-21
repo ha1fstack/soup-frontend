@@ -1,16 +1,14 @@
 import { css, keyframes } from "@emotion/react";
 import styled from "@emotion/styled";
-import { useMatch } from "hooks/useMatch";
+import { useMatch, useAuth } from "lib/hooks";
 import Link, { LinkProps } from "next/link";
 import { useRouter } from "next/router";
 import React, { useRef, useEffect } from "react";
 import { Dimmer, Header, Media, Portal } from "components";
 import { Button, SectionHeader } from "common/components";
-import useAuth from "hooks/useAuth";
-import { loginPopupState, sideBarOpenState } from "state";
+import { loginPopupState, sideBarOpenState } from "lib/states";
 import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
-import { breakpoints } from "utils";
-import { WithThemeToggle } from "utils/renderProps";
+import { breakpoints, WithThemeToggle } from "lib/utils";
 import { useAtom, useSetAtom } from "jotai";
 import { ISideBarProps } from "types";
 

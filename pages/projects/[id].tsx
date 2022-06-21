@@ -19,14 +19,13 @@ import {
   MdOutlineStar,
   MdOutlineStarBorder,
 } from "react-icons/md";
-import useAuth from "hooks/useAuth";
 import { CustomNextPage, IProjectContentData, IProjectData } from "types";
-import { getDisplayTag, getDisplayColor } from "utils/tagDictionary";
 import { GetServerSideProps } from "next";
 import { NotFound } from "components/NotFound";
 import styled from "@emotion/styled";
-import { injectSession } from "utils";
 import Write from "./write";
+import { useAuth } from "lib/hooks";
+import { getDisplayColor, getDisplayTag, injectSession } from "lib/utils";
 
 const Page: CustomNextPage = () => {
   return (
