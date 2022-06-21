@@ -3,13 +3,12 @@ import {
   Box,
   Button,
   ButtonLink,
-  SectionHeader,
   SectionBody,
   ProfilePlaceholder,
   Label,
   Hr,
 } from "common/components";
-import { ChildrenContainer, Viewer } from "components";
+import { createPageLayout, Viewer } from "components";
 import { dehydrate, QueryClient, useQuery, useQueryClient } from "react-query";
 import { http } from "common/services";
 import { useRouter } from "next/router";
@@ -21,12 +20,38 @@ import {
   MdOutlineStarBorder,
 } from "react-icons/md";
 import useAuth from "hooks/useAuth";
-import { IProjectContentData, IProjectData } from "types";
+import { CustomNextPage, IProjectContentData, IProjectData } from "types";
 import { getDisplayTag, getDisplayColor } from "utils/tagDictionary";
-import { GetServerSideProps, NextPage } from "next";
+import { GetServerSideProps } from "next";
 import { NotFound } from "components/NotFound";
 import styled from "@emotion/styled";
 import { injectSession } from "utils";
+import Write from "./write";
+
+const Page: CustomNextPage = () => {
+  return (
+    <>
+      <SectionBody>
+        <Article />
+        <Box column>
+          <div css={{ height: "240px" }}></div>
+        </Box>
+      </SectionBody>
+    </>
+  );
+};
+
+Write.getLayout = createPageLayout({
+  width: 840,
+  title: "프로젝트/스터디 찾기",
+  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+});
+
+export default Page;
+
+/* -------------------------------------------------------------------------- */
+/*                                 components                                 */
+/* -------------------------------------------------------------------------- */
 
 const ArticlePreview = ({
   data,
@@ -247,26 +272,6 @@ const Article = () => {
     </Box>
   );
 };
-
-const Page: NextPage = () => {
-  return (
-    <ChildrenContainer width={840}>
-      <SectionHeader>
-        <SectionHeader.Title>프로젝트/스터디 찾기</SectionHeader.Title>
-        <SectionHeader.Description>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        </SectionHeader.Description>
-      </SectionHeader>
-      <SectionBody>
-        <Article />
-        <Box column>
-          <div css={{ height: "240px" }}></div>
-        </Box>
-      </SectionBody>
-    </ChildrenContainer>
-  );
-};
-
 const fetchProject = async (_http = http, id: string) => {
   const res = await _http.get<IProjectData>(`/projects/${id}`);
   return res.data;
@@ -302,5 +307,3 @@ export const getServerSideProps: GetServerSideProps = injectSession(
     };
   }
 );
-
-export default Page;

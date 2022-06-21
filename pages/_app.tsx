@@ -1,6 +1,6 @@
 import { css, Global, Theme, ThemeProvider } from "@emotion/react";
-import { MediaContextProvider, Layout, Error, Login } from "components";
-import NextApp, { AppContext, AppProps } from "next/app";
+import { MediaContextProvider, Layout, Error } from "components";
+import NextApp, { AppContext } from "next/app";
 import Head from "next/head";
 import {
   Hydrate,
@@ -14,18 +14,15 @@ import "common/styles/globals.css";
 import "swiper/css";
 
 import { useEffect, useLayoutEffect, useState } from "react";
-import { NextPage } from "next";
-import useAuth, { fetchAuth } from "hooks/useAuth";
+import useAuth from "hooks/useAuth";
 
 import { ThemeProvider as NextThemeProvider } from "next-themes";
 import { http } from "common/services";
 import React from "react";
-import { Atom, Provider, useAtomValue } from "jotai";
+import { Provider } from "jotai";
 import { breakpoints, isDevEnv } from "utils";
 import { CustomAppProps, IAuthData } from "types";
 import { useRouter } from "next/router";
-import { loginPopupState } from "state";
-import { useHydrateAtoms } from "jotai/utils";
 import axios from "axios";
 
 // suppress react query logging

@@ -1,15 +1,7 @@
-import { JSONContent } from "@tiptap/react";
-import {
-  Box,
-  Flex,
-  Input,
-  Button,
-  SectionBody,
-  SectionHeader,
-} from "common/components";
+import { Box, Flex, Input, Button, SectionBody } from "common/components";
 import { http } from "common/services";
-import { ChildrenContainer, Editor } from "components";
-import { GetServerSideProps, NextPage } from "next";
+import { createPageLayout, Editor } from "components";
+import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { useLayoutEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -17,6 +9,30 @@ import { QueryClient, dehydrate, useQuery, useQueryClient } from "react-query";
 import { CustomNextPage, IArticleData, IProjectData } from "types";
 
 const Edit: CustomNextPage = () => {
+  return (
+    <>
+      <SectionBody>
+        <EditForm />
+      </SectionBody>
+    </>
+  );
+};
+
+Edit.getLayout = createPageLayout({
+  width: 960,
+  title: "프로젝트/스터디 수정",
+  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+});
+
+Edit.authorized = true;
+
+export default Edit;
+
+/* -------------------------------------------------------------------------- */
+/*                                 components                                 */
+/* -------------------------------------------------------------------------- */
+
+const EditForm = () => {
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -49,48 +65,38 @@ const Edit: CustomNextPage = () => {
   if (!data || isLoading || isError) return null;
 
   return (
-    <ChildrenContainer width={960}>
-      <SectionHeader>
-        <SectionHeader.Title>프로젝트/스터디 수정</SectionHeader.Title>
-        <SectionHeader.Description>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        </SectionHeader.Description>
-      </SectionHeader>
-      <SectionBody>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Box
-            responsive
-            column
-            css={{
-              padding: "16px",
-              gap: "16px",
-              marginBottom: "24px",
-            }}
-          >
-            <Flex
-              css={{
-                justifyContent: "space-between",
-              }}
-            >
-              <Input
-                {...register("title")}
-                css={{ maxWidth: "480px", flex: "1 0 auto" }}
-                placeholder="제목"
-              />
-              <Button type="submit" variant="primary">
-                작성
-              </Button>
-            </Flex>
-            <Box responsive column>
-              <Editor
-                initialContent={JSON.parse(data.content as string)}
-                setValue={setValue}
-              />
-            </Box>
-          </Box>
-        </form>
-      </SectionBody>
-    </ChildrenContainer>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Box
+        responsive
+        column
+        css={{
+          padding: "16px",
+          gap: "16px",
+          marginBottom: "24px",
+        }}
+      >
+        <Flex
+          css={{
+            justifyContent: "space-between",
+          }}
+        >
+          <Input
+            {...register("title")}
+            css={{ maxWidth: "480px", flex: "1 0 auto" }}
+            placeholder="제목"
+          />
+          <Button type="submit" variant="primary">
+            작성
+          </Button>
+        </Flex>
+        <Box responsive column>
+          <Editor
+            initialContent={JSON.parse(data.content as string)}
+            setValue={setValue}
+          />
+        </Box>
+      </Box>
+    </form>
   );
 };
 
@@ -114,7 +120,3 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
   };
 };
-
-Edit.authorized = true;
-
-export default Edit;

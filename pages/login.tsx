@@ -1,7 +1,7 @@
-import { useAtom, useAtomValue } from "jotai";
-import { GetServerSideProps, NextPage } from "next";
+import { useAtom } from "jotai";
+import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useLayoutEffect } from "react";
+import { useLayoutEffect } from "react";
 import { loginPopupState } from "state";
 import { useHydrateAtoms } from "jotai/utils";
 import useAuth from "hooks/useAuth";

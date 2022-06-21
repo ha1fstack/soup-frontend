@@ -5,7 +5,7 @@ import Link, { LinkProps } from "next/link";
 import { useRouter } from "next/router";
 import React, { useRef, useEffect } from "react";
 import { Dimmer, Header, Media, Portal } from "components";
-import { Button } from "common/components";
+import { Button, SectionHeader } from "common/components";
 import useAuth from "hooks/useAuth";
 import { loginPopupState, sideBarOpenState } from "state";
 import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
@@ -281,3 +281,47 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
     </>
   );
 };
+
+type IPageLayoutHeader =
+  | {
+      title: string;
+      description?: string;
+    }
+  | {
+      title?: never;
+      description?: never;
+    };
+
+type IPageLayout = IPageLayoutHeader & {
+  width?: number;
+};
+
+export const PageLayout = ({
+  title,
+  description,
+  children,
+  width,
+}: React.PropsWithChildren<IPageLayout>) => {
+  return (
+    <Layout>
+      <ChildrenContainer width={width}>
+        {title && (
+          <SectionHeader>
+            <SectionHeader.Title>{title}</SectionHeader.Title>
+            {description && (
+              <SectionHeader.Description>
+                {description}
+              </SectionHeader.Description>
+            )}
+          </SectionHeader>
+        )}
+        {children}
+      </ChildrenContainer>
+    </Layout>
+  );
+};
+
+export const createPageLayout =
+  // eslint-disable-next-line react/display-name
+  (options: IPageLayout) => (page: React.ReactElement) =>
+    React.createElement(PageLayout, options, page);

@@ -15,7 +15,7 @@ import { css } from "@emotion/react";
 import { dehydrate, QueryClient, useQuery } from "react-query";
 import { http } from "common/services";
 import { ellipsis } from "polished";
-import { ChildrenContainer } from "components";
+import { ChildrenContainer, createPageLayout } from "components";
 import {
   breakpoints,
   ISource,
@@ -37,7 +37,28 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperType, { Autoplay } from "swiper";
 import React from "react";
 import Link from "next/link";
-import { IPostPreviewContent, ILoungePost } from "types";
+import { IPostPreviewContent, ILoungePost, CustomNextPage } from "types";
+
+const Home: CustomNextPage = () => {
+  return (
+    <>
+      <Banner />
+      <SectionBodyAlt css={FeaturedSectionStyle}>
+        <Featured />
+      </SectionBodyAlt>
+      <SectionBody>
+        <Flex css={{ gap: "36px", flexWrap: "wrap" }}>
+          <Projects />
+          <Lounge />
+        </Flex>
+      </SectionBody>
+    </>
+  );
+};
+
+Home.getLayout = createPageLayout({});
+
+export default Home;
 
 /* -------------------------------------------------------------------------- */
 /*                                    utils                                   */
@@ -66,6 +87,96 @@ const FeaturedSectionStyle = css({
 /* -------------------------------------------------------------------------- */
 /*                                 components                                 */
 /* -------------------------------------------------------------------------- */
+
+const Projects = () => {
+  const styles = {
+    Wrapper: css({
+      flex: "99999 1 480px",
+      gap: "12px",
+    }),
+    HeaderWrapper: css({
+      fontSize: "20px",
+      fontWeight: "700",
+      "& > *+*": { marginLeft: "12px" },
+    }),
+  };
+
+  const { data, isLoading, isError } = useQuery(
+    "front/projects",
+    fetchFrontProjects
+  );
+  const [source, setSource] = useSource(
+    SourceList[(Math.random() * SourceList.length) | 0]
+  );
+
+  if (!data || isLoading || isError)
+    return <Flex column css={{ flex: "3 1 480px" }} />;
+
+  return (
+    <Flex column css={styles.Wrapper}>
+      <p css={styles.HeaderWrapper}>
+        {SourceList.map((currentSource, i) => (
+          <span
+            onClick={() => setSource(currentSource)}
+            key={i}
+            css={{
+              color: source === currentSource ? undefined : "var(--disabled)",
+              fontWeight: source === currentSource ? undefined : 500,
+              cursor: "pointer",
+            }}
+          >
+            {SourceDictionary[currentSource]}
+          </span>
+        ))}
+      </p>
+      <Box responsive column css={{ gap: "16px", padding: "16px 12px" }}>
+        {data[source].map((post, i) => (
+          <Fragment key={post.id}>
+            {i !== 0 && <Hr />}
+            <PostItem post={post} />
+          </Fragment>
+        ))}
+      </Box>
+    </Flex>
+  );
+};
+
+const Lounge = () => {
+  const styles = {
+    Wrapper: css({ flex: "1 1 440px", gap: "12px" }),
+    HeaderWrapper: css({
+      fontSize: "20px",
+      fontWeight: "700",
+    }),
+    ContentWrapper: css({
+      gap: "16px",
+      padding: "16px 12px",
+      cursor: "pointer",
+    }),
+  };
+
+  const { data, isLoading, isError } = useQuery("lounge", fetchLounge);
+
+  if (!data || isLoading || isError) return null;
+
+  return (
+    <Flex column css={styles.Wrapper}>
+      <p css={styles.HeaderWrapper}>
+        <span>라운지</span>
+      </p>
+      <Link passHref href="/lounge">
+        <Box as="a" responsive column css={styles.ContentWrapper}>
+          {data.map((post, i) => (
+            <Fragment key={post.lounge_id}>
+              {i !== 0 && <Hr />}
+              <LoungeItem post={post} />
+            </Fragment>
+          ))}
+        </Box>
+      </Link>
+    </Flex>
+  );
+};
 
 const HotItem = ({ post }: { post: IPostPreviewContent }) => {
   const styles = {
@@ -105,8 +216,6 @@ const HotItem = ({ post }: { post: IPostPreviewContent }) => {
 };
 
 const NewItem = ({ post }: { post: IPostPreviewContent }) => {
-  const router = useRouter();
-
   return (
     <Link passHref href={`/projects/${post.id}`}>
       <Flex as="a" css={{ gap: "16px", cursor: "pointer" }}>
@@ -239,96 +348,6 @@ const LoungeItem = ({ post }: { post: ILoungePost }) => {
           {post.content}
         </div>
       </Flex>
-    </Flex>
-  );
-};
-
-const Projects = () => {
-  const styles = {
-    Wrapper: css({
-      flex: "99999 1 480px",
-      gap: "12px",
-    }),
-    HeaderWrapper: css({
-      fontSize: "20px",
-      fontWeight: "700",
-      "& > *+*": { marginLeft: "12px" },
-    }),
-  };
-
-  const { data, isLoading, isError } = useQuery(
-    "front/projects",
-    fetchFrontProjects
-  );
-  const [source, setSource] = useSource(
-    SourceList[(Math.random() * SourceList.length) | 0]
-  );
-
-  if (!data || isLoading || isError)
-    return <Flex column css={{ flex: "3 1 480px" }} />;
-
-  return (
-    <Flex column css={styles.Wrapper}>
-      <p css={styles.HeaderWrapper}>
-        {SourceList.map((currentSource, i) => (
-          <span
-            onClick={() => setSource(currentSource)}
-            key={i}
-            css={{
-              color: source === currentSource ? undefined : "var(--disabled)",
-              fontWeight: source === currentSource ? undefined : 500,
-              cursor: "pointer",
-            }}
-          >
-            {SourceDictionary[currentSource]}
-          </span>
-        ))}
-      </p>
-      <Box responsive column css={{ gap: "16px", padding: "16px 12px" }}>
-        {data[source].map((post, i) => (
-          <Fragment key={post.id}>
-            {i !== 0 && <Hr />}
-            <PostItem post={post} />
-          </Fragment>
-        ))}
-      </Box>
-    </Flex>
-  );
-};
-
-const Lounge = () => {
-  const styles = {
-    Wrapper: css({ flex: "1 1 440px", gap: "12px" }),
-    HeaderWrapper: css({
-      fontSize: "20px",
-      fontWeight: "700",
-    }),
-    ContentWrapper: css({
-      gap: "16px",
-      padding: "16px 12px",
-      cursor: "pointer",
-    }),
-  };
-
-  const { data, isLoading, isError } = useQuery("lounge", fetchLounge);
-
-  if (!data || isLoading || isError) return null;
-
-  return (
-    <Flex column css={styles.Wrapper}>
-      <p css={styles.HeaderWrapper}>
-        <span>라운지</span>
-      </p>
-      <Link passHref href="/lounge">
-        <Box as="a" responsive column css={styles.ContentWrapper}>
-          {data.map((post, i) => (
-            <Fragment key={post.lounge_id}>
-              {i !== 0 && <Hr />}
-              <LoungeItem post={post} />
-            </Fragment>
-          ))}
-        </Box>
-      </Link>
     </Flex>
   );
 };
@@ -553,27 +572,6 @@ const Banner = React.memo(() => {
 Banner.displayName = "Banner";
 
 /* -------------------------------------------------------------------------- */
-/*                                    page                                    */
-/* -------------------------------------------------------------------------- */
-
-const Home: NextPage = () => {
-  return (
-    <ChildrenContainer>
-      <Banner />
-      <SectionBodyAlt css={FeaturedSectionStyle}>
-        <Featured />
-      </SectionBodyAlt>
-      <SectionBody>
-        <Flex css={{ gap: "36px", flexWrap: "wrap" }}>
-          <Projects />
-          <Lounge />
-        </Flex>
-      </SectionBody>
-    </ChildrenContainer>
-  );
-};
-
-/* -------------------------------------------------------------------------- */
 /*                                     api                                    */
 /* -------------------------------------------------------------------------- */
 
@@ -615,5 +613,3 @@ export const getServerSideProps: GetServerSideProps = async () => {
     },
   };
 };
-
-export default Home;

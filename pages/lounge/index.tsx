@@ -1,28 +1,92 @@
-import { css } from "@emotion/react";
-import {
-  Flex,
-  Box,
-  Button,
-  SectionHeader,
-  SectionBody,
-  Hr,
-} from "common/components";
+import styled from "@emotion/styled";
+import { Flex, Box, Button, SectionBody, Hr } from "common/components";
 import { http } from "common/services";
-import { ChildrenContainer } from "components";
+import { createPageLayout } from "components";
 import useAuth from "hooks/useAuth";
 import { GetServerSideProps } from "next";
 import Image from "next/image";
+import React from "react";
 import { Fragment, useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, UseFormRegister } from "react-hook-form";
 import { MdOutlineFavorite, MdOutlineFavoriteBorder } from "react-icons/md";
 import { dehydrate, QueryClient, useQuery, useQueryClient } from "react-query";
 import ReactTextareaAutosize from "react-textarea-autosize";
-import { ILoungePost } from "types";
+import { CustomNextPage, ILoungePost } from "types";
 import { injectSession, timeDiffString } from "utils";
+
+const Lounge: CustomNextPage = () => {
+  const auth = useAuth();
+
+  return (
+    <>
+      <SectionBody>
+        <Flex column css={{ gap: "24px" }}>
+          {auth.success ? <LoungeEditor /> : <LoungeLoginMessage />}
+          <LoungePostSection />
+        </Flex>
+      </SectionBody>
+    </>
+  );
+};
+
+Lounge.getLayout = createPageLayout({
+  width: 840,
+  title: "라운지",
+  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+});
+
+export default Lounge;
 
 /* -------------------------------------------------------------------------- */
 /*                                 components                                 */
 /* -------------------------------------------------------------------------- */
+
+const FavButton = ({
+  count,
+  checked,
+  ...rest
+}: React.ComponentProps<typeof Button> & {
+  count: number;
+  checked: boolean;
+}) => (
+  <Button
+    variant="white"
+    css={{
+      padding: "0px 6px 0px 8px",
+      height: "24px",
+      gap: "4px",
+      alignItems: "center",
+      color: "var(--negative2)",
+    }}
+    {...rest}
+  >
+    <span css={{ fontSize: "12px" }}>{count}</span>
+    {React.createElement(
+      checked ? MdOutlineFavorite : MdOutlineFavoriteBorder,
+      {
+        style: { fontSize: "var(--font-paragraph-small)", margin: 0 },
+      }
+    )}
+  </Button>
+);
+
+const ProfileImage = ({ src }: { src: string }) => (
+  <span
+    css={{
+      flex: "0 0 auto",
+    }}
+  >
+    <Image
+      css={{
+        borderRadius: "24px",
+      }}
+      width="48px"
+      height="48px"
+      alt="profile"
+      src={src}
+    />
+  </span>
+);
 
 const LoungePost = ({ post }: { post: ILoungePost }) => {
   const queryClient = useQueryClient();
@@ -50,58 +114,19 @@ const LoungePost = ({ post }: { post: ILoungePost }) => {
       );
   };
 
-  const FavButton = () => (
-    <Button
-      variant="white"
-      css={{
-        padding: "0px 6px 0px 8px",
-        height: "24px",
-        gap: "4px",
-        alignItems: "center",
-        color: "var(--negative2)",
-      }}
-      onClick={() => handleFav(post)}
-    >
-      <span css={{ fontSize: "12px" }}>{post.fav}</span>
-      {post.isfav || false ? (
-        <MdOutlineFavorite
-          style={{ fontSize: "var(--font-paragraph-small)", margin: 0 }}
-        />
-      ) : (
-        <MdOutlineFavoriteBorder
-          style={{ fontSize: "var(--font-paragraph-small)", margin: 0 }}
-        />
-      )}
-    </Button>
-  );
-
-  const ProfileImage = () => (
-    <span
-      css={{
-        flex: "0 0 auto",
-      }}
-    >
-      <Image
-        css={{
-          borderRadius: "24px",
-        }}
-        width="48px"
-        height="48px"
-        alt="profile"
-        src={post.picture}
-      />
-    </span>
-  );
-
   return (
     <Flex css={{ gap: "18px", alignItems: "stretch" }}>
-      <ProfileImage />
+      <ProfileImage src={post.picture} />
       <Flex column css={{ gap: "12px", flex: "1 1 auto" }}>
         <Flex css={{ justifyContent: "space-between", alignItems: "center" }}>
           <p>
             <b>{post.username}</b> · {timeDiffString(post.date)}
           </p>
-          <FavButton />
+          <FavButton
+            count={post.fav}
+            checked={post.isfav}
+            onClick={() => handleFav(post)}
+          />
         </Flex>
         <div css={{ whiteSpace: "pre-line" }}>{post.content}</div>
       </Flex>
@@ -109,9 +134,19 @@ const LoungePost = ({ post }: { post: ILoungePost }) => {
   );
 };
 
-const LoungeEditor = () => {
-  const styles = {
-    TextArea: css({
+const LoungeEditorTextArea = ({
+  register,
+}: {
+  register: UseFormRegister<ILoungeForm>;
+}) => (
+  <ReactTextareaAutosize
+    placeholder="간단한 이야기를 작성해 보세요..."
+    {...register("content", {
+      required: true,
+      minLength: 10,
+      maxLength: 500,
+    })}
+    css={{
       background: "transparent",
       fontSize: "var(--font-title-normal)",
       marginTop: "10px",
@@ -121,15 +156,34 @@ const LoungeEditor = () => {
       ":focus": {
         outline: "0px",
       },
-    }),
-    Dialog: css({
-      justifyContent: "flex-end",
-      alignItems: "center",
-      gap: "12px",
-      lineHeight: "initial",
-    }),
-  };
+    }}
+    maxLength={500}
+    minRows={3}
+    spellCheck="false"
+    autoComplete="off"
+    autoCorrect="off"
+    autoCapitalize="off"
+  />
+);
 
+interface ILoungeForm {
+  content: string;
+}
+
+const LoungeEditorDialog = styled(Flex)({
+  justifyContent: "flex-end",
+  alignItems: "center",
+  gap: "12px",
+  lineHeight: "initial",
+});
+
+const LoungeEditorSubmitButton = ({ disabled }: { disabled: boolean }) => (
+  <Button disabled={disabled} type="submit" variant="primary">
+    작성하기
+  </Button>
+);
+
+const LoungeEditor = () => {
   const auth = useAuth();
 
   const {
@@ -139,9 +193,7 @@ const LoungeEditor = () => {
     trigger,
     reset,
     formState: { errors },
-  } = useForm<{
-    content: string;
-  }>({
+  } = useForm<ILoungeForm>({
     mode: "all",
   });
 
@@ -165,134 +217,48 @@ const LoungeEditor = () => {
 
   if (!auth.success) return null;
 
-  const TextArea = () => (
-    <ReactTextareaAutosize
-      {...register("content", {
-        required: true,
-        minLength: 10,
-        maxLength: 500,
-      })}
-      placeholder="간단한 이야기를 작성해 보세요..."
-      css={styles.TextArea}
-      maxLength={500}
-      minRows={3}
-      spellCheck="false"
-      autoComplete="off"
-      autoCorrect="off"
-      autoCapitalize="off"
-    />
-  );
-
-  const ProfileImage = () => (
-    <div
-      css={{
-        flex: "0 0 auto",
-      }}
-    >
-      <Image
-        css={{
-          borderRadius: "24px",
-        }}
-        width="48px"
-        height="48px"
-        alt="profile"
-        src={auth.profileImage!}
-      />
-    </div>
-  );
-
-  const SubmitButton = () => (
-    <Button
-      disabled={!!Object.keys(errors).length}
-      type="submit"
-      variant="primary"
-    >
-      작성하기
-    </Button>
-  );
-
   return (
     <Box responsive column css={{ padding: "16px" }}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Flex column css={{ gap: "0px" }}>
           <Flex css={{ gap: "18px" }}>
-            <ProfileImage />
-            <TextArea />
+            <ProfileImage src={auth.profileImage!} />
+            <LoungeEditorTextArea register={register} />
           </Flex>
-          <Flex css={styles.Dialog}>
+          <LoungeEditorDialog>
             <span>{watchContent?.length}/500</span>
-            <SubmitButton />
-          </Flex>
+            <LoungeEditorSubmitButton disabled={!!Object.keys(errors).length} />
+          </LoungeEditorDialog>
         </Flex>
       </form>
     </Box>
   );
 };
 
-const LoungeInfoMessage = () => (
+const LoungeLoginMessage = () => (
   <Box variant="primary" css={{ lineHeight: "initial" }}>
     로그인 후 라운지에 이야기를 작성해 보세요.
   </Box>
 );
 
-const Lounge = () => {
-  const auth = useAuth();
-
+const LoungePostSection = () => {
   let { data } = useQuery<ILoungePost[]>("lounge", () => fetchLounge());
 
   return (
-    <ChildrenContainer width={840}>
-      <SectionHeader>
-        <SectionHeader.Title>라운지</SectionHeader.Title>
-        <SectionHeader.Description>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        </SectionHeader.Description>
-      </SectionHeader>
-      <SectionBody>
-        <Flex column css={{ gap: "24px" }}>
-          {auth.success ? <LoungeEditor /> : <LoungeInfoMessage />}
-          <Box responsive column css={{ gap: "16px", padding: "16px" }}>
-            {data?.map((post, i) => (
-              <Fragment key={post.lounge_id}>
-                {!!i && <Hr />}
-                <LoungePost post={post} />
-              </Fragment>
-            ))}
-          </Box>
-        </Flex>
-      </SectionBody>
-    </ChildrenContainer>
+    <Box as="section" responsive column css={{ gap: "16px", padding: "16px" }}>
+      {data?.map((post, i) => (
+        <Fragment key={post.lounge_id}>
+          {!!i && <Hr />}
+          <LoungePost post={post} />
+        </Fragment>
+      ))}
+    </Box>
   );
 };
 
 /* -------------------------------------------------------------------------- */
 /*                                     api                                    */
 /* -------------------------------------------------------------------------- */
-
-// function Query<TQueryFnData = unknown, TQueryKey extends QueryKey = QueryKey>(
-//   this: {
-//     http: AxiosInstance;
-//   },
-//   queryKey: TQueryKey,
-//   queryFn:
-// ) {
-//   return (this.http) => {
-
-//   };
-// }
-
-// const makeQuery = <
-//   TQueryFnData = unknown,
-//   TQueryKey extends QueryKey = QueryKey
-// >({
-//   queryKey,
-//   queryFn,
-// }: {
-//   queryKey: TQueryKey;
-//   queryFn: QueryFunction<TQueryFnData, TQueryKey>;
-// }) => {
-//   return new Query(queryKey, queryFn)
-// };
 
 const fetchLounge = async (_http = http) => {
   const res = await _http.get("/lounge");
@@ -303,7 +269,7 @@ export const getServerSideProps: GetServerSideProps = injectSession(
   async ({ http }) => {
     const queryClient = new QueryClient();
 
-    const res = await Promise.all([
+    await Promise.all([
       queryClient.prefetchQuery("lounge", () => fetchLounge(http)),
     ]);
 
@@ -314,5 +280,3 @@ export const getServerSideProps: GetServerSideProps = injectSession(
     };
   }
 );
-
-export default Lounge;

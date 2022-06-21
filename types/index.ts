@@ -46,7 +46,7 @@ export interface IProjectContentData<T> {
   content: T;
   userName: string;
   date: string;
-  link: "https://okky.kr/article/1221052";
+  link: string;
   stacks: ITag[];
   views: number;
   talk: string;
@@ -94,7 +94,7 @@ export interface IPostPreviewContent {
   content: string;
   userName: string;
   date: string;
-  link: "https://okky.kr/article/1221052";
+  link: string;
   stacks: ITag[];
   views: number;
   talk: string;

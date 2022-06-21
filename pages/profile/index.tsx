@@ -5,7 +5,6 @@ import {
   TextArea,
   Input,
   Box,
-  SectionHeader,
   SectionBody,
   Hr,
 } from "common/components";
@@ -16,6 +15,54 @@ import useAuth from "hooks/useAuth";
 import { useQuery } from "react-query";
 import { http } from "common/services";
 import { CustomNextPage } from "types";
+import { createPageLayout } from "components";
+
+const Profile: CustomNextPage = () => {
+  return (
+    <>
+      <SectionBody>
+        <Flex
+          css={{
+            flexWrap: "wrap",
+            justifyContent: "space-between",
+            width: "100%",
+            alignItems: "flex-start",
+            "& > *": {
+              flex: 1,
+            },
+            gap: "24px",
+          }}
+        >
+          <Info />
+          <Flex
+            column
+            css={{
+              width: 0,
+              flex: "1 0 400px",
+              gap: "24px",
+            }}
+          >
+            {/* <FavoritePost />
+            <FavoriteLounge /> */}
+          </Flex>
+        </Flex>
+      </SectionBody>
+    </>
+  );
+};
+
+Profile.getLayout = createPageLayout({
+  title: "내 프로필",
+  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+});
+
+Profile.authorized = true;
+
+export default Profile;
+
+/* -------------------------------------------------------------------------- */
+/*                                 components                                 */
+/* -------------------------------------------------------------------------- */
 
 const DetailsRow = ({
   item,
@@ -235,48 +282,6 @@ const Info = () => {
   );
 };
 
-const Profile: CustomNextPage = () => {
-  return (
-    <ChildrenContainer>
-      <SectionHeader>
-        <SectionHeader.Title>내 프로필</SectionHeader.Title>
-        <SectionHeader.Description>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        </SectionHeader.Description>
-      </SectionHeader>
-      <SectionBody>
-        <Flex
-          css={{
-            flexWrap: "wrap",
-            justifyContent: "space-between",
-            width: "100%",
-            alignItems: "flex-start",
-            "& > *": {
-              flex: 1,
-            },
-            gap: "24px",
-          }}
-        >
-          <Info />
-          <Flex
-            column
-            css={{
-              width: 0,
-              flex: "1 0 400px",
-              gap: "24px",
-            }}
-          >
-            {/* <FavoritePost />
-            <FavoriteLounge /> */}
-          </Flex>
-        </Flex>
-      </SectionBody>
-    </ChildrenContainer>
-  );
-};
-
-Profile.authorized = true;
-
 const FavoriteLounge = () => {
   const { data, isLoading, isError } = useQuery("FavoriteLounge", async () => {
     return (await http.get<any>("/myfav")).data;
@@ -302,5 +307,3 @@ const FavoritePost = () => {
     </Box>
   );
 };
-
-export default Profile;

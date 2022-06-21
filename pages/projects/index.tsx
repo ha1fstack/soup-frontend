@@ -4,11 +4,10 @@ import {
   Button,
   Flex,
   ProfilePlaceholder,
-  SectionHeader,
   SectionBody,
   SectionBodyAlt,
 } from "common/components";
-import { GetServerSideProps, NextPage } from "next";
+import { GetServerSideProps } from "next";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { dehydrate, QueryClient, useQuery } from "react-query";
@@ -17,7 +16,7 @@ import { Pagination } from "common/components/Pagination";
 import { injectSession, SourceDictionary, timeDiffString } from "utils";
 import { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { keyframes } from "@emotion/react";
-import { ChildrenContainer } from "components";
+import { createPageLayout } from "components";
 import React from "react";
 import {
   MdOutlineCheck,
@@ -29,7 +28,7 @@ import { useToggle } from "hooks/useToggle";
 import { useCallback } from "react";
 import useClientRender from "hooks/useClientRender";
 import { ellipsis } from "polished";
-import { IFeaturedItem, IPageable, IPost } from "types";
+import { CustomNextPage, IFeaturedItem, IPageable, IPost } from "types";
 import {
   getDisplayColor,
   getDisplayTag,
@@ -40,6 +39,95 @@ import {
 } from "utils/tagDictionary";
 import Link from "next/link";
 import { atom, useAtom } from "jotai";
+
+const Project: CustomNextPage = () => {
+  return (
+    <>
+      <SectionBodyAlt>
+        <FilterList />
+      </SectionBodyAlt>
+      <SectionBody>
+        <TagSearch />
+        <Flex css={{ gap: "24px", flexWrap: "wrap", marginBottom: "56px" }}>
+          <ArticleList />
+          <Featured />
+        </Flex>
+      </SectionBody>
+    </>
+  );
+};
+
+Project.getLayout = createPageLayout({
+  title: "프로젝트/스터디 찾기",
+  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+});
+
+export default Project;
+
+/* -------------------------------------------------------------------------- */
+/*                                 components                                 */
+/* -------------------------------------------------------------------------- */
+
+const ProjectPagination = ({
+  current,
+  end,
+}: {
+  current: number;
+  end: number;
+}) => {
+  const router = useRouter();
+
+  return (
+    <Pagination
+      css={{ justifyContent: "center", margin: "12px 0px" }}
+      onClick={(i) => {
+        router.push({
+          query: {
+            page: String(i),
+          },
+        });
+      }}
+      current={current}
+      end={end}
+    />
+  );
+};
+
+const ArticleList = () => {
+  const router = useRouter();
+  const currentPage = parseInt(router.query.page as string) || 1;
+
+  const { data, isLoading, isError } = useQuery("projects", () =>
+    fetchProjects(
+      undefined,
+      currentPage,
+      router.query.stacks
+        ? ((Array.isArray(router.query.stacks)
+            ? router.query.stacks
+            : router.query.stacks.split(",")) as ITag[])
+        : undefined
+    )
+  );
+
+  if (!data || isLoading || isError) return null;
+
+  return (
+    <Flex column css={{ flex: "99999 1 480px", marginBottom: "-56px" }}>
+      <ProjectPagination current={currentPage} end={data?.totalPages || 0} />
+      <Flex
+        column
+        css={{
+          gap: "12px",
+        }}
+      >
+        {data?.content.map((post, i) => (
+          <Post post={post} key={i} />
+        ))}
+      </Flex>
+      <ProjectPagination current={currentPage} end={data?.totalPages || 0} />
+    </Flex>
+  );
+};
 
 const Post = ({ image, post }: { image?: boolean; post: IPost }) => {
   const timeString = useMemo(() => timeDiffString(post.date), [post]);
@@ -645,79 +733,6 @@ const Featured = () => {
   );
 };
 
-const Project: NextPage = () => {
-  const router = useRouter();
-  const currentPage = parseInt(router.query.page as string) || 1;
-  const { data, isLoading, isError } = useQuery("projects", () =>
-    fetchProjects(
-      undefined,
-      currentPage,
-      router.query.stacks
-        ? ((Array.isArray(router.query.stacks)
-            ? router.query.stacks
-            : router.query.stacks.split(",")) as ITag[])
-        : undefined
-    )
-  );
-
-  const ProjectPagination = ({
-    className,
-  }: {
-    className?: string | undefined;
-  }) => (
-    <Pagination
-      css={{ justifyContent: "center", margin: "12px 0px" }}
-      className={className}
-      onClick={(i) => {
-        router.push({
-          query: {
-            page: String(i),
-          },
-        });
-      }}
-      current={currentPage}
-      end={data?.totalPages || 0}
-    />
-  );
-
-  if (!data || isLoading || isError) return null;
-
-  return (
-    <ChildrenContainer>
-      <SectionHeader>
-        <SectionHeader.Title>프로젝트/스터디 찾기</SectionHeader.Title>
-        <SectionHeader.Description>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        </SectionHeader.Description>
-      </SectionHeader>
-      <SectionBodyAlt>
-        <FilterList />
-      </SectionBodyAlt>
-
-      <SectionBody>
-        <TagSearch />
-        <Flex css={{ gap: "24px", flexWrap: "wrap", marginBottom: "56px" }}>
-          <Flex column css={{ flex: "99999 1 480px", marginBottom: "-56px" }}>
-            <ProjectPagination />
-            <Flex
-              column
-              css={{
-                gap: "12px",
-              }}
-            >
-              {data?.content.map((post, i) => (
-                <Post post={post} key={i} />
-              ))}
-            </Flex>
-            <ProjectPagination />
-          </Flex>
-          <Featured />
-        </Flex>
-      </SectionBody>
-    </ChildrenContainer>
-  );
-};
-
 const fetchProjects = async (_http = http, page = 1, stacks?: ITag[]) => {
   const res = await _http.get<IPageable<IPost[]>>(`/projects`, {
     params: {
@@ -751,4 +766,3 @@ export const getServerSideProps: GetServerSideProps = injectSession(
     };
   }
 );
-export default Project;
