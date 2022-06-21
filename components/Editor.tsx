@@ -4,12 +4,11 @@ import {
   useEditor,
   EditorContent,
   Editor as TipTapEditor,
-  JSONContent,
   Content,
 } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
-import { Flex, Box } from "common/components";
+import { Flex } from "common/components";
 import {
   MdOutlineCode,
   MdOutlineFormatBold,
@@ -28,7 +27,7 @@ import {
   MdOutlineSplitscreen,
   MdOutlineUndo,
 } from "react-icons/md";
-import { Youtube } from "tiptap/youtube";
+import { Youtube } from "lib/tiptap";
 import { UseFormSetValue } from "react-hook-form";
 import { useEffect } from "react";
 import { IArticleData } from "types";
