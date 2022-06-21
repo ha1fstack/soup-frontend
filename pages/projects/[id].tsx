@@ -26,6 +26,7 @@ import styled from "@emotion/styled";
 import Write from "./write";
 import { useAuth } from "lib/hooks";
 import { getDisplayColor, getDisplayTag, injectSession } from "lib/utils";
+import { fetchProject } from "lib/queries";
 
 const Page: CustomNextPage = () => {
   return (
@@ -270,10 +271,6 @@ const Article = () => {
       </Flex>
     </Box>
   );
-};
-const fetchProject = async (_http = http, id: string) => {
-  const res = await _http.get<IProjectData>(`/projects/${id}`);
-  return res.data;
 };
 
 const deleteProject = async (_http = http, id: string) => {

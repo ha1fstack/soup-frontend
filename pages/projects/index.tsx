@@ -38,6 +38,7 @@ import {
   ITagCategory,
   TagGroup,
 } from "lib/utils";
+import { fetchProjects } from "lib/queries";
 
 const Project: CustomNextPage = () => {
   return (
@@ -730,16 +731,6 @@ const Featured = () => {
       </Box>
     </Flex>
   );
-};
-
-const fetchProjects = async (_http = http, page = 1, stacks?: ITag[]) => {
-  const res = await _http.get<IPageable<IPost[]>>(`/projects`, {
-    params: {
-      page,
-      stacks: stacks?.join(","),
-    },
-  });
-  return res.data;
 };
 
 export const getServerSideProps: GetServerSideProps = injectSession(

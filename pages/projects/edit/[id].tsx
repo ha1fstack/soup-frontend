@@ -1,6 +1,8 @@
 import { Box, Flex, Input, Button, SectionBody } from "common/components";
 import { http } from "common/services";
 import { createPageLayout, Editor } from "components";
+import { fetchProject } from "lib/queries";
+import { injectSession } from "lib/utils";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { useLayoutEffect } from "react";
@@ -45,7 +47,7 @@ const EditForm = () => {
   });
 
   const { data, isLoading, isError } = useQuery(["project", id], () =>
-    fetchProject(id)
+    fetchProject(undefined, id)
   );
 
   useLayoutEffect(() => {
@@ -100,23 +102,22 @@ const EditForm = () => {
   );
 };
 
-const fetchProject = async (id: string) => {
-  const res = await http.get<IProjectData>(`/projects/${id}`);
-  return res.data;
-};
+export const getServerSideProps: GetServerSideProps = injectSession(
+  async ({ http, context }) => {
+    const queryClient = new QueryClient();
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const queryClient = new QueryClient();
+    const { id } = context.query as {
+      id: string;
+    };
 
-  const { id } = context.query as {
-    id: string;
-  };
+    await queryClient.prefetchQuery(["project", id], () =>
+      fetchProject(http, id)
+    );
 
-  await queryClient.prefetchQuery(["project", id], () => fetchProject(id));
-
-  return {
-    props: {
-      dehydratedState: dehydrate(queryClient),
-    },
-  };
-};
+    return {
+      props: {
+        dehydratedState: dehydrate(queryClient),
+      },
+    };
+  }
+);

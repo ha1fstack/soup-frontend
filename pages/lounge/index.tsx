@@ -3,6 +3,7 @@ import { Flex, Box, Button, SectionBody, Hr } from "common/components";
 import { http } from "common/services";
 import { createPageLayout } from "components";
 import { useAuth } from "lib/hooks";
+import { fetchLounge } from "lib/queries";
 import { injectSession, timeDiffString } from "lib/utils";
 import { GetServerSideProps } from "next";
 import Image from "next/image";
@@ -259,11 +260,6 @@ const LoungePostSection = () => {
 /* -------------------------------------------------------------------------- */
 /*                                     api                                    */
 /* -------------------------------------------------------------------------- */
-
-const fetchLounge = async (_http = http) => {
-  const res = await _http.get("/lounge");
-  return res.data;
-};
 
 export const getServerSideProps: GetServerSideProps = injectSession(
   async ({ http }) => {

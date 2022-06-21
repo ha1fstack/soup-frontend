@@ -8,23 +8,7 @@ import { loginPopupState } from "lib/states";
 import Image from "next/image";
 import { useSetAtom } from "jotai";
 import { isDevEnv } from "lib/utils";
-
-const Logo = styled.span`
-  cursor: pointer;
-  font-weight: bold;
-  font-size: 28px;
-  color: var(--primary);
-`;
-
-const fetchAuth = async () => {
-  const res = await http.get<{
-    success: boolean;
-    profileImage?: string;
-    nickname?: string;
-  }>("/auth");
-  if (res.data) window.sessionStorage.setItem("auth", JSON.stringify(res.data));
-  return res.data;
-};
+import { fetchAuth } from "lib/queries";
 
 export const Login = () => {
   const queryClient = useQueryClient();

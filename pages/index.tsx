@@ -23,6 +23,7 @@ import {
   timeDiffString,
   toMatrix,
   getDisplayTag,
+  injectSession,
 } from "lib/utils";
 import {
   Dispatch,
@@ -37,6 +38,11 @@ import SwiperType, { Autoplay } from "swiper";
 import React from "react";
 import Link from "next/link";
 import { IPostPreviewContent, ILoungePost, CustomNextPage } from "types";
+import {
+  fetchFrontFeatured,
+  fetchFrontProjects,
+  fetchLounge,
+} from "lib/queries";
 
 const Home: CustomNextPage = () => {
   return (
@@ -100,9 +106,8 @@ const Projects = () => {
     }),
   };
 
-  const { data, isLoading, isError } = useQuery(
-    "front/projects",
-    fetchFrontProjects
+  const { data, isLoading, isError } = useQuery("front/projects", () =>
+    fetchFrontProjects()
   );
   const [source, setSource] = useSource(
     SourceList[(Math.random() * SourceList.length) | 0]
@@ -154,7 +159,7 @@ const Lounge = () => {
     }),
   };
 
-  const { data, isLoading, isError } = useQuery("lounge", fetchLounge);
+  const { data, isLoading, isError } = useQuery("lounge", () => fetchLounge());
 
   if (!data || isLoading || isError) return null;
 
@@ -350,9 +355,8 @@ const LoungeItem = ({ post }: { post: ILoungePost }) => {
 };
 
 const HotFeatured = () => {
-  const { data, isLoading, isError } = useQuery(
-    "front/featured",
-    fetchFrontFeatured
+  const { data, isLoading, isError } = useQuery("front/featured", () =>
+    fetchFrontFeatured()
   );
 
   const content = useMemo(() => toMatrix(data?.HOT || [], 2), [data]);
@@ -418,9 +422,8 @@ const HotFeatured = () => {
 };
 
 const NewFeatured = () => {
-  const { data, isLoading, isError } = useQuery(
-    "front/featured",
-    fetchFrontFeatured
+  const { data, isLoading, isError } = useQuery("front/featured", () =>
+    fetchFrontFeatured()
   );
 
   if (!data || isLoading || isError) return null;
@@ -572,41 +575,21 @@ Banner.displayName = "Banner";
 /*                                     api                                    */
 /* -------------------------------------------------------------------------- */
 
-const fetchFrontProjects = async () => {
-  const res = await http.get<{
-    SOUP: IPostPreviewContent[];
-    OKKY: IPostPreviewContent[];
-    INFLEARN: IPostPreviewContent[];
-    CAMPICK: IPostPreviewContent[];
-    HOLA: IPostPreviewContent[];
-  }>("/front/projects");
-  return res.data;
-};
+export const getServerSideProps: GetServerSideProps = injectSession(
+  async ({ http }) => {
+    const queryClient = new QueryClient();
 
-const fetchFrontFeatured = async () => {
-  const res = await http.get<{
-    NEW: IPostPreviewContent[];
-    HOT: IPostPreviewContent[];
-  }>("/front/featured");
-  return res.data;
-};
+    await Promise.all([
+      queryClient.prefetchQuery("front/featured", () =>
+        fetchFrontFeatured(http)
+      ),
+      // queryClient.prefetchQuery("front/projects", fetchFrontProjects),
+    ]);
 
-const fetchLounge = async () => {
-  const res = await http.get<ILoungePost[]>("/lounge");
-  return res.data;
-};
-
-export const getServerSideProps: GetServerSideProps = async () => {
-  const queryClient = new QueryClient();
-
-  let res = await Promise.all([
-    queryClient.prefetchQuery("front/featured", fetchFrontFeatured),
-    // queryClient.prefetchQuery("front/projects", fetchFrontProjects),
-  ]);
-
-  return {
-    props: {
-      dehydratedState: dehydrate(queryClient),
-    },
-  };
-};
+    return {
+      props: {
+        dehydratedState: dehydrate(queryClient),
+      },
+    };
+  }
+);
