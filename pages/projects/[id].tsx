@@ -41,7 +41,7 @@ const Page: CustomNextPage = () => {
   );
 };
 
-Write.getLayout = createPageLayout({
+Page.getLayout = createPageLayout({
   width: 840,
   title: "프로젝트/스터디 찾기",
   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
