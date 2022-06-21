@@ -19,7 +19,7 @@ const themeTransition = (ms: number) => {
 export const WithThemeToggle = ({
   children,
 }: {
-  children(props: { theme: string; toggleTheme: () => void }): JSX.Element;
+  children: (props: { theme: string; toggleTheme: () => void }) => JSX.Element;
 }) => {
   const { theme, setTheme } = useNextTheme();
   const toggleTheme = () => {
@@ -28,5 +28,6 @@ export const WithThemeToggle = ({
     removeAnimation();
   };
 
+  if (!theme) return null;
   return children({ theme, toggleTheme });
 };
