@@ -28,14 +28,15 @@
     "react-query": "^3.39.1",
     "react-textarea-autosize": "^8.3.3",
     "recoil": "^0.7.3-alpha.2",
+    "sharp": "^0.30.6",
     "swiper": "^8.2.4",
     "usehooks-ts": "^2.5.1"
   },
   "devDependencies": {
-    "cross-env": "^7.0.3",
     "@types/node": "18.0.0",
     "@types/react": "^17.0.44",
     "@types/react-dom": "^17.0.15",
+    "cross-env": "^7.0.3",
     "eslint": "8.18.0",
     "eslint-config-next": "12.1.6",
     "typescript": "4.7.4"
