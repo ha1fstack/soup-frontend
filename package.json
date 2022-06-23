@@ -17,7 +17,7 @@
     "@tiptap/starter-kit": "^2.0.0-beta.183",
     "axios": "^0.26.1",
     "jotai": "^1.7.2",
-    "next": "12.1.4",
+    "next": "12.1.6",
     "next-themes": "^0.2.0",
     "polished": "^4.2.2",
     "react": "^17.0.2",
