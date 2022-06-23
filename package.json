@@ -14,7 +14,7 @@
     "@emotion/styled": "^11.9.3",
     "@tiptap/extension-image": "^2.0.0-beta.27",
     "@tiptap/react": "^2.0.0-beta.113",
-    "@tiptap/starter-kit": "^2.0.0-beta.183",
+    "@tiptap/starter-kit": "^2.0.0-beta.189",
     "axios": "^0.26.1",
     "jotai": "^1.7.2",
     "next": "12.1.4",
