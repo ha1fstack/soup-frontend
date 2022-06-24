@@ -30,7 +30,7 @@
     "recoil": "^0.7.3-alpha.2",
     "sharp": "^0.30.6",
     "swiper": "^8.2.4",
-    "usehooks-ts": "^2.5.1"
+    "usehooks-ts": "^2.6.0"
   },
   "devDependencies": {
     "@types/node": "18.0.0",
