@@ -14,8 +14,8 @@ import { dehydrate, QueryClient, useQuery } from "react-query";
 import { http } from "common/services";
 import { Pagination } from "common/components/Pagination";
 import { injectSession, SourceDictionary, timeDiffString } from "lib/utils";
-import { useEffect, useLayoutEffect, useMemo, useState } from "react";
-import { keyframes } from "@emotion/react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { css, keyframes } from "@emotion/react";
 import { createPageLayout } from "components";
 import React from "react";
 import {
@@ -39,6 +39,8 @@ import {
   TagGroup,
 } from "lib/utils";
 import { fetchProjects } from "lib/queries";
+import { useHorizontalScroll } from "lib/hooks/useHorizontalScroll";
+import { hideScrollbar, horizontalScrollShadow } from "lib/styles";
 
 const Project: CustomNextPage = () => {
   return (
@@ -322,7 +324,7 @@ const Test = React.forwardRef<HTMLDivElement>((_, ref) => {
 Test.displayName = "test";
 
 const Slider = ({ toggle }: { toggle: (set?: boolean) => void }) => {
-  const scrollRef = React.useRef<HTMLDivElement | null>(null);
+  const scrollRef = useHorizontalScroll();
   const [position, setPosition] = React.useState<number>(0);
 
   const backupHeight = position;
@@ -335,30 +337,8 @@ const Slider = ({ toggle }: { toggle: (set?: boolean) => void }) => {
         if (scrollRef.current) scrollRef.current.scrollLeft = backupHeight;
       }
     },
-    [backupHeight]
+    [backupHeight, scrollRef]
   );
-
-  // event listener: on mouse wheel scroll
-  const onWheel = React.useCallback((e: WheelEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (!scrollRef.current) return;
-    const container = scrollRef.current;
-    const containerScrollPosition = scrollRef.current.scrollLeft;
-    container.scrollTo({
-      top: 0,
-      left: containerScrollPosition + e.deltaY * 0.25,
-    });
-  }, []);
-
-  // attach onWheel to scrollRef
-  // why: https://github.com/facebook/react/issues/14856
-  useEffect(() => {
-    if (!scrollRef.current) return;
-    const ref = scrollRef.current;
-    ref.addEventListener("wheel", onWheel);
-    return () => ref.removeEventListener("wheel", onWheel);
-  }, [onWheel]);
 
   // event listener: on any virtual scroll
   const onScroll = React.useCallback(() => {
@@ -372,7 +352,7 @@ const Slider = ({ toggle }: { toggle: (set?: boolean) => void }) => {
         });
       }
     }
-  }, [backupHeight, position]);
+  }, [backupHeight, position, scrollRef]);
 
   return (
     <>
@@ -390,16 +370,12 @@ const Slider = ({ toggle }: { toggle: (set?: boolean) => void }) => {
             whiteSpace: "nowrap",
           },
           display: "inline-flex",
-          msOverflowStyle: "none" /* IE and Edge */,
-          scrollbarWidth: "none" /* Firefox */,
-          "::-webkit-scrollbar": {
-            display: "none",
-          },
           ":hover": {
             "*": {
               animationPlayState: "paused",
             },
           },
+          ...hideScrollbar,
         }}
       >
         <Test />
@@ -497,15 +473,17 @@ const useFilter = () => {
 const Search = ({ toggle }: { toggle: (set?: boolean) => void }) => {
   const [currentMenu, setCurrentMenu] = useSearchMenu("popular");
   const { addFilter } = useFilter();
+  const scrollRef = useHorizontalScroll();
 
   return (
-    <Flex column css={{ flex: "1", gap: "16px" }}>
+    <Flex column css={{ flex: "1", gap: "16px", overflow: "hidden" }}>
       <Flex css={{ gap: "16px" }}>
         <Button
           variant="primary-outlined"
           css={{
             height: "36px",
             width: "36px",
+            flex: "0 0 auto",
             padding: 0,
             backgroundColor: "var(--primarylight2)",
           }}
@@ -514,8 +492,8 @@ const Search = ({ toggle }: { toggle: (set?: boolean) => void }) => {
           <MdOutlineCheck css={{ fontSize: "var(--font-title-normal)" }} />
         </Button>
         <Flex
+          ref={scrollRef}
           css={{
-            gap: "12px",
             "*": {
               padding: "16px",
               height: "36px",
@@ -524,6 +502,8 @@ const Search = ({ toggle }: { toggle: (set?: boolean) => void }) => {
               wordBreak: "keep-all",
               whiteSpace: "nowrap",
             },
+            gap: "4px",
+            ...hideScrollbar,
           }}
         >
           {TagGroup.map((menu) => (

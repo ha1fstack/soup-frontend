@@ -1,5 +1,4 @@
 import axios, { AxiosInstance } from "axios";
-import { http } from "common/services";
 import { GetServerSideProps } from "next";
 
 export const injectSession =
@@ -12,18 +11,21 @@ export const injectSession =
       http: AxiosInstance;
     }) => ReturnType<GetServerSideProps>
   ) =>
-  (context: Parameters<GetServerSideProps>[0]) => {
+  async (context: Parameters<GetServerSideProps>[0]) => {
     const Cookie = context.req.headers.cookie;
     const ssHttp = axios.create({
-      baseURL: "http://localhost:8080",
+      baseURL: process.env.API_URL,
       headers: { ...(Cookie && { Cookie }) },
     });
-    return getServerSideProps({
-      context,
-      http: ssHttp,
-    })
-      .then((result) => result)
-      .catch((_) => ({
+    try {
+      const result_1 = await getServerSideProps({
+        context,
+        http: ssHttp,
+      });
+      return result_1;
+    } catch (_) {
+      return {
         props: { error: 500 },
-      }));
+      };
+    }
   };

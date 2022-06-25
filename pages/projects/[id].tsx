@@ -27,6 +27,8 @@ import Write from "./write";
 import { useAuth } from "lib/hooks";
 import { getDisplayColor, getDisplayTag, injectSession } from "lib/utils";
 import { fetchProject } from "lib/queries";
+import { useSetAtom } from "jotai";
+import { loginPopupState } from "lib/states";
 
 const Page: CustomNextPage = () => {
   return (
@@ -97,6 +99,7 @@ const ArticlePreview = ({
 const ArticleHeader = ({ data }: { data: IProjectContentData<unknown> }) => {
   const auth = useAuth();
   const router = useRouter();
+  const setLoginPopup = useSetAtom(loginPopupState);
   const { id } = router.query as {
     id: string;
   };
@@ -117,6 +120,11 @@ const ArticleHeader = ({ data }: { data: IProjectContentData<unknown> }) => {
   const queryClient = useQueryClient();
 
   const handleFav = async () => {
+    if (!auth.success) {
+      setLoginPopup(true);
+      return;
+    }
+
     const { data: res } = await http.post("/projects/fav", {
       id: data.id,
       mode: !data.isfav,

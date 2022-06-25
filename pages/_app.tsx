@@ -225,7 +225,7 @@ App.getInitialProps = async (context: AppContext) => {
     const cookie = req?.headers.cookie;
 
     const ssHttp = axios.create({
-      baseURL: "http://localhost:8080",
+      baseURL: process.env.API_URL,
       headers: { ...(cookie && { cookie }) },
     });
 
