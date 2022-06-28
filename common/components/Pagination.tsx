@@ -22,11 +22,11 @@ const Item = styled.button<{
   padding: 4px 6px;
   min-width: 24px;
   border-radius: 4px;
-  font-size: var(--font-paragraph-small);
+  font-size: 1.4rem;
   font-weight: 600;
   cursor: pointer;
   svg {
-    font-size: var(--font-paragraph-normal);
+    font-size: 1.6rem;
   }
   :disabled {
     color: #d3d5d9;

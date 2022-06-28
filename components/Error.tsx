@@ -34,7 +34,7 @@ export const Error = ({ status }: { status: keyof typeof STATUS }) => {
         >
           <h1
             css={{
-              fontSize: "60px",
+              fontSize: "6rem",
             }}
           >
             {status}

@@ -45,13 +45,13 @@ const HeaderMenuContainer = styled.header`
   display: flex;
   flex-direction: row;
   align-items: center;
-  font-size: var(--font-paragraph-small);
+  font-size: 1.4rem;
   color: var(--negative2);
   & > :not(:last-child) {
     margin-right: 12px;
   }
   svg {
-    font-size: 18px;
+    font-size: 1.8rem;
   }
 `;
 
@@ -81,7 +81,7 @@ const PopupContainer = styled(Box)({
   top: "44px",
   width: "150px",
   right: 0,
-  fontSize: "var(--font-paragraph-small)",
+  fontSize: "1.4rem",
   boxShadow: "0px 0px 10px rgba(0,0,0,0.1)",
   padding: "6px",
   hr: {
@@ -90,7 +90,7 @@ const PopupContainer = styled(Box)({
   svg: {
     display: "inline-block",
     marginRight: "8px",
-    fontSize: "22px",
+    fontSize: "2.2rem",
   },
   "& > *": {
     cursor: "pointer",
@@ -194,7 +194,7 @@ export const Header = React.memo(() => {
               icon
               css={{
                 marginLeft: "4px",
-                fontSize: "24px",
+                fontSize: "2.4rem",
                 padding: 0,
               }}
             >

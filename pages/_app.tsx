@@ -76,13 +76,8 @@ const GlobalStyle = css`
   }
 
   :root {
-    --font-paragraph-small: 14px;
-    --font-paragraph-normal: 16px;
-    --font-title-normal: 18px;
     ${breakpoints.at("sm")} {
-      --font-paragraph-small: 13px;
-      --font-paragraph-normal: 14px;
-      --font-title-normal: 16px;
+      font-size: 56.25%;
     }
   }
 
@@ -122,18 +117,18 @@ export default function App({
       })
   );
 
-  const getLayout =
-    Component.getLayout ||
-    ((page: React.ReactElement) => (
-      <DefaultPageLayout>{page}</DefaultPageLayout>
-    ));
-
   // load dynamic api baseurl
   useLayoutEffect(() => {
     if (window)
       http.defaults.baseURL =
         window.location.protocol + "//" + window.location.host + "/api";
   }, []);
+
+  const getLayout =
+    Component.getLayout ||
+    ((page: React.ReactElement) => (
+      <DefaultPageLayout>{page}</DefaultPageLayout>
+    ));
 
   const page = (
     <WithAuth authorized={Component.authorized}>

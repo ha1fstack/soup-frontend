@@ -86,9 +86,7 @@ const ArticlePreview = ({
       </Flex>
       <p>{data.content}...</p>
       <ButtonLink href={data.link} target="_blank" variant="primary-outlined">
-        <MdOutlineOpenInNew
-          css={{ fontSize: "var(--font-paragraph-normal)" }}
-        />
+        <MdOutlineOpenInNew css={{ fontSize: "1.6rem" }} />
         원문 보기
       </ButtonLink>
     </Box>
@@ -173,7 +171,7 @@ const ArticleHeader = ({ data }: { data: IProjectContentData<unknown> }) => {
       ) : null}
       <p
         css={{
-          fontSize: "28px",
+          fontSize: "2.8rem",
           fontWeight: "500",
           lineHeight: "initial",
         }}
@@ -186,7 +184,7 @@ const ArticleHeader = ({ data }: { data: IProjectContentData<unknown> }) => {
           alignItems: "center",
           gap: "12px",
           marginTop: "16px",
-          fontSize: "var(--font-paragraph-small)",
+          fontSize: "1.4rem",
         }}
       >
         <Flex
@@ -206,7 +204,7 @@ const ArticleHeader = ({ data }: { data: IProjectContentData<unknown> }) => {
           css={{
             alignItems: "center",
             gap: "12px",
-            fontSize: "var(--font-title-normal)",
+            fontSize: "1.8rem",
             color: "var(--negative2)",
           }}
         >
@@ -226,9 +224,7 @@ const ArticleHeader = ({ data }: { data: IProjectContentData<unknown> }) => {
                 onClick={handleFav}
               >
                 {data.isfav ? <MdOutlineStar /> : <MdOutlineStarBorder />}
-                <span css={{ fontSize: "var(--font-paragraph-small)" }}>
-                  {data.fav}
-                </span>
+                <span css={{ fontSize: "1.4rem" }}>{data.fav}</span>
               </HeaderButton>
             </>
           )}

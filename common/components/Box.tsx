@@ -1,4 +1,4 @@
-import { css, Theme } from "@emotion/react";
+import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { breakpoints } from "lib/utils";
 
@@ -48,35 +48,44 @@ const fullspanStyle = css`
   }
 `;
 
-export const Box = styled.div<{
-  variant?: keyof typeof BoxVariant;
-  column?: boolean;
-  responsive?: boolean;
-  fullspan?: boolean;
-}>`
-  border-radius: 8px;
-  display: flex;
-  padding: 12px 12px;
-  // ???
-  ${breakpoints.at("sm")} {
-    padding: 12px 16px;
-  }
-  ${({ fullspan }) => fullspan && fullspanStyle}
-  ${({ column }) =>
-    column &&
-    css`
-      flex-direction: column;
-    `}
+export const Box = Object.assign(
+  styled.div<{
+    variant?: keyof typeof BoxVariant;
+    column?: boolean;
+    responsive?: boolean;
+    fullspan?: boolean;
+  }>`
+    border-radius: 8px;
+    display: flex;
+    padding: 12px 12px;
+    // ???
+    ${breakpoints.at("sm")} {
+      padding: 12px 16px;
+    }
+    ${({ fullspan }) => fullspan && fullspanStyle}
+    ${({ column }) =>
+      column &&
+      css`
+        flex-direction: column;
+      `}
   ${({ responsive }) =>
-    responsive &&
-    css({
-      [breakpoints.at("sm")]: fullspanStyle,
-    })}
+      responsive &&
+      css({
+        [breakpoints.at("sm")]: fullspanStyle,
+      })}
   ${({ variant }) =>
-    variant
-      ? BoxVariant[variant]
-      : css`
-          border: 1px solid var(--outline);
-          background-color: var(--positive);
-        `}
-`;
+      variant
+        ? BoxVariant[variant]
+        : css`
+            border: 1px solid var(--outline);
+            background-color: var(--positive);
+          `}
+  `,
+  {
+    Header: styled.p`
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    `,
+  }
+);

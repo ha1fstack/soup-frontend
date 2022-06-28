@@ -8,6 +8,12 @@ body {
   -webkit-tap-highlight-color: transparent;
   word-break: break-all;
 }
+html {
+  font-size: 62.5%;
+}
+body {
+  font-size: 1.6rem;
+}
 
 input,
 button {

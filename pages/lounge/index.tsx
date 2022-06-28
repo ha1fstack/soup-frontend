@@ -61,11 +61,11 @@ const FavButton = ({
     }}
     {...rest}
   >
-    <span css={{ fontSize: "12px" }}>{count}</span>
+    <span css={{ fontSize: "1.2rem" }}>{count}</span>
     {React.createElement(
       checked ? MdOutlineFavorite : MdOutlineFavoriteBorder,
       {
-        style: { fontSize: "var(--font-paragraph-small)", margin: 0 },
+        style: { fontSize: "1.4rem", margin: 0 },
       }
     )}
   </Button>
@@ -149,7 +149,7 @@ const LoungeEditorTextArea = ({
     })}
     css={{
       background: "transparent",
-      fontSize: "var(--font-title-normal)",
+      fontSize: "1.8rem",
       marginTop: "10px",
       flex: "1 0 auto",
       resize: "none",

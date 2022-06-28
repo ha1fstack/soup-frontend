@@ -7,13 +7,13 @@ const SizeVariant = () => ({
   smaller: css`
     min-height: 22px;
     padding: 0px 6px;
-    font-size: 11px;
+    font-size: 1.1rem;
     border-radius: 4px;
   `,
   small: css`
     min-height: 28px;
     padding: 0px 8px;
-    font-size: 12px;
+    font-size: 1.2rem;
     border-radius: 6px;
   `,
 });

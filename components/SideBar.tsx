@@ -82,7 +82,7 @@ const SideBarContainer = ({
       <footer>
         <div
           css={{
-            fontSize: "var(--font-paragraph-small)",
+            fontSize: "1.4rem",
             color: "var(--negative2)",
           }}
         >

@@ -48,7 +48,7 @@ export const CarouselPagination = React.memo(
             backgroundColor: "var(--background)",
             border: "1px solid var(--outline)",
             color: "var(--negative2)",
-            fontSize: "11px",
+            fontSize: "1.1rem",
             justifyContent: "center",
             alignItems: "center",
             lineHeight: "initial",

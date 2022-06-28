@@ -41,12 +41,12 @@ export const Viewer = ({
             marginBlockEnd: "6px",
           },
           h1: {
-            fontSize: "24px",
+            fontSize: "2.4rem",
             fontWeight: "600",
             lineHeight: 2,
           },
           h2: {
-            fontSize: "18px",
+            fontSize: "1.8rem",
             fontWeight: "600",
             lineHeight: 2,
           },

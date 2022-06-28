@@ -17,12 +17,12 @@ export const SectionHeader = Object.assign(
     Title: styled.div`
       display: flex;
       font-weight: bold;
-      font-size: 20px;
+      font-size: 2rem;
     `,
     Description: styled.div`
       display: flex;
       flex-direction: column;
-      font-size: 12px;
+      font-size: 1.2rem;
     `,
   }
 );

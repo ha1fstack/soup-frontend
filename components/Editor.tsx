@@ -50,7 +50,7 @@ const ButtonElem = styled.button<{
 `;
 
 const ButtonGroup = styled(Flex)`
-  font-size: var(--font-paragraph-small);
+  font-size: 1.4rem;
   border-radius: 4px;
   // padding: 4px;
   // border: 1px solid var(--outline);
@@ -308,12 +308,12 @@ export const Editor = ({
               marginBlockEnd: "6px",
             },
             h1: {
-              fontSize: "24px",
+              fontSize: "2.4rem",
               fontWeight: "600",
               lineHeight: 2,
             },
             h2: {
-              fontSize: "18px",
+              fontSize: "1.8rem",
               fontWeight: "600",
               lineHeight: 2,
             },
