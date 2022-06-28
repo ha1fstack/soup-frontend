@@ -1,5 +1,5 @@
 import { css, Global, Theme, ThemeProvider } from "@emotion/react";
-import { MediaContextProvider, Layout, Error } from "components";
+import { MediaContextProvider, Error, DefaultPageLayout } from "components";
 import NextApp, { AppContext } from "next/app";
 import Head from "next/head";
 import {
@@ -12,6 +12,7 @@ import {
 import "common/styles/reset.css";
 import "common/styles/globals.css";
 import "swiper/css";
+import "swiper/css/effect-fade";
 
 import { useEffect, useLayoutEffect, useState } from "react";
 import { useAuth } from "lib/hooks";
@@ -19,7 +20,7 @@ import { ThemeProvider as NextThemeProvider } from "next-themes";
 import { http } from "common/services";
 import React from "react";
 import { Provider } from "jotai";
-import { breakpoints, isDevEnv } from "lib/utils";
+import { breakpoints, isDevEnv, WithAuth } from "lib/utils";
 import { CustomAppProps, IAuthData } from "types";
 import { useRouter } from "next/router";
 import axios from "axios";
@@ -97,44 +98,11 @@ const theme: Theme = {};
 /*                                     app                                    */
 /* -------------------------------------------------------------------------- */
 
-const AuthProvider = ({ children }: React.PropsWithChildren<{}>) => {
-  return React.createElement(React.Fragment, {}, children);
-};
-
-export const WithAuth = ({
-  authorized = false,
-  children,
-}: {
-  authorized?: boolean;
-  children({
-    auth,
-    forbidden,
-  }: {
-    auth: IAuthData;
-    forbidden: boolean;
-  }): JSX.Element;
-}) => {
-  const auth = useAuth();
-  const forbidden = authorized && !auth.success;
-
-  const router = useRouter();
-  useEffect(() => {
-    if (forbidden)
-      router.push(
-        {
-          pathname: "/login",
-          query: {
-            redirect: router.asPath,
-          },
-        },
-        undefined,
-        {
-          shallow: true,
-        }
-      );
-  }, [forbidden, router]);
-
-  return children({ auth, forbidden });
+const AuthQuery = ({ initialAuth }: { initialAuth: any }) => {
+  useAuth({
+    initialData: initialAuth,
+  });
+  return null;
 };
 
 export default function App({
@@ -156,7 +124,9 @@ export default function App({
 
   const getLayout =
     Component.getLayout ||
-    ((page: React.ReactElement) => <Layout>{page}</Layout>);
+    ((page: React.ReactElement) => (
+      <DefaultPageLayout>{page}</DefaultPageLayout>
+    ));
 
   // load dynamic api baseurl
   useLayoutEffect(() => {
@@ -168,10 +138,20 @@ export default function App({
   const page = (
     <WithAuth authorized={Component.authorized}>
       {({ auth, forbidden }) => {
-        if (!auth) return <Error status={500} />;
-        if (pageProps.error) return <Error status={pageProps.error} />;
-        if (forbidden) return <></>;
-        return <Component {...pageProps} />;
+        if (!auth)
+          return (
+            <DefaultPageLayout>
+              <Error status={500} />
+            </DefaultPageLayout>
+          );
+        if (pageProps.error)
+          return (
+            <DefaultPageLayout>
+              <Error status={pageProps.error} />
+            </DefaultPageLayout>
+          );
+        if (forbidden) return <DefaultPageLayout></DefaultPageLayout>;
+        return <>{getLayout(<Component {...pageProps} />)}</>;
       }}
     </WithAuth>
   );
@@ -182,18 +162,24 @@ export default function App({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>SouP</title>
       </Head>
+      {/* jotai provider */}
       <Provider>
+        {/* react query provider */}
         <QueryClientProvider client={queryClient}>
+          {/* react query hydration provider */}
           <Hydrate state={pageProps.dehydratedState}>
-            <AuthProvider>
-              <AuthQuery initialAuth={initialAuth} />
-              <Global styles={GlobalStyle} />
-              <NextThemeProvider defaultTheme="system">
-                <ThemeProvider theme={theme}>
-                  <MediaContextProvider>{getLayout(page)}</MediaContextProvider>
-                </ThemeProvider>
-              </NextThemeProvider>
-            </AuthProvider>
+            {/* auth */}
+            <AuthQuery initialAuth={initialAuth} />
+            {/* global styles */}
+            <Global styles={GlobalStyle} />
+            {/* next-themes provider */}
+            <NextThemeProvider defaultTheme="system">
+              {/* emotionjs provider */}
+              <ThemeProvider theme={theme}>
+                {/* fresnel provider */}
+                <MediaContextProvider>{page}</MediaContextProvider>
+              </ThemeProvider>
+            </NextThemeProvider>
           </Hydrate>
         </QueryClientProvider>
       </Provider>
@@ -204,13 +190,6 @@ export default function App({
 /* -------------------------------------------------------------------------- */
 /*                                     api                                    */
 /* -------------------------------------------------------------------------- */
-
-const AuthQuery = ({ initialAuth }: { initialAuth: any }) => {
-  useAuth({
-    initialData: initialAuth,
-  });
-  return null;
-};
 
 App.getInitialProps = async (context: AppContext) => {
   const {

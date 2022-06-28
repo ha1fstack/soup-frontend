@@ -3,7 +3,7 @@ import {
   Box,
   Button,
   ButtonLink,
-  SectionBody,
+  Section,
   ProfilePlaceholder,
   Label,
   Hr,
@@ -23,7 +23,6 @@ import { CustomNextPage, IProjectContentData, IProjectData } from "types";
 import { GetServerSideProps } from "next";
 import { NotFound } from "components/NotFound";
 import styled from "@emotion/styled";
-import Write from "./write";
 import { useAuth } from "lib/hooks";
 import { getDisplayColor, getDisplayTag, injectSession } from "lib/utils";
 import { fetchProject } from "lib/queries";
@@ -33,12 +32,12 @@ import { loginPopupState } from "lib/states";
 const Page: CustomNextPage = () => {
   return (
     <>
-      <SectionBody>
+      <Section>
         <Article />
         <Box column>
           <div css={{ height: "240px" }}></div>
         </Box>
-      </SectionBody>
+      </Section>
     </>
   );
 };
@@ -296,7 +295,7 @@ export const getServerSideProps: GetServerSideProps = injectSession(
     const res = await queryClient.fetchQuery(["project", id], () =>
       fetchProject(http, id)
     );
-    // replace with 404 error thrown
+
     if (!res)
       return {
         props: {

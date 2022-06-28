@@ -7,4 +7,5 @@ export * from "./Login";
 export * from "./Media";
 export * from "./NotFound";
 export { default as Portal } from "./Portal";
+export * from "./SideBar";
 export * from "./Viewer";

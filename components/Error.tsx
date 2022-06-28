@@ -1,6 +1,5 @@
-import { SectionBody } from "common/components";
+import { Section } from "common/components";
 import Link from "next/link";
-import { ChildrenContainer } from "./Layout";
 
 const STATUS = {
   404: {
@@ -15,41 +14,39 @@ const STATUS = {
 
 export const Error = ({ status }: { status: keyof typeof STATUS }) => {
   return (
-    <ChildrenContainer>
-      <SectionBody>
+    <Section>
+      <div
+        css={{
+          marginTop: "24px",
+          color: "var(--negative2)",
+        }}
+      >
         <div
           css={{
-            marginTop: "24px",
-            color: "var(--negative2)",
+            lineHeight: 1,
+            fontWeight: 700,
+            marginBottom: "12px",
+            color: "var(--positive)",
+            backgroundColor: "var(--primary)",
+            padding: "8px 12px",
+            borderRadius: "8px",
           }}
         >
-          <div
+          <h1
             css={{
-              lineHeight: 1,
-              fontWeight: 700,
-              marginBottom: "12px",
-              color: "var(--positive)",
-              backgroundColor: "var(--primary)",
-              padding: "8px 12px",
-              borderRadius: "8px",
+              fontSize: "60px",
             }}
           >
-            <h1
-              css={{
-                fontSize: "60px",
-              }}
-            >
-              {status}
-            </h1>
-          </div>
-          <p>{STATUS[status].message}</p>
-          <br />
-          <p>{STATUS[status].description}</p>
-          <Link href="/">
-            <a>{"메인으로 돌아가기 >>"}</a>
-          </Link>
+            {status}
+          </h1>
         </div>
-      </SectionBody>
-    </ChildrenContainer>
+        <p>{STATUS[status].message}</p>
+        <br />
+        <p>{STATUS[status].description}</p>
+        <Link href="/">
+          <a>{"메인으로 돌아가기 >>"}</a>
+        </Link>
+      </div>
+    </Section>
   );
 };

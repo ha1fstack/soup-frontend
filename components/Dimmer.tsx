@@ -1,6 +1,7 @@
-import { Interpolation, keyframes, Theme } from "@emotion/react";
-import { useTheme } from "next-themes";
 import React from "react";
+
+import { keyframes } from "@emotion/react";
+import { useTheme } from "next-themes";
 import Portal from "./Portal";
 
 const FadeInAnimation = keyframes`

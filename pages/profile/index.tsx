@@ -5,10 +5,9 @@ import {
   TextArea,
   Input,
   Box,
-  SectionBody,
+  Section,
   Hr,
 } from "common/components";
-import { ChildrenContainer } from "components";
 import { useToggle, useAuth } from "lib/hooks";
 import { MdOutlineEdit } from "react-icons/md";
 import { useQuery } from "react-query";
@@ -19,7 +18,7 @@ import { createPageLayout } from "components";
 const Profile: CustomNextPage = () => {
   return (
     <>
-      <SectionBody>
+      <Section>
         <Flex
           css={{
             flexWrap: "wrap",
@@ -45,7 +44,7 @@ const Profile: CustomNextPage = () => {
             <FavoriteLounge /> */}
           </Flex>
         </Flex>
-      </SectionBody>
+      </Section>
     </>
   );
 };
@@ -80,7 +79,7 @@ const DetailsRow = ({
 
 const InfoEdit = ({ toggleIsEdit }: { toggleIsEdit: () => void }) => {
   return (
-    <ChildrenContainer>
+    <Flex>
       <Flex
         css={{
           alignItems: "center",
@@ -164,7 +163,7 @@ const InfoEdit = ({ toggleIsEdit }: { toggleIsEdit: () => void }) => {
           </div>
         </div>
       </Flex>
-    </ChildrenContainer>
+    </Flex>
   );
 };
 

@@ -2,7 +2,7 @@ import { css, Theme } from "@emotion/react";
 import styled from "@emotion/styled";
 import { breakpoints } from "lib/utils";
 
-const BoxVariant = (theme: Theme) => ({
+const BoxVariant = {
   primary: css`
     border: 1px solid var(--primary);
     background: var(--positive);
@@ -13,7 +13,7 @@ const BoxVariant = (theme: Theme) => ({
     background: var(--background);
   `,
   transparent: css``,
-});
+};
 
 export const Flex = styled.div<{
   column?: boolean;
@@ -36,23 +36,31 @@ export const Flex = styled.div<{
 
 const fullspanStyle = css`
   border-radius: 0;
-  padding-left: 16px;
-  margin-left: -16px;
-  padding-right: 16px;
-  margin-right: -16px;
   border-left: 0px;
   border-right: 0px;
+
+  // compensate double padding
+  margin-right: -36px;
+  margin-left: -36px;
+  ${breakpoints.at("sm")} {
+    margin-right: -16px;
+    margin-left: -16px;
+  }
 `;
 
 export const Box = styled.div<{
-  variant?: keyof ReturnType<typeof BoxVariant>;
+  variant?: keyof typeof BoxVariant;
   column?: boolean;
   responsive?: boolean;
   fullspan?: boolean;
 }>`
   border-radius: 8px;
   display: flex;
-  padding: 12px;
+  padding: 12px 12px;
+  // ???
+  ${breakpoints.at("sm")} {
+    padding: 12px 16px;
+  }
   ${({ fullspan }) => fullspan && fullspanStyle}
   ${({ column }) =>
     column &&
@@ -64,9 +72,9 @@ export const Box = styled.div<{
     css({
       [breakpoints.at("sm")]: fullspanStyle,
     })}
-  ${({ variant, theme }) =>
+  ${({ variant }) =>
     variant
-      ? BoxVariant(theme)[variant]
+      ? BoxVariant[variant]
       : css`
           border: 1px solid var(--outline);
           background-color: var(--positive);

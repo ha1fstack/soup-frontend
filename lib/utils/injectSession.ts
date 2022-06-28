@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from "axios";
+import axios, { AxiosError, AxiosInstance } from "axios";
 import { GetServerSideProps } from "next";
 
 export const injectSession =
@@ -18,12 +18,17 @@ export const injectSession =
       headers: { ...(Cookie && { Cookie }) },
     });
     try {
-      const result_1 = await getServerSideProps({
+      const result = await getServerSideProps({
         context,
         http: ssHttp,
       });
-      return result_1;
-    } catch (_) {
+      return result;
+    } catch (e: unknown) {
+      if (e instanceof AxiosError) {
+        return {
+          props: { error: e.response?.status },
+        };
+      }
       return {
         props: { error: 500 },
       };

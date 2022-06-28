@@ -1,286 +1,35 @@
-import { css, keyframes } from "@emotion/react";
-import styled from "@emotion/styled";
-import { useMatch, useAuth } from "lib/hooks";
-import Link, { LinkProps } from "next/link";
-import { useRouter } from "next/router";
-import React, { useRef, useEffect } from "react";
-import { Dimmer, Header, Media, Portal } from "components";
-import { Button, SectionHeader } from "common/components";
-import { loginPopupState, sideBarOpenState } from "lib/states";
-import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
-import { breakpoints, WithThemeToggle } from "lib/utils";
-import { useAtom, useSetAtom } from "jotai";
-import { ISideBarProps } from "types";
+import React from "react";
 
-const PageContainer = styled.div`
-  min-height: 100vh;
-`;
+import { css } from "@emotion/react";
+import styled from "@emotion/styled";
+
+import { Header, Media, MobileSideBar, SideBar } from "components";
+import { SectionHeader } from "common/components";
 
 const BodyContainer = styled.div`
-  min-height: 100vh;
-  ${breakpoints.greaterThan("md")} {
-    margin-left: 240px;
-  }
-  display: flex;
-  flex-direction: row;
-  padding-right: 36px;
-  padding-left: 36px;
-  ${breakpoints.at("sm")} {
-    padding-right: 16px;
-    padding-left: 16px;
-  }
+  display: grid;
+  grid-template-areas: "header header";
+  grid-template-columns: auto 1fr;
 `;
 
-const SlideAnimation = keyframes`
-  0% {
-    margin-left: -300px
-  }
-  100% {
-    margin-left: 0px
-  }
-`;
-
-const SideBarContainerWrapper = styled.div<{
-  animated?: boolean;
-}>`
-  display: flex;
-  flex-direction: column;
-  z-index: 9999;
-  background-color: var(--positive);
-  position: fixed;
-  top: 59px;
-  min-width: 240px;
-  height: calc(100vh - 59px);
-  justify-content: space-between;
-  border-right: solid 1px var(--outline);
-  padding: 16px;
-  ${breakpoints.at("sm")} {
-    top: 0;
-    height: 100vh;
-  }
-  ${(animated) =>
-    animated &&
-    css`
-      animation: ${SlideAnimation} 0.1s ease-out;
-    `}
-`;
-
-const SideBarContentWrapper = styled.ul`
-  margin: 0;
-  line-height: normal;
-  list-style-type: none;
-  ${breakpoints.at("sm")} {
-    top: 0;
-  }
-`;
-
-const SideBarContainer = ({
-  children,
-  animated,
-}: {
-  children?: React.ReactNode;
-  animated?: boolean;
-}) => {
-  return (
-    <SideBarContainerWrapper animated={animated}>
-      <SideBarContentWrapper>{children}</SideBarContentWrapper>
-      <footer>
-        <div
-          css={{
-            fontSize: "var(--font-paragraph-small)",
-            color: "var(--negative2)",
-          }}
-        >
-          개인정보처리방침 <br /> © 2022 SouP
-        </div>
-      </footer>
-    </SideBarContainerWrapper>
-  );
-};
-
-const SideBarLink = styled.a<ISideBarProps>`
-  display: block;
-  cursor: pointer;
-  padding: 10px 12px;
-  border-radius: 8px;
-  margin-bottom: 4px;
-  font-weight: 500;
-  ${(props) =>
-    props.selected
-      ? css`
-          font-weight: 700;
-          background-color: var(--primarylight);
-        `
-      : css`
-          color: var(--negative2);
-          :hover {
-            background-color: var(--primarylight2);
-          }
-        `};
-`;
-
-const SideBarElement = ({
-  children,
-  selected,
-  exact,
-  authorized,
-  ...props
-}: ISideBarProps & React.PropsWithChildren<LinkProps>) => {
-  const match = useMatch(props.href, exact);
-  const setLoginPopup = useSetAtom(loginPopupState);
-  const auth = useAuth();
-
-  const LinkWrapper =
-    authorized && !auth.success
-      ? ({ children }: { children: React.ReactNode }) => (
-          <SideBarLink onClick={() => setLoginPopup(true)} selected={match}>
-            {children}
-          </SideBarLink>
-        )
-      : ({ children }: { children: React.ReactNode }) => (
-          <Link {...props}>
-            <SideBarLink href={props.href.toString()} selected={match}>
-              {children}
-            </SideBarLink>
-          </Link>
-        );
-
-  return (
-    <li>
-      <LinkWrapper>{children}</LinkWrapper>
-    </li>
-  );
-};
-
-export const ChildrenContainer = styled.div<{
-  width?: number;
-}>`
-  margin-top: 59px;
-  margin-bottom: 120px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  --width: ${({ width }) => width || 1140}px;
-  & > .dividing {
-    margin-right: -36px;
-    margin-left: -36px;
-    padding-right: 36px;
-    padding-left: 36px;
-    width: calc(100% + 72px);
-    ${breakpoints.at("sm")} {
-      margin-right: -16px;
-      margin-left: -16px;
-      padding-right: 16px;
-      padding-left: 16px;
-      width: calc(100% + 32px);
-    }
-  }
-`;
-
-const HeaderIconStyle = css({
-  color: "var(--negative2)",
-  margin: "-9px",
-});
-
-const SideBarNavigation = () => {
+const LayoutWrapper = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       <Media at="sm">
-        <WithThemeToggle>
-          {({ theme, toggleTheme }) => (
-            <Button
-              icon
-              onClick={toggleTheme}
-              css={{ width: "36px", marginBottom: "16px" }}
-            >
-              {theme === "light" ? (
-                <MdOutlineLightMode css={HeaderIconStyle} />
-              ) : (
-                <MdOutlineDarkMode css={HeaderIconStyle} />
-              )}
-            </Button>
-          )}
-        </WithThemeToggle>
+        <MobileSideBar />
       </Media>
-      <SideBarElement href="/" selected>
-        홈
-      </SideBarElement>
-      <SideBarElement authorized href="/projects/write">
-        모집 만들기
-      </SideBarElement>
-      <SideBarElement href="/projects" exact={false}>
-        프로젝트/스터디 찾기
-      </SideBarElement>
-      <SideBarElement href="/lounge">라운지</SideBarElement>
-      <br />
-      <SideBarElement authorized href="/profile">
-        내 프로필
-      </SideBarElement>
-      {/* <SideBarElement href="">새소식</SideBarElement>
-      <SideBarElement href="">쪽지</SideBarElement> */}
-    </>
-  );
-};
-
-const SideBar = React.memo(
-  ({ ...props }: React.ComponentProps<typeof SideBarContainer>) => {
-    return (
-      <>
-        <SideBarContainer {...props}>
-          <SideBarNavigation />
-        </SideBarContainer>
-      </>
-    );
-  }
-);
-SideBar.displayName = "SideBar";
-
-const MobileSideBar = React.memo(
-  ({ ...props }: {} & React.ComponentProps<typeof SideBarContainer>) => {
-    const router = useRouter();
-
-    const [sideBarOpen, setSideBarOpen] = useAtom(sideBarOpenState);
-
-    const initial = useRef(true);
-    useEffect(() => {
-      if (initial.current) initial.current = false;
-      else if (router.pathname) setSideBarOpen(false);
-    }, [router.pathname, setSideBarOpen]);
-
-    if (!sideBarOpen) return null;
-    return (
-      <>
-        <Dimmer onClick={() => setSideBarOpen(false)} css={{ zIndex: 9998 }} />
-        <Portal at="#portal">
-          <SideBarContainer animated {...props}>
-            <SideBarNavigation />
-          </SideBarContainer>
-        </Portal>
-      </>
-    );
-  }
-);
-MobileSideBar.displayName = "MobileSideBar";
-
-export const Layout = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <>
-      <PageContainer>
+      <BodyContainer>
         <Header />
-        <Media at="sm">
-          <MobileSideBar />
-        </Media>
         <Media greaterThan="sm">
           <SideBar />
         </Media>
-        <BodyContainer>{children}</BodyContainer>
-      </PageContainer>
+        {children}
+      </BodyContainer>
     </>
   );
 };
 
-type IPageLayoutHeader =
+type IPageLayout = (
   | {
       title: string;
       description?: string;
@@ -288,21 +37,37 @@ type IPageLayoutHeader =
   | {
       title?: never;
       description?: never;
-    };
-
-type IPageLayout = IPageLayoutHeader & {
+    }
+) & {
   width?: number;
 };
 
-export const PageLayout = ({
+const PageContainer = styled.div<{
+  width?: number;
+}>`
+  display: grid;
+  width: 100%;
+  align-self: start;
+  ${({ width = 1198 }) => css`
+    grid-template-columns:
+      1fr min(100%, ${width}px) minmax(0px, ${1198 - width}px)
+      1fr;
+    --container-width: ${width}px;
+  `}
+  & > * {
+    grid-column: 2;
+  }
+`;
+
+const PageLayout = ({
   title,
   description,
   children,
   width,
 }: React.PropsWithChildren<IPageLayout>) => {
   return (
-    <Layout>
-      <ChildrenContainer width={width}>
+    <LayoutWrapper>
+      <PageContainer width={width}>
         {title && (
           <SectionHeader>
             <SectionHeader.Title>{title}</SectionHeader.Title>
@@ -314,8 +79,18 @@ export const PageLayout = ({
           </SectionHeader>
         )}
         {children}
-      </ChildrenContainer>
-    </Layout>
+      </PageContainer>
+    </LayoutWrapper>
+  );
+};
+
+export const DefaultPageLayout = ({
+  children,
+}: React.PropsWithChildren<IPageLayout>) => {
+  return (
+    <LayoutWrapper>
+      <PageContainer>{children}</PageContainer>
+    </LayoutWrapper>
   );
 };
 

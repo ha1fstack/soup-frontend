@@ -15,7 +15,6 @@ import { useQueryClient } from "react-query";
 import { Login } from "./Login";
 import { Media } from "./Media";
 import Image from "next/image";
-import { useRouter } from "next/router";
 import { http } from "common/services";
 import { useAtom, useSetAtom } from "jotai";
 import { useAuth, useToggle, useOuterClick } from "lib/hooks";
@@ -23,13 +22,15 @@ import { sideBarOpenState, loginPopupState } from "lib/states";
 import { breakpoints, WithThemeToggle } from "lib/utils";
 
 const HeaderContainer = styled.div`
+  grid-area: header;
   box-sizing: border-box;
   padding: 0px 12px;
   ${breakpoints.at("sm")} {
     padding: 0px 12px;
   }
-  position: fixed;
-  height: 59px;
+  position: sticky;
+  top: 0;
+  height: 60px;
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -113,7 +114,6 @@ const Popup = React.forwardRef<
     toggle: (set?: boolean) => void;
   }
 >(({ toggle }, ref) => {
-  const router = useRouter();
   const queryClient = useQueryClient();
 
   const final = (_?: any) => toggle();
@@ -146,7 +146,7 @@ Popup.displayName = "Popup";
 const HeaderBackground = styled.div`
   position: fixed;
   width: 100%;
-  height: 59px;
+  height: 60px;
   background-color: var(--positive);
   z-index: -1;
 `;
@@ -154,7 +154,7 @@ const HeaderBackground = styled.div`
 const HeaderOverlay = styled.div`
   position: fixed;
   width: 100%;
-  height: 59px;
+  height: 60px;
   background-color: var(--positive);
   opacity: 0.75;
   z-index: 1;

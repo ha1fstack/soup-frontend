@@ -8,6 +8,5 @@ const ExampleAppMedia = createMedia({
   },
 });
 
-// Generate CSS to be injected into the head
 export const mediaStyle = ExampleAppMedia.createMediaStyle();
 export const { Media, MediaContextProvider } = ExampleAppMedia;

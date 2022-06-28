@@ -1,5 +1,4 @@
 import { useRouter } from "next/router";
-import Error404 from "pages/404";
 import { useLayoutEffect } from "react";
 
 export const NotFound = () => {

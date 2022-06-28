@@ -1,4 +1,4 @@
-import { Box, Flex, Input, Button, SectionBody } from "common/components";
+import { Box, Flex, Input, Button, Section } from "common/components";
 import { http } from "common/services";
 import { createPageLayout, Editor } from "components";
 import { fetchProject } from "lib/queries";
@@ -8,14 +8,14 @@ import { useRouter } from "next/router";
 import { useLayoutEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { QueryClient, dehydrate, useQuery, useQueryClient } from "react-query";
-import { CustomNextPage, IArticleData, IProjectData } from "types";
+import { CustomNextPage, IArticleData } from "types";
 
 const Edit: CustomNextPage = () => {
   return (
     <>
-      <SectionBody>
+      <Section>
         <EditForm />
-      </SectionBody>
+      </Section>
     </>
   );
 };

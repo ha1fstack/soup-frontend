@@ -4,8 +4,7 @@ import {
   Button,
   Flex,
   ProfilePlaceholder,
-  SectionBody,
-  SectionBodyAlt,
+  Section,
 } from "common/components";
 import { GetServerSideProps } from "next";
 import Image from "next/image";
@@ -45,16 +44,16 @@ import { hideScrollbar, horizontalScrollShadow } from "lib/styles";
 const Project: CustomNextPage = () => {
   return (
     <>
-      <SectionBodyAlt>
+      <Section bleed css={{ paddingTop: "12px", paddingBottom: "12px" }}>
         <FilterList />
-      </SectionBodyAlt>
-      <SectionBody>
+      </Section>
+      <Section>
         <TagSearch />
         <Flex css={{ gap: "24px", flexWrap: "wrap", marginBottom: "56px" }}>
           <ArticleList />
           <Featured />
         </Flex>
-      </SectionBody>
+      </Section>
     </>
   );
 };
@@ -542,7 +541,7 @@ const TagSearch = () => {
   const [isSearchMode, toggleIsSearchMode] = useToggle(false);
 
   return (
-    <Flex css={{ flexWrap: "wrap", marginTop: "-56px" }}>
+    <Flex css={{ flexWrap: "wrap", marginTop: "-32px" }}>
       <Box
         css={{
           flex: "99999 1 480px",

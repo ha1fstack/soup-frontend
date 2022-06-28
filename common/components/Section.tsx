@@ -1,3 +1,4 @@
+import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import { breakpoints } from "lib/utils";
 
@@ -11,7 +12,6 @@ export const SectionHeader = Object.assign(
     }
     margin-bottom: 24px;
     width: 100%;
-    max-width: 1140px;
   `,
   {
     Title: styled.div`
@@ -27,85 +27,33 @@ export const SectionHeader = Object.assign(
   }
 );
 
-const SectionBodyAltContainer = styled.section`
-  display: flex;
+export const Section = styled.section<{
+  bleed?: boolean;
+}>`
   width: 100%;
-  justify-content: center;
-  background-color: var(--positive);
-  border-top: 1px solid var(--outline);
-  border-bottom: 1px solid var(--outline);
+
+  ${({ bleed }) =>
+    bleed &&
+    css`
+      background-color: var(--positive);
+      border-top: 1px solid var(--outline);
+      border-bottom: 1px solid var(--outline);
+    `}
+  padding-top: 32px;
+  padding-bottom: 32px;
+  grid-column: 1 / 5;
+  display: grid;
+  grid-template-columns: inherit;
+  & > * {
+    grid-column: 2;
+    width: 100%;
+
+    // horizontal padding when section width is 100%
+    ${breakpoints.at("sm")} {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+    padding-left: 36px;
+    padding-right: 36px;
+  }
 `;
-
-export const SectionBodyAlt = ({
-  children,
-  className,
-}: {
-  column?: boolean;
-  inline?: boolean;
-  children?: React.ReactNode;
-  className?: any;
-}) => {
-  return (
-    <SectionBodyAltContainer
-      css={{
-        marginBottom: "24px",
-        paddingTop: "12px",
-        paddingBottom: "12px",
-      }}
-      className={`dividing ${className}`}
-    >
-      <div
-        css={{
-          display: "flex",
-          width: "100%",
-          maxWidth: "1140px",
-        }}
-      >
-        <div
-          css={{
-            flex: "0 1 var(--width)",
-            width: 0,
-          }}
-        >
-          {children}
-        </div>
-      </div>
-    </SectionBodyAltContainer>
-  );
-};
-
-const SectionBodyContainer = styled.section`
-  display: flex;
-  width: 100%;
-  max-width: 1140px;
-`;
-
-export const SectionBody = ({
-  children,
-  className,
-}: {
-  column?: boolean;
-  inline?: boolean;
-  children?: React.ReactNode;
-  className?: any;
-}) => {
-  return (
-    <SectionBodyContainer
-      css={{
-        marginBottom: "24px",
-      }}
-    >
-      <div
-        css={[
-          {
-            flex: "0 1 var(--width)",
-            width: 0,
-          },
-          className,
-        ]}
-      >
-        {children}
-      </div>
-    </SectionBodyContainer>
-  );
-};

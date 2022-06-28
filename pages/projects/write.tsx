@@ -1,4 +1,4 @@
-import { Box, Flex, Input, Button, SectionBody } from "common/components";
+import { Box, Flex, Input, Button, Section } from "common/components";
 import { http } from "common/services";
 import { Editor, createPageLayout } from "components";
 import { useRouter } from "next/router";
@@ -8,9 +8,9 @@ import { CustomNextPage, IArticleData } from "types";
 const Write: CustomNextPage = () => {
   return (
     <>
-      <SectionBody>
+      <Section>
         <WriteForm />
-      </SectionBody>
+      </Section>
     </>
   );
 };

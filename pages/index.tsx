@@ -1,8 +1,7 @@
 import {
   Box,
   Flex,
-  SectionBody,
-  SectionBodyAlt,
+  Section,
   ProfilePlaceholder,
   Hr,
   Label,
@@ -12,7 +11,6 @@ import { GetServerSideProps } from "next";
 import Image from "next/image";
 import { css } from "@emotion/react";
 import { dehydrate, QueryClient, useQuery } from "react-query";
-import { http } from "common/services";
 import { ellipsis } from "polished";
 import { createPageLayout } from "components";
 import {
@@ -34,7 +32,7 @@ import {
   useState,
 } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import SwiperType, { Autoplay } from "swiper";
+import SwiperType, { Autoplay, EffectFade } from "swiper";
 import React from "react";
 import Link from "next/link";
 import { IPostPreviewContent, ILoungePost, CustomNextPage } from "types";
@@ -43,20 +41,21 @@ import {
   fetchFrontProjects,
   fetchLounge,
 } from "lib/queries";
+import { Banner } from "components/Banner";
 
 const Home: CustomNextPage = () => {
   return (
     <>
-      <Banner />
-      <SectionBodyAlt css={FeaturedSectionStyle}>
+      <BannerCarousel />
+      <Section bleed css={FeaturedSectionStyle}>
         <Featured />
-      </SectionBodyAlt>
-      <SectionBody>
+      </Section>
+      <Section>
         <Flex css={{ gap: "36px", flexWrap: "wrap" }}>
           <Projects />
           <Lounge />
         </Flex>
-      </SectionBody>
+      </Section>
     </>
   );
 };
@@ -64,6 +63,60 @@ const Home: CustomNextPage = () => {
 Home.getLayout = createPageLayout({});
 
 export default Home;
+
+const SwiperSection = Section.withComponent(Swiper);
+
+const BannerCarousel = () => {
+  const swiperRef = useRef<SwiperType | null>(null);
+  const [pagination, setPagination] = useState(0);
+
+  return (
+    <Swiper
+      css={css`
+        grid-column: 1 / 5;
+      `}
+      onSwiper={(ref) => (swiperRef.current = ref)}
+      loop={true}
+      autoplay={{
+        delay: 300000,
+        disableOnInteraction: false,
+      }}
+      effect={"fade"}
+      modules={[Autoplay, EffectFade]}
+      onSlideChange={(swiper) => setPagination(swiper.realIndex)}
+    >
+      <SwiperSlide key={0}>
+        <Banner
+          color="#fff"
+          backgroundColor="#111"
+          label="안내사항"
+          title={
+            <>
+              흩어져 있는 스터디와 프로젝트 모집,
+              <br />
+              이젠 SouP에서 편하게 모아보세요
+            </>
+          }
+        />
+      </SwiperSlide>
+      <SwiperSlide key={0}>
+        <Banner
+          color="#111"
+          backgroundColor="#ffd3cc"
+          label="프로모션"
+          title={
+            <>
+              프론트엔드 BEST 강의
+              <br />
+              SouP에서만 30% 할인중👌
+            </>
+          }
+          description={<>입문부터 실전까지, 믿고 보는 실무자 Pick</>}
+        />
+      </SwiperSlide>
+    </Swiper>
+  );
+};
 
 /* -------------------------------------------------------------------------- */
 /*                                    utils                                   */
@@ -86,7 +139,6 @@ const FeaturedSectionStyle = css({
   paddingBottom: "44px",
   border: "0px",
   borderBottom: "1px solid var(--outline)",
-  marginBottom: "36px",
 });
 
 /* -------------------------------------------------------------------------- */
@@ -471,105 +523,6 @@ const Featured = () => {
     </Flex>
   );
 };
-
-const Banner = React.memo(() => {
-  const styles = {
-    Wrapper: css`
-      height: 300px;
-      --banner-title: 24px;
-      --banner-description: 16px;
-      --banner-image-size: 240px;
-      padding-top: 48px;
-      padding-bottom: 48px;
-      ${breakpoints.at("sm")} {
-        height: 200px;
-        --banner-title: 16px;
-        --banner-description: 14px;
-        --banner-image-size: 128px;
-        padding: 24px 18px !important;
-      }
-      background-color: #111;
-      color: #ffffff;
-      border-bottom: 1px solid var(--outline);
-      margin-bottom: 0;
-      z-index: -2;
-    `,
-    InnerWrapper: css({
-      height: "100%",
-      alignItems: "center",
-      justifyContent: "space-between",
-      position: "relative",
-    }),
-    BannerContentWrapper: css`
-      height: 100%;
-      justify-content: space-between;
-      align-items: flex-start;
-    `,
-    BannerBadge: css`
-      color: #111;
-      font-weight: 700;
-      font-size: var(--banner-description);
-      padding: 0.5em 0.65em;
-    `,
-    BannerTitle: css`
-      font-weight: 700;
-      font-size: var(--banner-title);
-    `,
-    BannerDescription: css`
-      font-size: var(--banner-description);
-    `,
-    BannerImage: css`
-      position: absolute;
-      right: 0;
-      z-index: 1;
-      width: var(--banner-image-size);
-    `,
-  };
-
-  const BannerLabel = () => (
-    <Label variant="primary" size="freeform" css={styles.BannerBadge}>
-      프로모션
-    </Label>
-  );
-  const BannerTitle = () => (
-    <>
-      프론트엔드 BEST 강의
-      <br />
-      SouP에서만 30% 할인중👌
-    </>
-  );
-  const BannerDescription = () => <>입문부터 실전까지, 믿고 보는 실무자 Pick</>;
-  const BannerImage = () => (
-    <Image
-      alt="front-banner"
-      src="https://i.imgur.com/7FfQL9b.png"
-      width="240"
-      height="240"
-    />
-  );
-
-  return (
-    <SectionBodyAlt css={styles.Wrapper}>
-      <Flex css={styles.InnerWrapper}>
-        <Flex column css={styles.BannerContentWrapper}>
-          <BannerLabel />
-          <Flex column css={{ gap: "12px" }}>
-            <p css={styles.BannerTitle}>
-              <BannerTitle />
-            </p>
-            <p css={styles.BannerDescription}>
-              <BannerDescription />
-            </p>
-          </Flex>
-        </Flex>
-        <span css={styles.BannerImage}>
-          <BannerImage />
-        </span>
-      </Flex>
-    </SectionBodyAlt>
-  );
-});
-Banner.displayName = "Banner";
 
 /* -------------------------------------------------------------------------- */
 /*                                     api                                    */

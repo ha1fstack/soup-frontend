@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Flex, Box, Button, SectionBody, Hr } from "common/components";
+import { Flex, Box, Button, Section, Hr } from "common/components";
 import { http } from "common/services";
 import { createPageLayout } from "components";
 import { useAuth } from "lib/hooks";
@@ -20,12 +20,12 @@ const Lounge: CustomNextPage = () => {
 
   return (
     <>
-      <SectionBody>
+      <Section>
         <Flex column css={{ gap: "24px" }}>
           {auth.success ? <LoungeEditor /> : <LoungeLoginMessage />}
           <LoungePostSection />
         </Flex>
-      </SectionBody>
+      </Section>
     </>
   );
 };

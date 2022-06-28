@@ -1,4 +1,8 @@
+import { useAuth } from "lib/hooks";
 import { useTheme as useNextTheme } from "next-themes";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { IAuthData } from "types";
 
 const themeTransition = (ms: number) => {
   const css = document.createElement("style");
@@ -30,4 +34,40 @@ export const WithThemeToggle = ({
 
   if (!theme) return null;
   return children({ theme, toggleTheme });
+};
+
+export const WithAuth = ({
+  authorized = false,
+  children,
+}: {
+  authorized?: boolean;
+  children({
+    auth,
+    forbidden,
+  }: {
+    auth: IAuthData;
+    forbidden: boolean;
+  }): JSX.Element;
+}) => {
+  const auth = useAuth();
+  const forbidden = authorized && !auth.success;
+
+  const router = useRouter();
+  useEffect(() => {
+    if (forbidden)
+      router.push(
+        {
+          pathname: "/login",
+          query: {
+            redirect: router.asPath,
+          },
+        },
+        undefined,
+        {
+          shallow: true,
+        }
+      );
+  }, [forbidden, router]);
+
+  return children({ auth, forbidden });
 };
