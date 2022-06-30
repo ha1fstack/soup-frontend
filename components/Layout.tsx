@@ -6,6 +6,7 @@ import styled from "@emotion/styled";
 import { Header, Media, MobileSideBar, SideBar } from "components";
 import { SectionHeader } from "common/components";
 import { breakpoints } from "lib/utils";
+import { defaultGridTemplate } from "common/styles";
 
 const BodyContainer = styled.div`
   display: grid;
@@ -50,15 +51,8 @@ const PageContainer = styled.div<{
   width: 100%;
   align-self: start;
   ${({ width = 1188 }) => css`
-    //prettier-ignore
-    grid-template-columns: minmax(24px, 1fr) min(calc(100% - 48px), calc(var(--container-width) - 48px)) minmax(${1188 -
-    width}px, 0px) minmax(24px, 1fr);
-    ${breakpoints.at("sm")} {
-      //prettier-ignore
-      grid-template-columns: minmax(16px, 1fr) min(calc(100% - 32px), calc(var(--container-width) - 32px)) minmax(${1188 -
-      width}px, 0px) minmax(16px, 1fr);
-    }
     --container-width: ${width}px;
+    ${defaultGridTemplate}
   `}
   * {
     grid-column: 2;

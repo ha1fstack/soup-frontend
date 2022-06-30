@@ -3,6 +3,7 @@ import { css } from "@emotion/react";
 import { Label, Flex } from "common/components";
 import { breakpoints } from "lib/utils";
 import React from "react";
+import { defaultGridTemplate } from "common/styles";
 
 export const Banner = React.memo(
   ({
@@ -21,12 +22,7 @@ export const Banner = React.memo(
     const styles = {
       Wrapper: css`
         display: grid;
-        grid-template-columns:
-          1fr min(100%, var(--container-width)) minmax(
-            0px,
-            calc(1188px - var(--container-width))
-          )
-          1fr;
+        ${defaultGridTemplate}
         background-color: ${backgroundColor};
         color: ${color};
         height: 300px;
@@ -51,12 +47,6 @@ export const Banner = React.memo(
         align-items: center;
         justify-content: space-between;
         position: relative;
-        ${breakpoints.at("sm")} {
-          padding-left: 16px;
-          padding-right: 16px;
-        }
-        padding-left: 36px;
-        padding-right: 36px;
       `,
       BannerContentWrapper: css`
         padding-top: 48px;
