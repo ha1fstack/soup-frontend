@@ -38,22 +38,18 @@ export const Section = styled.section<{
       background-color: var(--positive);
       border-top: 1px solid var(--outline);
       border-bottom: 1px solid var(--outline);
+      padding-top: 32px;
+      padding-bottom: 32px;
     `}
-  padding-top: 32px;
-  padding-bottom: 32px;
-  grid-column: 1 / 5;
+  margin-bottom: 32px;
   display: grid;
   grid-template-columns: inherit;
+  // sc trick to override default inherit behavior
+  && {
+    grid-column: 1 / 5;
+  }
   & > * {
     grid-column: 2;
     width: 100%;
-
-    // horizontal padding when section width is 100%
-    ${breakpoints.at("sm")} {
-      padding-left: 16px;
-      padding-right: 16px;
-    }
-    padding-left: 36px;
-    padding-right: 36px;
   }
 `;

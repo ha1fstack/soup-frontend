@@ -16,7 +16,7 @@ const BannerView = () => {
       onSwiper={(ref) => (swiperRef.current = ref)}
       loop={true}
       autoplay={{
-        delay: 300000,
+        delay: 5000,
         disableOnInteraction: false,
       }}
       effect={"fade"}
@@ -37,7 +37,7 @@ const BannerView = () => {
           }
         />
       </SwiperSlide>
-      <SwiperSlide key={0}>
+      <SwiperSlide key={1}>
         <Banner
           color="#111"
           backgroundColor="#ffd3cc"

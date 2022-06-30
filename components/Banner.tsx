@@ -24,7 +24,7 @@ export const Banner = React.memo(
         grid-template-columns:
           1fr min(100%, var(--container-width)) minmax(
             0px,
-            calc(1198px - var(--container-width))
+            calc(1188px - var(--container-width))
           )
           1fr;
         background-color: ${backgroundColor};

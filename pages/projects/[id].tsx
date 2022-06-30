@@ -252,6 +252,7 @@ const Article = () => {
       responsive
       column
       css={{
+        boxSizing: "border-box",
         padding: "24px",
         marginBottom: "48px",
       }}

@@ -32,8 +32,8 @@ const SideBarContainerWrapper = styled.div<{
   animated?: boolean;
 }>`
   position: sticky;
-  top: 60px;
-  height: calc(100vh - 60px);
+  top: 6rem;
+  height: calc(100vh - 6rem);
 
   display: flex;
   flex-direction: column;

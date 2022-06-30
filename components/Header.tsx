@@ -30,14 +30,13 @@ const HeaderContainer = styled.div`
   }
   position: sticky;
   top: 0;
-  height: 60px;
+  height: calc(6rem - 1px);
   width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  border-bottom: solid 1px var(--outline);
-  z-index: 2;
+  z-index: 3;
   backdrop-filter: blur(6px);
 `;
 
@@ -146,7 +145,7 @@ Popup.displayName = "Popup";
 const HeaderBackground = styled.div`
   position: fixed;
   width: 100%;
-  height: 60px;
+  height: 6rem;
   background-color: var(--positive);
   z-index: -1;
 `;
@@ -154,10 +153,18 @@ const HeaderBackground = styled.div`
 const HeaderOverlay = styled.div`
   position: fixed;
   width: 100%;
-  height: 60px;
+  height: 6rem;
   background-color: var(--positive);
   opacity: 0.75;
-  z-index: 1;
+  z-index: 2;
+`;
+
+const HeaderOutline = styled.div`
+  position: fixed;
+  width: 100%;
+  top: calc(6rem - 1px);
+  border-bottom: solid 1px var(--outline);
+  z-index: 3;
 `;
 
 const VerticalDivider = styled.div`
@@ -179,6 +186,7 @@ export const Header = React.memo(() => {
     <>
       <HeaderBackground />
       <HeaderOverlay />
+      <HeaderOutline />
       <HeaderContainer>
         <Flex
           css={{
@@ -283,6 +291,7 @@ export const Header = React.memo(() => {
           )}
         </HeaderMenuContainer>
       </HeaderContainer>
+
       {loginPopup && <Login />}
     </>
   );

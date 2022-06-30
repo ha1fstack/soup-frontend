@@ -32,18 +32,18 @@ export const LabelVariant = (theme: Theme) => ({
 export const LabelSize = () => ({
   default: css`
     height: 36px;
-    padding: 0px 12px;
+    padding: 0px 1.2rem;
     border-radius: 8px;
   `,
   smaller: css`
     min-height: 22px;
-    padding: 0px 8px;
+    padding: 0px 0.8rem;
     font-size: 1.1rem;
     border-radius: 4px;
   `,
   small: css`
     min-height: 28px;
-    padding: 0px 10px;
+    padding: 0px 1rem;
     font-size: 1.2rem;
     border-radius: 6px;
   `,
