@@ -1,5 +1,6 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
+import { defaultGridTemplate } from "common/styles";
 import { breakpoints } from "lib/utils";
 
 export const SectionHeader = Object.assign(
@@ -31,7 +32,6 @@ export const Section = styled.section<{
   bleed?: boolean;
 }>`
   width: 100%;
-
   ${({ bleed }) =>
     bleed &&
     css`

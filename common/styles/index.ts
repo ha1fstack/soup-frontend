@@ -3,9 +3,9 @@ import { breakpoints } from "lib/utils";
 
 export const defaultGridTemplate = css`
   //prettier-ignore
-  grid-template-columns: minmax(24px, 1fr) min(calc(100% - 48px), calc(var(--container-width) - 48px)) minmax(calc(1188px - var(--container-width)), 0px) minmax(24px, 1fr);
+  grid-template-columns: minmax(36px, 1fr) min(calc(100% - 72px), var(--container-width)) minmax(0px, calc(1140px - var(--container-width) )) minmax(36px, 1fr);
   ${breakpoints.at("sm")} {
     //prettier-ignore
-    grid-template-columns: minmax(16px, 1fr) min(calc(100% - 32px), calc(var(--container-width) - 32px)) minmax(calc(1188px - var(--container-width)), 0px) minmax(16px, 1fr);
+    grid-template-columns: minmax(16px, 1fr) min(calc(100% - 32px), var(--container-width)) minmax(0px, calc(1140px - var(--container-width) )) minmax(16px, 1fr);
   }
 `;

@@ -55,12 +55,14 @@ export const Box = Object.assign(
     responsive?: boolean;
     fullspan?: boolean;
   }>`
+    width: auto;
     border-radius: 8px;
     display: flex;
     padding: 12px 12px;
-    // ???
+    // x padding 16px to match layout side margin
     ${breakpoints.at("sm")} {
-      padding: 12px 16px;
+      padding-left: 16px !important;
+      padding-right: 16px !important;
     }
     ${({ fullspan }) => fullspan && fullspanStyle}
     ${({ column }) =>
@@ -68,12 +70,12 @@ export const Box = Object.assign(
       css`
         flex-direction: column;
       `}
-  ${({ responsive }) =>
+    ${({ responsive }) =>
       responsive &&
       css({
         [breakpoints.at("sm")]: fullspanStyle,
       })}
-  ${({ variant }) =>
+    ${({ variant }) =>
       variant
         ? BoxVariant[variant]
         : css`

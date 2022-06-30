@@ -50,7 +50,11 @@ const PageContainer = styled.div<{
   display: grid;
   width: 100%;
   align-self: start;
-  ${({ width = 1188 }) => css`
+  ${({ width = 1140 }) => {
+    console.log("width:", width);
+    return css``;
+  }}
+  ${({ width = 1140 }) => css`
     --container-width: ${width}px;
     ${defaultGridTemplate}
   `}
