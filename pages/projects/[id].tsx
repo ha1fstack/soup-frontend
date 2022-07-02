@@ -95,13 +95,14 @@ const ArticlePreview = ({
 
 const ArticleHeader = ({ data }: { data: IProjectContentData<unknown> }) => {
   const auth = useAuth();
+  const ownership = auth.success && auth.user_id === data.userId;
+
+  const queryClient = useQueryClient();
   const router = useRouter();
   const setLoginPopup = useSetAtom(loginPopupState);
   const { id } = router.query as {
     id: string;
   };
-
-  const ownership = auth.success && auth.user_id === data.userId;
 
   const handleDelete = async () => {
     if (!window.confirm("정말 삭제하시겠습니까?")) return;
@@ -113,8 +114,6 @@ const ArticleHeader = ({ data }: { data: IProjectContentData<unknown> }) => {
   const handleEdit = async () => {
     router.push(`/projects/edit/${id}`);
   };
-
-  const queryClient = useQueryClient();
 
   const handleFav = async () => {
     if (!auth.success) {

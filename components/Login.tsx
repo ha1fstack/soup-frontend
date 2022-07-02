@@ -154,7 +154,21 @@ export const Login = () => {
               </Flex>
               <p>로 로그인 / 회원가입</p>
               {isDevEnv && (
-                <Button onClick={checkLogin}>manual login refresh</Button>
+                <>
+                  <Button onClick={checkLogin}>manual login refresh</Button>
+                  <Button
+                    onClick={() => {
+                      queryClient.setQueryData("auth", () => ({
+                        success: true,
+                        user_id: 1,
+                        profileImage: "https://via.placeholder.com/64x64",
+                        username: "Test",
+                      }));
+                    }}
+                  >
+                    mock login success
+                  </Button>
+                </>
               )}
             </Flex>
           </div>

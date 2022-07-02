@@ -18,7 +18,19 @@ const BoxVariant = {
 export const Flex = styled.div<{
   column?: boolean;
   inline?: boolean;
+  alignCenter?: boolean;
+  gap?: string;
 }>`
+  ${({ alignCenter }) =>
+    alignCenter &&
+    css`
+      align-items: center;
+    `}
+  ${({ gap }) =>
+    gap &&
+    css`
+      gap: ${gap};
+    `}
   ${({ inline }) =>
     inline
       ? css`

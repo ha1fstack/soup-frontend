@@ -2,7 +2,12 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["i.imgur.com", "lh3.googleusercontent.com", "k.kakaocdn.net"],
+    domains: [
+      "i.imgur.com",
+      "lh3.googleusercontent.com",
+      "k.kakaocdn.net",
+      "via.placeholder.com",
+    ],
   },
   experimental: {
     scrollRestoration: "manual",

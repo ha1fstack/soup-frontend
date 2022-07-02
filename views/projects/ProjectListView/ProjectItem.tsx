@@ -6,12 +6,52 @@ import {
   getDisplayTag,
 } from "lib/utils";
 import Link from "next/link";
-import { useMemo } from "react";
-import { IPost } from "types";
+import { MouseEventHandler, useMemo } from "react";
+import { IPageable, IPost } from "types";
 import Image from "next/image";
+import { MdOutlineStar, MdOutlineStarBorder } from "react-icons/md";
+import { http } from "common/services";
+import { useAuth } from "lib/hooks";
+import { useSetAtom } from "jotai";
+import { loginPopupState } from "lib/states";
+import { useQueryClient } from "react-query";
+import { useRouter } from "next/router";
+import produce from "immer";
 
 const ProjectItem = ({ image, post }: { image?: boolean; post: IPost }) => {
   const timeString = useMemo(() => timeDiffString(post.date), [post]);
+  const auth = useAuth();
+  const setLoginPopup = useSetAtom(loginPopupState);
+  const queryClient = useQueryClient();
+
+  const router = useRouter();
+  const currentPage = parseInt(router.query.page as string) || 1;
+
+  const handleFav: MouseEventHandler<HTMLButtonElement> = async (e) => {
+    e.preventDefault();
+
+    if (!auth.success) {
+      setLoginPopup(true);
+      return;
+    }
+
+    const { data: res } = await http.post("/projects/fav", {
+      id: post.id,
+      mode: !post.isfav,
+    });
+
+    if (res.success)
+      queryClient.setQueryData<IPageable<IPost[]> | undefined>(
+        ["projects", currentPage],
+        (projects) =>
+          projects &&
+          produce(projects, (draft) => {
+            const _post = draft.content.find((_post) => _post.id === post.id);
+            if (_post) _post.isfav = !post.isfav;
+            console.log(draft);
+          })
+      );
+  };
 
   return (
     <Box responsive column>
@@ -40,17 +80,29 @@ const ProjectItem = ({ image, post }: { image?: boolean; post: IPost }) => {
             <a>
               <Flex
                 css={{
-                  alignItems: "center",
                   fontSize: "1.4rem",
                   marginBottom: "16px",
                   gap: "8px",
+                  justifyContent: "space-between",
                 }}
               >
-                <ProfilePlaceholder value={post.userName} size={24} />
-                <span>
-                  {post.userName} · {timeString} · 조회 {post.views} · 스크랩{" "}
-                  {post.fav}
-                </span>
+                <Flex alignCenter gap="8px">
+                  <ProfilePlaceholder value={post.userName} size={24} />
+                  <span>
+                    {post.userName} · {timeString} · 조회 {post.views} · 스크랩{" "}
+                    {post.fav}
+                  </span>
+                </Flex>
+
+                <button
+                  onClick={handleFav}
+                  css={{
+                    fontSize: "2rem",
+                    color: post.isfav ? "var(--negative2)" : "var(--disabled)",
+                  }}
+                >
+                  {post.isfav ? <MdOutlineStar /> : <MdOutlineStarBorder />}
+                </button>
               </Flex>
               <div
                 css={{
@@ -111,7 +163,7 @@ const ProjectItem = ({ image, post }: { image?: boolean; post: IPost }) => {
           flexDirection: "row",
           marginTop: 0,
           justifyContent: "space-between",
-          alignItems: "center",
+
           lineHeight: "normal",
         }}
       >

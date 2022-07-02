@@ -10,7 +10,7 @@ const ProjectListView = () => {
   const router = useRouter();
   const currentPage = parseInt(router.query.page as string) || 1;
 
-  const { data, isLoading, isError } = useQuery("projects", () =>
+  const { data, isLoading, isError } = useQuery(["projects", currentPage], () =>
     fetchProjects(
       undefined,
       currentPage,

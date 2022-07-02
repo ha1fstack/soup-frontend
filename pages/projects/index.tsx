@@ -41,10 +41,12 @@ export const getServerSideProps: GetServerSideProps = injectSession(
   async ({ http, context }) => {
     const queryClient = new QueryClient();
 
-    await queryClient.prefetchQuery("projects", () =>
+    const currentPage = parseInt(context.query.page as string) || 1;
+
+    await queryClient.prefetchQuery(["projects", currentPage], () =>
       fetchProjects(
         http,
-        parseInt(context.query.page as string) || 1,
+        currentPage,
         context.query.stacks
           ? ((Array.isArray(context.query.stacks)
               ? context.query.stacks

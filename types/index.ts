@@ -38,6 +38,7 @@ export interface IPost {
   views: number;
   source: "SOUP" | "INFLEARN" | "OKKY" | "CAMPICK" | "HOLA";
   fav: number;
+  isfav: boolean;
 }
 
 export interface IProjectContentData<T> {
