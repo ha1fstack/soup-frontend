@@ -8,5 +8,5 @@ const ExampleAppMedia = createMedia({
   },
 });
 
-export const mediaStyle = ExampleAppMedia.createMediaStyle();
+export const mediaStyles = ExampleAppMedia.createMediaStyle();
 export const { Media, MediaContextProvider } = ExampleAppMedia;

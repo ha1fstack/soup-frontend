@@ -1,4 +1,3 @@
-import { css } from "@emotion/react";
 import { Styles } from "polished/lib/types/style";
 
 export const hideScrollbar: Styles = {

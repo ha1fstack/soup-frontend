@@ -1,3 +1,4 @@
+import { mediaStyles } from "lib/utils";
 import { Html, Head, Main, NextScript } from "next/document";
 
 export default function Document() {
@@ -10,6 +11,10 @@ export default function Document() {
           type="text/css"
           crossOrigin="anonymous"
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css"
+        />
+        <style
+          type="text/css"
+          dangerouslySetInnerHTML={{ __html: mediaStyles }}
         />
       </Head>
       <body>

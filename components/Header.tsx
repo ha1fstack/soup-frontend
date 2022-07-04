@@ -13,13 +13,12 @@ import {
 } from "react-icons/md";
 import { useQueryClient } from "react-query";
 import { Login } from "./Login";
-import { Media } from "./Media";
 import Image from "next/image";
 import { http } from "common/services";
 import { useAtom, useSetAtom } from "jotai";
 import { useAuth, useToggle, useOuterClick } from "lib/hooks";
 import { sideBarOpenState, loginPopupState } from "lib/states";
-import { breakpoints, WithThemeToggle } from "lib/utils";
+import { breakpoints, Media, WithThemeToggle } from "lib/utils";
 
 const HeaderContainer = styled.div`
   grid-area: header;

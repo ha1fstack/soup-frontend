@@ -3,10 +3,10 @@ import React from "react";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 
-import { Header, Media, MobileSideBar, SideBar } from "components";
+import { Header, MobileSideBar, SideBar } from "components";
 import { SectionHeader } from "common/components";
 import { defaultGridTemplate } from "common/styles";
-import { breakpoints } from "lib/utils";
+import { breakpoints, Media } from "lib/utils";
 
 const BodyContainer = styled.div`
   display: grid;

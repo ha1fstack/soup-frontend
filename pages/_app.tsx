@@ -1,5 +1,5 @@
 import { css, Global, Theme, ThemeProvider } from "@emotion/react";
-import { MediaContextProvider, Error, DefaultPageLayout } from "components";
+import { Error, DefaultPageLayout } from "components";
 import NextApp, { AppContext } from "next/app";
 import Head from "next/head";
 import {
@@ -14,15 +14,19 @@ import "common/styles/globals.css";
 import "swiper/css";
 import "swiper/css/effect-fade";
 
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { useAuth } from "lib/hooks";
 import { ThemeProvider as NextThemeProvider } from "next-themes";
 import { http } from "common/services";
 import React from "react";
 import { Provider } from "jotai";
-import { breakpoints, isDevEnv, WithAuth } from "lib/utils";
+import {
+  breakpoints,
+  isDevEnv,
+  MediaContextProvider,
+  WithAuth,
+} from "lib/utils";
 import { CustomAppProps, IAuthData } from "types";
-import { useRouter } from "next/router";
 import axios from "axios";
 
 // suppress react query logging

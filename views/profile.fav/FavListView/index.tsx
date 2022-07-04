@@ -34,7 +34,6 @@ const FavListView = () => {
           produce(projects, (draft) => {
             const _post = draft.find((_post) => _post.id === post.id);
             if (_post) _post.isfav = !post.isfav;
-            console.log(draft);
           })
       );
   };

@@ -62,7 +62,6 @@ const ProjectListView = () => {
           produce(projects, (draft) => {
             const _post = draft.content.find((_post) => _post.id === post.id);
             if (_post) _post.isfav = !post.isfav;
-            console.log(draft);
           })
       );
   };

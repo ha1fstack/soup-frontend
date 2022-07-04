@@ -4,7 +4,6 @@ export * from "./Error";
 export * from "./Header";
 export * from "./Layout";
 export * from "./Login";
-export * from "./Media";
 export * from "./NotFound";
 export { default as Portal } from "./Portal";
 export * from "./SideBar";

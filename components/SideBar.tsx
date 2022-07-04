@@ -4,14 +4,13 @@ import { Button } from "common/components";
 import { useSetAtom, useAtom } from "jotai";
 import { useMatch, useAuth } from "lib/hooks";
 import { loginPopupState, sideBarOpenState } from "lib/states";
-import { breakpoints, WithThemeToggle } from "lib/utils";
+import { breakpoints, WithThemeToggle, Media } from "lib/utils";
 import Link, { LinkProps } from "next/link";
 import { useRouter } from "next/router";
 import React, { useRef, useEffect } from "react";
 import { MdOutlineLightMode, MdOutlineDarkMode } from "react-icons/md";
 import { ISideBarProps } from "types";
 import { Dimmer } from "./Dimmer";
-import { Media } from "./Media";
 import Portal from "./Portal";
 
 const HeaderIconStyle = css({
@@ -188,7 +187,6 @@ const SideBarNavigation = () => {
 export const MobileSideBar = React.memo(
   ({ ...props }: {} & React.ComponentProps<typeof SideBarContainer>) => {
     const router = useRouter();
-
     const [sideBarOpen, setSideBarOpen] = useAtom(sideBarOpenState);
 
     const initial = useRef(true);

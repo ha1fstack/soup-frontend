@@ -11,7 +11,6 @@ const LoungeItem = ({ post }: { post: ILoungePost }) => {
   const auth = useAuth();
 
   const handleFav = async ({ user_id, isfav, lounge_id }: ILoungePost) => {
-    console.log("click");
     if (!auth.success || user_id === auth.user_id) return;
     const { data: res } = await http.post("/lounge/fav", {
       id: lounge_id,
