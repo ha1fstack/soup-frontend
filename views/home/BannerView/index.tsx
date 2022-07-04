@@ -3,7 +3,7 @@ import { CarouselPagination } from "common/components";
 import { defaultGridTemplate } from "common/styles";
 import { Banner } from "components/Banner";
 import { useSwiperRef } from "lib/hooks";
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React from "react";
 import { Autoplay, EffectFade } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 

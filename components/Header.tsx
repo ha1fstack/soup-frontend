@@ -56,6 +56,9 @@ const HeaderMenuContainer = styled.header`
 const LogoLink = styled.a`
   height: 32px;
   cursor: pointer;
+  ${breakpoints.greaterThan("sm")} {
+    margin-left: 6px;
+  }
 `;
 
 const Logo = ({ children, ...props }: React.PropsWithChildren<LinkProps>) => (
