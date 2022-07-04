@@ -1,4 +1,5 @@
 import { Flex, CarouselPagination } from "common/components";
+import { useSwiperRef } from "lib/hooks";
 import { fetchFrontFeatured } from "lib/queries";
 import { toMatrix, breakpoints } from "lib/utils";
 import { useMemo, useState, useRef } from "react";
@@ -13,9 +14,8 @@ const HotFeatured = ({ className }: { className?: string }) => {
   );
 
   const content = useMemo(() => toMatrix(data?.HOT || [], 2), [data]);
-  const [pagination, setPagination] = useState(0);
-
-  const swiperRef = useRef<SwiperType | null>(null);
+  const { swiperRef, onSwiper, pagination, onSlideChange, isClientRender } =
+    useSwiperRef();
 
   if (!data || isLoading || isError) return null;
 
@@ -43,15 +43,15 @@ const HotFeatured = ({ className }: { className?: string }) => {
         />
       </Flex>
       <Swiper
-        onSwiper={(ref) => (swiperRef.current = ref)}
-        loop={true}
+        onSwiper={onSwiper}
+        loop={isClientRender}
         autoplay={{
           delay: 5000,
           disableOnInteraction: false,
         }}
         modules={[Autoplay]}
         spaceBetween={72}
-        onSlideChange={(swiper) => setPagination(swiper.realIndex)}
+        onSlideChange={onSlideChange}
       >
         {content.map((content, i) => (
           <SwiperSlide key={i}>

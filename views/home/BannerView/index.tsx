@@ -2,27 +2,28 @@ import { css } from "@emotion/react";
 import { CarouselPagination } from "common/components";
 import { defaultGridTemplate } from "common/styles";
 import { Banner } from "components/Banner";
-import React, { useRef, useState } from "react";
-import SwiperType, { Autoplay, EffectFade } from "swiper";
+import { useSwiperRef } from "lib/hooks";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { Autoplay, EffectFade } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 const BannerView = () => {
-  const swiperRef = useRef<SwiperType | null>(null);
-  const [pagination, setPagination] = useState(0);
+  const { swiperRef, onSwiper, pagination, onSlideChange, isClientRender } =
+    useSwiperRef();
 
   return (
     <>
       <Swiper
-        css={{ gridColumn: "1/5" }}
-        onSwiper={(ref) => (swiperRef.current = ref)}
-        loop={true}
+        css={{ gridColumn: "1 / 5" }}
+        onSwiper={onSwiper}
+        loop={isClientRender}
         autoplay={{
           delay: 5000,
           disableOnInteraction: false,
         }}
         effect={"fade"}
         modules={[Autoplay, EffectFade]}
-        onSlideChange={(swiper) => setPagination(swiper.realIndex)}
+        onSlideChange={onSlideChange}
       >
         {bannerItems.map((item, i) => (
           <SwiperSlide key={i}>

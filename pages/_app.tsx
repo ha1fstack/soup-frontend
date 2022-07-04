@@ -11,6 +11,7 @@ import {
 
 import "common/styles/reset.css";
 import "common/styles/globals.css";
+
 import "swiper/css";
 import "swiper/css/effect-fade";
 

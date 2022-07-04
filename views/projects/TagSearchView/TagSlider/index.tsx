@@ -57,6 +57,8 @@ const TagSlider = ({ toggle }: { toggle: (set?: boolean) => void }) => {
               animationPlayState: "paused",
             },
           },
+          // force height for ssr
+          height: "36px",
           ...hideScrollbar,
         }}
       >

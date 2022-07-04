@@ -29,8 +29,7 @@
     "react-query": "^3.39.1",
     "react-textarea-autosize": "^8.3.4",
     "sharp": "^0.30.7",
-    "swiper": "^8.2.6",
-    "usehooks-ts": "^2.6.0"
+    "swiper": "^8.2.6"
   },
   "devDependencies": {
     "@types/node": "18.0.0",

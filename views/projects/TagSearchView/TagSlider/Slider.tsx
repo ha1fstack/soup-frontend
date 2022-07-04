@@ -30,6 +30,7 @@ const Slider = React.forwardRef<HTMLDivElement>((_, ref) => {
           TagList.length * 15
         }s linear infinite`,
         "& > *": { marginRight: "12px" },
+        height: "36px",
       }}
       ref={ref}
     >

@@ -141,7 +141,7 @@ const ProjectItem = ({
           css={{
             fontWeight: 500,
             display: "flex",
-            "& > *+*": { marginLeft: "8px" },
+            "& > *": { marginRight: "8px" },
           }}
         >
           <Label
