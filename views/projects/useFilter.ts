@@ -24,6 +24,7 @@ const useFilter = () => {
         {
           query: {
             ...router.query,
+            page: 1,
             stacks: result.join(","),
           },
         },
@@ -51,6 +52,7 @@ const useFilter = () => {
         {
           query: {
             ...router.query,
+            page: 1,
             stacks: result,
           },
         },

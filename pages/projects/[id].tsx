@@ -19,7 +19,7 @@ import {
   MdOutlineStar,
   MdOutlineStarBorder,
 } from "react-icons/md";
-import { CustomNextPage, IProjectContentData, IProjectData } from "types";
+import { CustomNextPage, IPostContentData, IPostData } from "types";
 import { GetServerSideProps } from "next";
 import { NotFound } from "components/NotFound";
 import styled from "@emotion/styled";
@@ -59,7 +59,7 @@ const ArticlePreview = ({
 }: {
   data: {
     type: "string";
-  } & IProjectContentData<string>;
+  } & IPostContentData<string>;
 }) => {
   return (
     <Box
@@ -93,7 +93,7 @@ const ArticlePreview = ({
   );
 };
 
-const ArticleHeader = ({ data }: { data: IProjectContentData<unknown> }) => {
+const ArticleHeader = ({ data }: { data: IPostContentData<unknown> }) => {
   const auth = useAuth();
   const ownership = auth.success && auth.user_id === data.userId;
 
@@ -127,7 +127,7 @@ const ArticleHeader = ({ data }: { data: IProjectContentData<unknown> }) => {
     });
 
     if (res.success)
-      queryClient.setQueryData<IProjectData | undefined>(
+      queryClient.setQueryData<IPostData | undefined>(
         ["project", id],
         (post) =>
           post && {
@@ -277,7 +277,7 @@ const Article = () => {
 };
 
 const deleteProject = async (_http = http, id: string) => {
-  const res = await _http.post<IProjectData>(`/projects/delete`, { id });
+  const res = await _http.post<IPostData>(`/projects/delete`, { id });
   return res.data;
 };
 

@@ -21,7 +21,6 @@ export const Banner = React.memo(
   }) => {
     const styles = {
       Wrapper: css`
-        display: grid;
         ${defaultGridTemplate}
         background-color: ${backgroundColor};
         color: ${color};
@@ -42,7 +41,7 @@ export const Banner = React.memo(
           --banner-description: 14px;
           --banner-image-size: 128px;
         }
-        grid-column: 2;
+        grid-column: 2 / 2;
         height: 100%;
         align-items: center;
         justify-content: space-between;

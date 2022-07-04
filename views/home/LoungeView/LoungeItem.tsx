@@ -1,4 +1,4 @@
-import { Flex } from "common/components";
+import { Flex, ProfilePlaceholder } from "common/components";
 import { timeDiffString } from "lib/utils";
 import Image from "next/image";
 import { ellipsis } from "polished";
@@ -6,7 +6,7 @@ import { ILoungePost } from "types";
 
 const LoungeItem = ({ post }: { post: ILoungePost }) => {
   return (
-    <Flex css={{ gap: "12px", alignItems: "stretch" }}>
+    <Flex css={{ gap: "12px" }}>
       <Flex
         column
         css={{
@@ -15,18 +15,7 @@ const LoungeItem = ({ post }: { post: ILoungePost }) => {
           flex: "0 0 auto",
         }}
       >
-        <Image
-          css={{
-            width: "32px",
-            height: "32px",
-            borderRadius: "99999px",
-            overflow: "hidden",
-          }}
-          width="32px"
-          height="32px"
-          alt="profile"
-          src={post.picture}
-        />
+        <ProfilePlaceholder value={post.username} size={32} />
       </Flex>
       <Flex column css={{ gap: "4px", flex: "1 1 auto" }}>
         <Flex css={{ justifyContent: "space-between", alignItems: "center" }}>

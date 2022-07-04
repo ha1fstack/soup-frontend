@@ -36,6 +36,7 @@ const HotFeatured = ({ className }: { className?: string }) => {
           Hot 스터디/프로젝트 🔥
         </p>
         <CarouselPagination
+          reverse
           swiperRef={swiperRef}
           current={pagination}
           end={content.length}

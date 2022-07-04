@@ -14,36 +14,47 @@ const hashStringToHue = (str: string) => {
 export const ProfilePlaceholder = ({
   size,
   value,
+  className,
 }: React.PropsWithoutRef<{
   size: number;
   value: string;
+  className?: string;
 }>) => {
   return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 64 64"
-      preserveAspectRatio="xMinYMid meet"
-      xmlns="http://www.w3.org/2000/svg"
-      xmlnsXlink="http://www.w3.org/1999/xlink"
+    <span
+      className={className}
+      css={{
+        width: size,
+        height: size,
+        borderRadius: size,
+        overflow: "hidden",
+      }}
     >
-      <circle
-        cx="32"
-        cy="32"
-        r="32"
-        fill={`hsl(${hashStringToHue(value)}, 100%, 90%)`}
-      />
-      <text
-        x="50%"
-        y="55%"
-        dominantBaseline="middle"
-        textAnchor="middle"
-        fontSize="32"
-        fontWeight="600"
-        fill="black"
+      <svg
+        width={size}
+        height={size}
+        viewBox="0 0 64 64"
+        preserveAspectRatio="xMinYMid meet"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlnsXlink="http://www.w3.org/1999/xlink"
       >
-        {value[0]?.toLocaleUpperCase()}
-      </text>
-    </svg>
+        <rect
+          width="64"
+          height="64"
+          fill={`hsl(${hashStringToHue(value)}, 100%, 90%)`}
+        />
+        <text
+          x="50%"
+          y="55%"
+          dominantBaseline="middle"
+          textAnchor="middle"
+          fontSize="32"
+          fontWeight="600"
+          fill="black"
+        >
+          {value[0]?.toLocaleUpperCase()}
+        </text>
+      </svg>
+    </span>
   );
 };

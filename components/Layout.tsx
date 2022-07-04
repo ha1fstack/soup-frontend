@@ -5,8 +5,8 @@ import styled from "@emotion/styled";
 
 import { Header, Media, MobileSideBar, SideBar } from "components";
 import { SectionHeader } from "common/components";
-import { breakpoints } from "lib/utils";
 import { defaultGridTemplate } from "common/styles";
+import { breakpoints } from "lib/utils";
 
 const BodyContainer = styled.div`
   display: grid;
@@ -31,36 +31,44 @@ const LayoutWrapper = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-type IPageLayout = (
-  | {
-      title: string;
-      description?: string;
-    }
-  | {
-      title?: never;
-      description?: never;
-    }
-) & {
+interface IPageContainerProps {
   width?: number;
-};
+  ignoreDefaultTopPadding?: boolean;
+}
 
-const PageContainer = styled.div<{
-  width?: number;
-}>`
-  display: grid;
+type IPageLayout = IPageContainerProps &
+  (
+    | {
+        title: string;
+        description?: string;
+      }
+    | {
+        title?: never;
+        description?: never;
+      }
+  ) & {
+    width?: number;
+    ignoreDefaultTopPadding?: boolean;
+  };
+
+const PageContainer = styled.div<IPageContainerProps>`
   width: 100%;
   align-self: start;
-  ${({ width = 1140 }) => {
-    console.log("width:", width);
-    return css``;
-  }}
   ${({ width = 1140 }) => css`
     --container-width: ${width}px;
     ${defaultGridTemplate}
   `}
   * {
-    grid-column: 2;
+    grid-column: 2 / 2;
   }
+  ${({ ignoreDefaultTopPadding }) =>
+    ignoreDefaultTopPadding ||
+    css`
+      padding-top: 36px;
+      ${breakpoints.at("sm")} {
+        padding-top: 24px;
+      }
+    `}
 `;
 
 const PageLayout = ({
@@ -68,10 +76,11 @@ const PageLayout = ({
   description,
   children,
   width,
+  ignoreDefaultTopPadding,
 }: React.PropsWithChildren<IPageLayout>) => {
   return (
     <LayoutWrapper>
-      <PageContainer width={width}>
+      <PageContainer {...{ width, ignoreDefaultTopPadding }}>
         {title && (
           <SectionHeader>
             <SectionHeader.Title>{title}</SectionHeader.Title>
@@ -100,5 +109,5 @@ export const DefaultPageLayout = ({
 
 export const createPageLayout =
   // eslint-disable-next-line react/display-name
-  (options: IPageLayout) => (page: React.ReactElement) =>
+  (options?: IPageLayout) => (page: React.ReactElement) =>
     React.createElement(PageLayout, options, page);

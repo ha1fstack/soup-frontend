@@ -4,12 +4,16 @@ import Link from "next/link";
 import { ellipsis } from "polished";
 import { IPostPreviewContent } from "types";
 
-const ProjectItem = ({ post }: { post: IPostPreviewContent }) => {
+const ProjectPreviewItem = ({ post }: { post: IPostPreviewContent }) => {
   return (
     <Link passHref href={`/projects/${post.id}`}>
       <Flex
         as="a"
-        css={{ gap: "16px", alignItems: "stretch", cursor: "pointer" }}
+        css={{
+          gap: "16px",
+          alignItems: "stretch",
+          cursor: "pointer",
+        }}
       >
         <Flex
           column
@@ -21,10 +25,7 @@ const ProjectItem = ({ post }: { post: IPostPreviewContent }) => {
         >
           <ProfilePlaceholder size={32} value={post.userName} />
         </Flex>
-        <Flex
-          column
-          css={{ gap: "4px", flex: "1 1 auto", overflow: "hidden", width: 0 }}
-        >
+        <Flex column css={{ gap: "4px", flex: "1 1 0", minWidth: 0 }}>
           <p
             css={{
               fontSize: "1.6rem",
@@ -56,4 +57,4 @@ const ProjectItem = ({ post }: { post: IPostPreviewContent }) => {
   );
 };
 
-export default ProjectItem;
+export default ProjectPreviewItem;

@@ -18,7 +18,7 @@ const Login: NextPage = () => {
   const auth = useAuth();
 
   const { redirect } = router.query as {
-    redirect: string;
+    redirect?: string;
   };
 
   useLayoutEffect(() => {
@@ -28,7 +28,7 @@ const Login: NextPage = () => {
 
   useLayoutEffect(() => {
     if (isClientRender) {
-      if (auth.success) router.push(redirect);
+      if (auth.success) router.push(redirect || "/");
       else if (!loginPopup) router.push("/");
     }
   }, [auth.success, isClientRender, loginPopup, redirect, router]);

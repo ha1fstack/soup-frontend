@@ -1,5 +1,11 @@
 import axios from "axios";
 
-export const http = axios.create({
-  baseURL: "http://localhost:3000/api",
-});
+const createHttp = (baseURL: string) => {
+  const http = axios.create({
+    baseURL,
+    validateStatus: (status) => status >= 200 && status < 500,
+  });
+  return http;
+};
+
+export const http = createHttp("http://localhost:3000/api");

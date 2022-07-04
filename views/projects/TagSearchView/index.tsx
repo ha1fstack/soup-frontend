@@ -7,7 +7,7 @@ const TagSearch = () => {
   const [isSearchMode, toggleIsSearchMode] = useToggle(false);
 
   return (
-    <Flex css={{ flexWrap: "wrap", marginTop: "-32px" }}>
+    <Flex css={{ flexWrap: "wrap", marginTop: "-64px" }}>
       <Box
         css={{
           flex: "99999 1 480px",

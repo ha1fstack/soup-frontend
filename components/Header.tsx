@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import { Button, Box, Flex } from "common/components";
+import { Button, Box, Flex, ProfilePlaceholder } from "common/components";
 import Link, { LinkProps } from "next/link";
 import React from "react";
 import {
@@ -130,7 +130,7 @@ const Popup = React.forwardRef<
       <Link href="/profile">
         <a onClick={final}>
           <MdOutlinePerson />
-          <span>내 프로필</span>
+          <span>마이페이지</span>
         </a>
       </Link>
       <div onClick={() => final(logout())}>
@@ -268,12 +268,7 @@ export const Header = React.memo(() => {
                     overflow: "hidden",
                   }}
                 >
-                  <Image
-                    alt="profile-image"
-                    src={auth.profileImage}
-                    height={32}
-                    width={32}
-                  />
+                  <ProfilePlaceholder size={32} value={auth.username} />
                 </span>
                 {messagePopup && (
                   <Popup ref={messageRef} toggle={toggleMessagePopup} />

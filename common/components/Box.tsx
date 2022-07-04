@@ -100,6 +100,7 @@ export const Box = Object.assign(
       font-size: 2rem;
       font-weight: 700;
       margin-bottom: 8px;
+      margin-left: 4px;
     `,
   }
 );

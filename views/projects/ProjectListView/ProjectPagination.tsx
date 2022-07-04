@@ -12,10 +12,11 @@ const ProjectPagination = ({
 
   return (
     <Pagination
-      css={{ justifyContent: "center", margin: "12px 0px" }}
+      css={{ justifyContent: "center" }}
       onClick={(i) => {
         router.push({
           query: {
+            ...router.query,
             page: String(i),
           },
         });

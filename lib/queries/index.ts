@@ -4,9 +4,9 @@ import {
   IAuthData,
   ILoungePost,
   IPageable,
-  IPost,
   IPostPreviewContent,
-  IProjectData,
+  IPostPreviewContent,
+  IPostData,
 } from "types";
 
 export const fetchAuth = async (_http = http, cookie?: any) => {
@@ -41,7 +41,7 @@ export const fetchLounge = async (_http = http) => {
 };
 
 export const fetchProject = async (_http = http, id: string) => {
-  const res = await _http.get<IProjectData>(`/projects/${id}`);
+  const res = await _http.get<IPostData>(`/projects/${id}`);
   return res.data;
 };
 
@@ -50,7 +50,7 @@ export const fetchProjects = async (
   page = 1,
   stacks?: ITag[]
 ) => {
-  const res = await _http.get<IPageable<IPost[]>>(`/projects`, {
+  const res = await _http.get<IPageable<IPostPreviewContent[]>>(`/projects`, {
     params: {
       page,
       stacks: stacks?.join(","),

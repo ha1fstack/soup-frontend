@@ -24,24 +24,7 @@ export interface IPageable<T> {
   empty: boolean;
 }
 
-export interface IPost {
-  content: string;
-  date: string;
-  end: boolean;
-  id: number;
-  link: string;
-  postId: number;
-  postName: string;
-  stacks: ITag[];
-  talk: string;
-  userName: string;
-  views: number;
-  source: "SOUP" | "INFLEARN" | "OKKY" | "CAMPICK" | "HOLA";
-  fav: number;
-  isfav: boolean;
-}
-
-export interface IProjectContentData<T> {
+export interface IPostContentData<T> {
   id: number;
   postName: string;
   content: T;
@@ -57,11 +40,27 @@ export interface IProjectContentData<T> {
   userId: null | number;
 }
 
-export type IProjectData =
-  | ({ type: "string" } & IProjectContentData<string>)
+// individual project page
+export type IPostData =
+  | ({ type: "string" } & IPostContentData<string>)
   | ({
       type: "prosemirror";
-    } & IProjectContentData<JSONContent>);
+    } & IPostContentData<JSONContent>);
+
+export interface IPostPreviewContent {
+  id: number;
+  postName: string;
+  content: string;
+  userName: string;
+  date: string;
+  link: string;
+  stacks: ITag[];
+  views: number;
+  talk: string;
+  source: "SOUP" | "INFLEARN" | "OKKY" | "CAMPICK" | "HOLA";
+  fav: number;
+  isfav: boolean;
+}
 
 export type CustomNextPage = NextPage & {
   getLayout?: (page: React.ReactElement) => React.ReactNode;
@@ -87,21 +86,6 @@ export interface ISideBarProps {
   exact?: boolean;
   selected?: boolean;
   authorized?: boolean;
-}
-
-export interface IPostPreviewContent {
-  id: number;
-  postName: string;
-  content: string;
-  userName: string;
-  date: string;
-  link: string;
-  stacks: ITag[];
-  views: number;
-  talk: string;
-  source: string;
-  fav: number;
-  isfav: boolean;
 }
 
 export interface ILoungePost {

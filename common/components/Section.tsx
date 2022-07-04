@@ -1,16 +1,10 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import { defaultGridTemplate } from "common/styles";
-import { breakpoints } from "lib/utils";
 
 export const SectionHeader = Object.assign(
   styled.div`
     display: flex;
     flex-direction: column;
-    margin-top: 36px;
-    ${breakpoints.at("sm")} {
-      margin-top: 24px;
-    }
     margin-bottom: 24px;
     width: 100%;
   `,
@@ -49,7 +43,7 @@ export const Section = styled.section<{
     grid-column: 1 / 5;
   }
   & > * {
-    grid-column: 2;
+    grid-column: 2 / 2;
     width: 100%;
   }
 `;

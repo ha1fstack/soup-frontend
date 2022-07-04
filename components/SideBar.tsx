@@ -178,8 +178,8 @@ const SideBarNavigation = () => {
       </SideBarElement>
       <SideBarElement href="/lounge">라운지</SideBarElement>
       <br />
-      <SideBarElement authorized href="/profile">
-        내 프로필
+      <SideBarElement authorized href="/profile" exact={false}>
+        마이페이지
       </SideBarElement>
     </>
   );

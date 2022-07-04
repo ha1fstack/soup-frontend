@@ -4,7 +4,7 @@ import { fetchFrontProjects } from "lib/queries";
 import { SourceList, SourceDictionary, ISource } from "lib/utils";
 import { Dispatch, Fragment, SetStateAction, useState } from "react";
 import { useQuery } from "react-query";
-import ProjectItem from "./ProjectItem";
+import { ProjectPreviewItem } from "views/components";
 
 const useSource = (initialSource: ISource) => {
   const [source, setSource] = useState<ISource>(initialSource);
@@ -12,18 +12,6 @@ const useSource = (initialSource: ISource) => {
 };
 
 const ProjectsView = ({ className }: { className?: string }) => {
-  const styles = {
-    Wrapper: css({
-      flex: "99999 1 480px",
-      gap: "12px",
-    }),
-    HeaderWrapper: css({
-      fontSize: "2rem",
-      fontWeight: "700",
-      "& > *+*": { marginLeft: "12px" },
-    }),
-  };
-
   const { data, isLoading, isError } = useQuery("front/projects", () =>
     fetchFrontProjects()
   );
@@ -56,7 +44,7 @@ const ProjectsView = ({ className }: { className?: string }) => {
         {data[source].map((post, i) => (
           <Fragment key={post.id}>
             {i !== 0 && <Hr />}
-            <ProjectItem post={post} />
+            <ProjectPreviewItem post={post} />
           </Fragment>
         ))}
       </Box>

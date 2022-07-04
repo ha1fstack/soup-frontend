@@ -1,13 +1,13 @@
 import { Flex, Button } from "common/components";
 import { useHorizontalScroll } from "lib/hooks/useHorizontalScroll";
 import { hideScrollbar } from "lib/styles";
-import React, { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { MdOutlineSearch } from "react-icons/md";
 import Slider from "./Slider";
 
 const TagSlider = ({ toggle }: { toggle: (set?: boolean) => void }) => {
   const scrollRef = useHorizontalScroll();
-  const [position, setPosition] = React.useState<number>(0);
+  const [position, setPosition] = useState<number>(0);
 
   const backupHeight = position;
 
@@ -23,7 +23,7 @@ const TagSlider = ({ toggle }: { toggle: (set?: boolean) => void }) => {
   );
 
   // event listener: on any virtual scroll
-  const onScroll = React.useCallback(() => {
+  const onScroll = useCallback(() => {
     if (scrollRef.current) {
       const scroll = scrollRef.current.scrollLeft;
       if (scroll < backupHeight || scroll >= backupHeight + position) {

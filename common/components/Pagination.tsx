@@ -7,7 +7,6 @@ import { Flex } from "./Box";
 const Container = styled(Flex)`
   justify-content: center;
   align-items: center;
-  padding: 4px;
   gap: 2px;
 `;
 

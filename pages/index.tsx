@@ -33,7 +33,9 @@ const Home: CustomNextPage = () => {
   );
 };
 
-Home.getLayout = createPageLayout({});
+Home.getLayout = createPageLayout({
+  ignoreDefaultTopPadding: true,
+});
 
 export default Home;
 

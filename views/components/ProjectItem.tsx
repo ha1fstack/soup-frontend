@@ -6,8 +6,8 @@ import {
   getDisplayTag,
 } from "lib/utils";
 import Link from "next/link";
-import { MouseEventHandler, useMemo } from "react";
-import { IPageable, IPost } from "types";
+import { MouseEvent, MouseEventHandler, useMemo } from "react";
+import { IPageable, IPostPreviewContent } from "types";
 import Image from "next/image";
 import { MdOutlineStar, MdOutlineStarBorder } from "react-icons/md";
 import { http } from "common/services";
@@ -17,41 +17,21 @@ import { loginPopupState } from "lib/states";
 import { useQueryClient } from "react-query";
 import { useRouter } from "next/router";
 import produce from "immer";
+import { ellipsis } from "polished";
 
-const ProjectItem = ({ image, post }: { image?: boolean; post: IPost }) => {
+const ProjectItem = ({
+  image,
+  post,
+  handleFav,
+}: {
+  image?: boolean;
+  post: IPostPreviewContent;
+  handleFav: (
+    e: React.MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
+    post: IPostPreviewContent
+  ) => Promise<void>;
+}) => {
   const timeString = useMemo(() => timeDiffString(post.date), [post]);
-  const auth = useAuth();
-  const setLoginPopup = useSetAtom(loginPopupState);
-  const queryClient = useQueryClient();
-
-  const router = useRouter();
-  const currentPage = parseInt(router.query.page as string) || 1;
-
-  const handleFav: MouseEventHandler<HTMLButtonElement> = async (e) => {
-    e.preventDefault();
-
-    if (!auth.success) {
-      setLoginPopup(true);
-      return;
-    }
-
-    const { data: res } = await http.post("/projects/fav", {
-      id: post.id,
-      mode: !post.isfav,
-    });
-
-    if (res.success)
-      queryClient.setQueryData<IPageable<IPost[]> | undefined>(
-        ["projects", currentPage],
-        (projects) =>
-          projects &&
-          produce(projects, (draft) => {
-            const _post = draft.content.find((_post) => _post.id === post.id);
-            if (_post) _post.isfav = !post.isfav;
-            console.log(draft);
-          })
-      );
-  };
 
   return (
     <Box responsive column>
@@ -73,7 +53,6 @@ const ProjectItem = ({ image, post }: { image?: boolean; post: IPost }) => {
             flexDirection: "column",
             justifyContent: "space-between",
             overflow: "hidden",
-            lineHeight: "1.2em",
           }}
         >
           <Link href={`/projects/${post.id}`}>
@@ -81,7 +60,7 @@ const ProjectItem = ({ image, post }: { image?: boolean; post: IPost }) => {
               <Flex
                 css={{
                   fontSize: "1.4rem",
-                  marginBottom: "16px",
+                  marginBottom: "12px",
                   gap: "8px",
                   justifyContent: "space-between",
                 }}
@@ -95,7 +74,7 @@ const ProjectItem = ({ image, post }: { image?: boolean; post: IPost }) => {
                 </Flex>
 
                 <button
-                  onClick={handleFav}
+                  onClick={(e) => handleFav(e, post)}
                   css={{
                     fontSize: "2rem",
                     color: post.isfav ? "var(--negative2)" : "var(--disabled)",
@@ -108,24 +87,17 @@ const ProjectItem = ({ image, post }: { image?: boolean; post: IPost }) => {
                 css={{
                   fontWeight: "700",
                   fontSize: "1.8rem",
-                  overflow: "hidden",
-                  display: "-webkit-box",
-                  WebkitBoxOrient: "vertical",
-                  WebkitLineClamp: 2,
-                  marginBottom: "12px",
+                  marginBottom: "10px",
+                  ...ellipsis(undefined, 2),
                 }}
               >
                 {post.postName}
               </div>
               <div
                 css={{
-                  overflow: "hidden",
                   fontSize: "1.6rem",
-                  lineHeight: 1.5,
-                  display: "-webkit-box",
-                  WebkitBoxOrient: "vertical",
-                  WebkitLineClamp: 2,
                   marginBottom: "16px",
+                  ...ellipsis(undefined, 2),
                 }}
               >
                 {post.content}
@@ -163,8 +135,6 @@ const ProjectItem = ({ image, post }: { image?: boolean; post: IPost }) => {
           flexDirection: "row",
           marginTop: 0,
           justifyContent: "space-between",
-
-          lineHeight: "normal",
         }}
       >
         <div
