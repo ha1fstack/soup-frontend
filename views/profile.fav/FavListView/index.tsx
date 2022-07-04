@@ -1,12 +1,9 @@
 import { Box, Flex } from "common/components";
 import { http } from "common/services";
 import produce from "immer";
-import { useSetAtom } from "jotai";
-import { useAuth } from "lib/hooks";
-import { loginPopupState } from "lib/states";
 import { useQuery, useQueryClient } from "react-query";
-import { IPageable, IPostPreviewContent } from "types";
-import { ProjectItem, ProjectPreviewItem } from "views/components";
+import { IPostPreviewContent } from "types";
+import { ProjectItem } from "views/components";
 
 const FavListView = () => {
   const { data, isLoading, isError } = useQuery<IPostPreviewContent[]>(

@@ -5,7 +5,6 @@ import {
   ILoungePost,
   IPageable,
   IPostPreviewContent,
-  IPostPreviewContent,
   IPostData,
 } from "types";
 
