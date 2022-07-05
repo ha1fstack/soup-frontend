@@ -12,6 +12,9 @@ const BodyContainer = styled.div`
   display: grid;
   grid-template-areas: "header header";
   grid-template-columns: auto 1fr;
+  ${breakpoints.at("sm")} {
+    grid-template-columns: auto 0px;
+  }
 `;
 
 const LayoutWrapper = ({ children }: { children: React.ReactNode }) => {

@@ -101,7 +101,7 @@ const ProjectListView = () => {
 export default ProjectListView;
 
 const NothingHere = () => (
-  <Box column css={{ alignItems: "center", padding: "16px" }}>
+  <Box responsive column css={{ alignItems: "center", padding: "16px" }}>
     <p css={{ fontSize: "2.2rem", fontWeight: 500 }}>
       😢 보여드릴 내용이 없어요
     </p>

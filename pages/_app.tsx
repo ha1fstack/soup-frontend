@@ -116,6 +116,7 @@ export default function App({
         defaultOptions: {
           queries: {
             staleTime: Infinity,
+            cacheTime: 5000,
             ...(isDevEnv && { retry: 0 }),
           },
         },
@@ -199,7 +200,7 @@ App.getInitialProps = async (context: AppContext) => {
   const initialProps = await NextApp.getInitialProps(context);
 
   try {
-    if (req?.url && req.url.startsWith("/_next/")) return initialProps;
+    if (!req || req?.url?.startsWith("/_next/")) return initialProps;
 
     const cookie = req?.headers.cookie;
 
