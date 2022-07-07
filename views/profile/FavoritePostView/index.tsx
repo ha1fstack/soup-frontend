@@ -2,9 +2,13 @@ import { Box, Button, Flex, Hr } from "common/atoms";
 import { http } from "lib/services";
 import { useRouter } from "next/router";
 import { Fragment } from "react";
+import Skeleton from "react-loading-skeleton";
 import { useQuery } from "react-query";
 import { IPostPreviewContent } from "types";
-import { ProjectPreviewItem } from "views/components";
+import {
+  ProjectPreviewItem,
+  ProjectPreviewItemSkeleton,
+} from "views/components";
 
 const FavoritePostView = () => {
   const { data, isLoading, isError } = useQuery<IPostPreviewContent[]>(
@@ -16,12 +20,10 @@ const FavoritePostView = () => {
 
   const router = useRouter();
 
-  if (!data || isLoading || isError) return null;
-
-  return (
-    <div css={{ width: "100%" }}>
-      <Box.Header>스크랩</Box.Header>
-      {data.length ? (
+  const content = (() => {
+    if (data) {
+      if (data.length === 0) return <NothingHere />;
+      return (
         <Box responsive column css={{ gap: "12px" }}>
           <>
             {data.slice(0, 5).map((post, i) => (
@@ -35,9 +37,21 @@ const FavoritePostView = () => {
             </Button>
           </>
         </Box>
-      ) : (
-        <NothingHere />
-      )}
+      );
+    }
+    return (
+      <Box responsive column css={{ gap: "24px" }}>
+        <ProjectPreviewItemSkeleton />
+        <ProjectPreviewItemSkeleton />
+        <ProjectPreviewItemSkeleton />
+      </Box>
+    );
+  })();
+
+  return (
+    <div css={{ width: "100%" }}>
+      <Box.Header>내 스크랩</Box.Header>
+      {content}
     </div>
   );
 };

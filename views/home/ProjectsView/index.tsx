@@ -21,7 +21,7 @@ const ProjectsView = ({ className }: { className?: string }) => {
     return <Flex column css={{ flex: "3 1 480px" }} />;
 
   return (
-    <Flex column css={className}>
+    <Flex column className={className} css={{ width: "100%" }}>
       <Box.Header>
         {SourceList.map((currentSource, i) => (
           <span

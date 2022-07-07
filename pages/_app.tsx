@@ -10,6 +10,8 @@ import "common/styles/reset.css";
 import "swiper/css";
 import "swiper/css/effect-fade";
 
+import "react-loading-skeleton/dist/skeleton.css";
+
 import { Provider } from "jotai";
 import { useAuth } from "lib/hooks";
 import { createQueryClient, http } from "lib/services";
@@ -71,6 +73,11 @@ const GlobalStyle = css`
     --primary: #ff8a05;
     --primarylight: #1e2124;
     --primarylight2: #212428;
+
+    .react-loading-skeleton {
+      --base-color: #202020;
+      --highlight-color: #444;
+    }
   }
 
   :root {

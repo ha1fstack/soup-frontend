@@ -1,2 +1,2 @@
-export { default as ProjectItem } from "./ProjectItem";
-export { default as ProjectPreviewItem } from "./ProjectPreviewItem";
+export { default as ProjectItem } from './ProjectItem';
+export * from './ProjectPreviewItem';
