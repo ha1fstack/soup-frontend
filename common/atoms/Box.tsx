@@ -57,6 +57,9 @@ const fullspanStyle = css`
   ${breakpoints.at("sm")} {
     margin-right: -16px;
     margin-left: -16px;
+    // x padding 16px to match layout side margin
+    padding-left: 16px !important;
+    padding-right: 16px !important;
   }
 `;
 
@@ -71,11 +74,6 @@ export const Box = Object.assign(
     border-radius: 8px;
     display: flex;
     padding: 12px 12px;
-    // x padding 16px to match layout side margin
-    ${breakpoints.at("sm")} {
-      padding-left: 16px !important;
-      padding-right: 16px !important;
-    }
     ${({ fullspan }) => fullspan && fullspanStyle}
     ${({ column }) =>
       column &&
@@ -100,7 +98,6 @@ export const Box = Object.assign(
       font-size: 2rem;
       font-weight: 700;
       margin-bottom: 8px;
-      margin-left: 4px;
     `,
   }
 );

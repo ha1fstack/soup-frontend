@@ -17,7 +17,7 @@ const Profile: CustomNextPage = () => {
               flex: "1 1 360px",
               minWidth: 0,
             },
-            gap: "24px",
+            gap: "48px",
           }}
         >
           <InfoView />

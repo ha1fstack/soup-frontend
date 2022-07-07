@@ -32,10 +32,13 @@ const FavoritePostView = () => {
                 <ProjectPreviewItem post={post} />
               </Fragment>
             ))}
-            <Button onClick={() => router.push("/profile/fav")}>
-              모두 보기...
-            </Button>
           </>
+          <Button
+            css={{ marginTop: "8px" }}
+            onClick={() => router.push("/profile/fav")}
+          >
+            모두 보기...
+          </Button>
         </Box>
       );
     }

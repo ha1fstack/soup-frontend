@@ -10,7 +10,6 @@ const style = {
   postName: css({
     fontSize: "1.6rem",
     fontWeight: "600",
-    overflow: "hidden",
     ...ellipsis(),
   }),
   content: css({

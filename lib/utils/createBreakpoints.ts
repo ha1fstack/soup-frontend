@@ -73,14 +73,14 @@ export function createBreakpoints(options = defaultBreakpoints): Breakpoints {
   return {
     greaterThan: (name, orientation) =>
       withBreakpoints((bp) =>
-        withOrientationOrNot(`@media (min-width: ${bp(name)}px)`, orientation)
-      ),
-    greaterThanOrEqual: (name, orientation) =>
-      withBreakpoints((bp) =>
         withOrientationOrNot(
           `@media (min-width: ${bp(getRelativeBreakpoint(name, 1))}px)`,
           orientation
         )
+      ),
+    greaterThanOrEqual: (name, orientation) =>
+      withBreakpoints((bp) =>
+        withOrientationOrNot(`@media (min-width: ${bp(name)}px)`, orientation)
       ),
     lessThan: (name, orientation) =>
       withBreakpoints((bp) =>

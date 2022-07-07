@@ -57,6 +57,10 @@ type IPageLayout = IPageContainerProps &
 const PageContainer = styled.div<IPageContainerProps>`
   width: 100%;
   align-self: start;
+  padding-bottom: 10vh;
+  ${breakpoints.at("sm")} {
+    padding-bottom: 25vh;
+  }
   ${({ width = 1140 }) => css`
     --container-width: ${width}px;
     ${defaultGridTemplate}
