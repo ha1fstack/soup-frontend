@@ -1,5 +1,5 @@
 import { Flex, ProfilePlaceholder } from "common/atoms";
-import { http } from "common/services";
+import { http } from "lib/services";
 import { useAuth } from "lib/hooks";
 import { timeDiffString } from "lib/utils";
 import { useQueryClient } from "react-query";

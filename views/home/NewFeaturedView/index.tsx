@@ -1,12 +1,10 @@
 import { Flex } from "common/atoms";
-import { fetchFrontFeatured } from "lib/queries";
+import { frontFeaturedQueryContext } from "lib/queries";
 import { useQuery } from "react-query";
 import NewItem from "./NewItem";
 
 const NewFeatured = ({ className }: { className?: string }) => {
-  const { data, isLoading, isError } = useQuery("front/featured", () =>
-    fetchFrontFeatured()
-  );
+  const { data, isLoading, isError } = useQuery(...frontFeaturedQueryContext());
 
   if (!data || isLoading || isError) return null;
 

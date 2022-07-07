@@ -1,7 +1,4 @@
-let isDevEnv = false;
+export const isDevEnv =
+  process && process.env.NODE_ENV === "development" ? true : false;
 
-if (process && process.env.NODE_ENV === "development") {
-  isDevEnv = true;
-}
-
-export { isDevEnv };
+export const isServerEnv = typeof window === "undefined";

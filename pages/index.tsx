@@ -2,9 +2,8 @@ import { Flex, Section } from "common/atoms";
 import { GetServerSideProps } from "next";
 import { dehydrate, QueryClient } from "react-query";
 import { createPageLayout } from "components";
-import { injectSession } from "lib/utils";
+import { handleError } from "lib/utils";
 import { CustomNextPage } from "types";
-import { fetchFrontFeatured } from "lib/queries";
 import {
   BannerView,
   HotFeaturedView,
@@ -12,6 +11,7 @@ import {
   NewFeaturedView,
   ProjectsView,
 } from "views/home";
+import { frontFeaturedQueryContext } from "lib/queries";
 
 const Home: CustomNextPage = () => {
   return (
@@ -43,21 +43,17 @@ export default Home;
 /*                                     api                                    */
 /* -------------------------------------------------------------------------- */
 
-export const getServerSideProps: GetServerSideProps = injectSession(
-  async ({ http }) => {
-    const queryClient = new QueryClient();
+export const getServerSideProps: GetServerSideProps = handleError(async () => {
+  const queryClient = new QueryClient();
 
-    await Promise.all([
-      queryClient.prefetchQuery("front/featured", () =>
-        fetchFrontFeatured(http)
-      ),
-      // queryClient.prefetchQuery("front/projects", fetchFrontProjects),
-    ]);
+  await Promise.all([
+    queryClient.prefetchQuery(...frontFeaturedQueryContext()),
+    // queryClient.prefetchQuery("front/projects", fetchFrontProjects),
+  ]);
 
-    return {
-      props: {
-        dehydratedState: dehydrate(queryClient),
-      },
-    };
-  }
-);
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
+});

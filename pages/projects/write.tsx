@@ -1,5 +1,5 @@
 import { Box, Flex, Input, Button, Section } from "common/atoms";
-import { http } from "common/services";
+import { http } from "lib/services";
 import { Editor, createPageLayout } from "components";
 import { useRouter } from "next/router";
 import { SubmitHandler, useForm } from "react-hook-form";

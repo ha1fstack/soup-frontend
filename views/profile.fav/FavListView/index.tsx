@@ -1,5 +1,5 @@
 import { Box, Flex } from "common/atoms";
-import { http } from "common/services";
+import { http } from "lib/services";
 import produce from "immer";
 import { useQuery, useQueryClient } from "react-query";
 import { IPostPreviewContent } from "types";
@@ -42,7 +42,7 @@ const FavListView = () => {
 
   return (
     <div>
-      <Box.Header>스크랩</Box.Header>
+      <Box.Header>내 스크랩</Box.Header>
       <Flex column css={{ gap: "12px" }}>
         {data.map((post, i) => (
           <ProjectItem handleFav={handleFav} post={post} key={post.id} />

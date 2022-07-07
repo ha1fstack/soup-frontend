@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import { Flex, Box, Hr } from "common/atoms";
-import { fetchFrontProjects } from "lib/queries";
+import { frontProjectsQueryContext } from "lib/queries";
 import { SourceList, SourceDictionary, ISource } from "lib/utils";
 import { Dispatch, Fragment, SetStateAction, useState } from "react";
 import { useQuery } from "react-query";
@@ -12,9 +12,7 @@ const useSource = (initialSource: ISource) => {
 };
 
 const ProjectsView = ({ className }: { className?: string }) => {
-  const { data, isLoading, isError } = useQuery("front/projects", () =>
-    fetchFrontProjects()
-  );
+  const { data, isLoading, isError } = useQuery(...frontProjectsQueryContext());
   const [source, setSource] = useSource(
     SourceList[(Math.random() * SourceList.length) | 0]
   );

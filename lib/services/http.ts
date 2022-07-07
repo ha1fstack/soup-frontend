@@ -1,4 +1,5 @@
 import axios from "axios";
+import { isServerEnv } from "lib/utils";
 
 const createHttp = (baseURL: string) => {
   const http = axios.create({
@@ -8,4 +9,6 @@ const createHttp = (baseURL: string) => {
   return http;
 };
 
-export const http = createHttp("http://localhost:3000/api");
+export const http = createHttp(
+  (isServerEnv && process.env.API_URL) || "http://localhost:3000/api"
+);

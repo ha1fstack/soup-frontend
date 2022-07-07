@@ -14,7 +14,7 @@ import {
 import { useQueryClient } from "react-query";
 import { Login } from "./Login";
 import Image from "next/image";
-import { http } from "common/services";
+import { http } from "lib/services";
 import { useAtom, useSetAtom } from "jotai";
 import { useAuth, useToggle, useOuterClick } from "lib/hooks";
 import { sideBarOpenState, loginPopupState } from "lib/states";

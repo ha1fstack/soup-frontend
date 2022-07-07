@@ -1,7 +1,8 @@
 import styled from "@emotion/styled";
 import { Box, Button, Flex, ProfilePlaceholder } from "common/atoms";
-import { http } from "common/services";
+import { http } from "lib/services";
 import { useAuth } from "lib/hooks";
+import { loungeQueryContext } from "lib/queries";
 import { useEffect } from "react";
 import { useForm, UseFormRegister } from "react-hook-form";
 import { useQuery } from "react-query";
@@ -35,9 +36,7 @@ const LoungeEditor = () => {
     } else alert("알 수 없는 오류 발생");
   };
 
-  const { refetch } = useQuery("lounge", async () => {
-    return (await http.get("/lounge")).data;
-  });
+  const { refetch } = useQuery(...loungeQueryContext());
 
   if (!auth.success) return null;
 

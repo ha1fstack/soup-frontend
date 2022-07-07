@@ -1,8 +1,8 @@
 import { Box, Flex, Input, Button, Section } from "common/atoms";
-import { http } from "common/services";
+import { http } from "lib/services";
 import { createPageLayout, Editor } from "components";
-import { fetchProject } from "lib/queries";
-import { injectSession } from "lib/utils";
+import { projectQueryContext } from "lib/queries";
+import { handleError } from "lib/utils";
 import { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { useLayoutEffect } from "react";
@@ -46,9 +46,7 @@ const EditForm = () => {
     mode: "all",
   });
 
-  const { data, isLoading, isError } = useQuery(["project", id], () =>
-    fetchProject(undefined, id)
-  );
+  const { data, isLoading, isError } = useQuery(...projectQueryContext(id));
 
   useLayoutEffect(() => {
     if (data?.postName) setValue("title", data.postName);
@@ -102,17 +100,15 @@ const EditForm = () => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = injectSession(
-  async ({ http, context }) => {
+export const getServerSideProps: GetServerSideProps = handleError(
+  async ({ context }) => {
     const queryClient = new QueryClient();
 
     const { id } = context.query as {
       id: string;
     };
 
-    await queryClient.prefetchQuery(["project", id], () =>
-      fetchProject(http, id)
-    );
+    await queryClient.prefetchQuery(...projectQueryContext(id));
 
     return {
       props: {

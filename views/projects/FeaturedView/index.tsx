@@ -1,20 +1,14 @@
-import { Flex, Box } from "common/atoms";
-import { http } from "common/services";
+import { Box, Flex } from "common/atoms";
+import { projectsFeaturedQueryContext } from "lib/queries/projectsFeatured";
 import { useQuery } from "react-query";
-import { IFeaturedItem } from "types";
 import FeaturedHeader from "./FeaturedHeader";
 import FeaturedItem from "./FeaturedItem";
 
 const FeaturedView = () => {
   const { data, isLoading, isError } = useQuery(
-    "projects/featured",
-    async () => {
-      return (
-        await http.get<{
-          RECOMMEND: IFeaturedItem[];
-          HOT: IFeaturedItem[];
-        }>("/projects/featured")
-      ).data;
+    ...projectsFeaturedQueryContext(),
+    {
+      staleTime: 5000,
     }
   );
 

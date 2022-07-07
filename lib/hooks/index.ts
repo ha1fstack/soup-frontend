@@ -1,4 +1,4 @@
-export { default as useAuth } from "./useAuth";
+export * from "./useAuth";
 export { default as useClientRender } from "./useClientRender";
 export * from "./useHorizontalScroll";
 export * from "./useMatch";

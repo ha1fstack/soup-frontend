@@ -1,17 +1,15 @@
-import { Flex, CarouselPagination } from "common/atoms";
+import { CarouselPagination, Flex } from "common/atoms";
 import { useSwiperRef } from "lib/hooks";
-import { fetchFrontFeatured } from "lib/queries";
-import { toMatrix, breakpoints } from "lib/utils";
-import { useMemo, useState, useRef } from "react";
+import { frontFeaturedQueryContext } from "lib/queries";
+import { breakpoints, toMatrix } from "lib/utils";
+import { useMemo } from "react";
 import { useQuery } from "react-query";
-import SwiperType, { Autoplay } from "swiper";
+import { Autoplay } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 import HotItem from "./HotItem";
 
 const HotFeatured = ({ className }: { className?: string }) => {
-  const { data, isLoading, isError } = useQuery("front/featured", () =>
-    fetchFrontFeatured()
-  );
+  const { data, isLoading, isError } = useQuery(...frontFeaturedQueryContext());
 
   const content = useMemo(() => toMatrix(data?.HOT || [], 2), [data]);
   const { swiperRef, onSwiper, pagination, onSlideChange, isClientRender } =

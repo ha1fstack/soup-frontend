@@ -31,7 +31,7 @@ export const Flex = styled.div<{
     css`
       gap: ${gap};
     `}
-  ${({ inline }) =>
+      ${({ inline }) =>
     inline
       ? css`
           display: inline-flex;
@@ -39,11 +39,11 @@ export const Flex = styled.div<{
       : css`
           display: flex;
         `}
-  ${({ column }) =>
+      ${({ column }) =>
     column &&
     css`
       flex-direction: column;
-    `}
+    `};
 `;
 
 const fullspanStyle = css`

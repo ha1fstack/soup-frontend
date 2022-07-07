@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import { Flex, Box, Hr } from "common/atoms";
-import { fetchLounge } from "lib/queries";
+import { loungeQueryContext } from "lib/queries";
 import Link from "next/link";
 import { Fragment } from "react";
 import { useQuery } from "react-query";
@@ -20,7 +20,7 @@ const LoungeView = ({ className }: { className?: string }) => {
     }),
   };
 
-  const { data, isLoading, isError } = useQuery("lounge", () => fetchLounge());
+  const { data, isLoading, isError } = useQuery(...loungeQueryContext());
 
   if (!data || isLoading || isError) return null;
 

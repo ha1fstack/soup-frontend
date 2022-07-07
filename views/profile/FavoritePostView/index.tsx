@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Hr } from "common/atoms";
-import { http } from "common/services";
+import { http } from "lib/services";
 import { useRouter } from "next/router";
 import { Fragment } from "react";
 import { useQuery } from "react-query";

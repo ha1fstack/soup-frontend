@@ -1,9 +1,9 @@
 import { Box, Flex } from "common/atoms";
-import { http } from "common/services";
+import { http } from "lib/services";
 import produce from "immer";
 import { useSetAtom } from "jotai";
 import { useAuth } from "lib/hooks";
-import { fetchProjects } from "lib/queries";
+import { projectsQueryContext, projectsQueryKey } from "lib/queries";
 import { loginPopupState } from "lib/states";
 import { ITag } from "lib/utils";
 import { useRouter } from "next/router";
@@ -20,16 +20,14 @@ const ProjectListView = () => {
   const setLoginPopup = useSetAtom(loginPopupState);
   const queryClient = useQueryClient();
 
-  const { data, isLoading, isError } = useQuery(["projects", currentPage], () =>
-    fetchProjects(
-      undefined,
-      currentPage,
-      router.query.stacks
-        ? ((Array.isArray(router.query.stacks)
-            ? router.query.stacks
-            : router.query.stacks.split(",")) as ITag[])
-        : undefined
-    )
+  const stacks = router.query.stacks
+    ? ((Array.isArray(router.query.stacks)
+        ? router.query.stacks
+        : router.query.stacks.split(",")) as ITag[])
+    : undefined;
+
+  const { data, isLoading, isError } = useQuery(
+    ...projectsQueryContext(currentPage, stacks)
   );
 
   if (!data || isLoading || isError) return null;
@@ -56,7 +54,7 @@ const ProjectListView = () => {
 
     if (res.success)
       queryClient.setQueryData<IPageable<IPostPreviewContent[]> | undefined>(
-        ["projects", currentPage],
+        projectsQueryKey(currentPage, stacks),
         (projects) =>
           projects &&
           produce(projects, (draft) => {

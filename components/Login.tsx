@@ -6,7 +6,7 @@ import { loginPopupState } from "lib/states";
 import Image from "next/image";
 import { useSetAtom } from "jotai";
 import { isDevEnv } from "lib/utils";
-import { fetchAuth } from "lib/queries";
+import { fetchAuth } from "lib/hooks";
 
 export const Login = () => {
   const queryClient = useQueryClient();
@@ -16,6 +16,7 @@ export const Login = () => {
     const auth = await fetchAuth();
     if (!auth.success) return;
     queryClient.invalidateQueries();
+    queryClient.setQueryData(["auth"], auth);
     setLoginPopup(false);
   }, [queryClient, setLoginPopup]);
 

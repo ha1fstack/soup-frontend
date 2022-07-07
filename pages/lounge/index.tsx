@@ -1,8 +1,8 @@
 import { Flex, Box, Section } from "common/atoms";
 import { createPageLayout } from "components";
 import { useAuth } from "lib/hooks";
-import { fetchLounge } from "lib/queries";
-import { injectSession } from "lib/utils";
+import { loungeQueryContext } from "lib/queries";
+import { handleError } from "lib/utils";
 import { GetServerSideProps } from "next";
 import { dehydrate, QueryClient } from "react-query";
 import { CustomNextPage } from "types";
@@ -37,18 +37,14 @@ const LoungeLoginMessage = () => (
   </Box>
 );
 
-export const getServerSideProps: GetServerSideProps = injectSession(
-  async ({ http }) => {
-    const queryClient = new QueryClient();
+export const getServerSideProps: GetServerSideProps = handleError(async () => {
+  const queryClient = new QueryClient();
 
-    await Promise.all([
-      queryClient.prefetchQuery("lounge", () => fetchLounge(http)),
-    ]);
+  await Promise.all([queryClient.prefetchQuery(...loungeQueryContext())]);
 
-    return {
-      props: {
-        dehydratedState: dehydrate(queryClient),
-      },
-    };
-  }
-);
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
+  };
+});

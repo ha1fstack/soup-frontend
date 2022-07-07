@@ -1,11 +1,11 @@
 import { Flex, Section } from "common/atoms";
 import { GetServerSideProps } from "next";
 import { dehydrate, QueryClient } from "react-query";
-import { injectSession } from "lib/utils";
+import { handleError } from "lib/utils";
 import { createPageLayout } from "components";
 import { CustomNextPage } from "types";
 import { ITag } from "lib/utils";
-import { fetchProjects } from "lib/queries";
+import { projectsQueryContext } from "lib/queries";
 import {
   TagSearchView,
   ProjectListView,
@@ -37,15 +37,14 @@ Project.getLayout = createPageLayout({
 
 export default Project;
 
-export const getServerSideProps: GetServerSideProps = injectSession(
-  async ({ http, context }) => {
+export const getServerSideProps: GetServerSideProps = handleError(
+  async ({ context }) => {
     const queryClient = new QueryClient();
 
     const currentPage = parseInt(context.query.page as string) || 1;
 
-    await queryClient.prefetchQuery(["projects", currentPage], () =>
-      fetchProjects(
-        http,
+    await queryClient.prefetchQuery(
+      ...projectsQueryContext(
         currentPage,
         context.query.stacks
           ? ((Array.isArray(context.query.stacks)

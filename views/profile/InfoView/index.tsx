@@ -1,8 +1,9 @@
 import { Flex, Button, Hr, Input, Box, ProfilePlaceholder } from "common/atoms";
-import { http } from "common/services";
+import { http } from "lib/services";
 import { useToggle, useAuth } from "lib/hooks";
 import { MdOutlineEdit } from "react-icons/md";
 import { useQuery } from "react-query";
+import Skeleton from "react-loading-skeleton";
 
 const DetailsRow = ({
   item,
@@ -10,12 +11,14 @@ const DetailsRow = ({
   index,
 }: {
   item: string;
-  value: string;
+  value?: string;
   index: number;
 }) => (
   <>
     <p css={{ gridRow: index, gridColumn: 1, fontWeight: 600 }}>{item}</p>
-    <p css={{ gridRow: index, gridColumn: 2 }}>{value}</p>
+    <p css={{ gridRow: index, gridColumn: 2 }}>
+      {value || <Skeleton width={100} />}
+    </p>
   </>
 );
 
@@ -47,8 +50,17 @@ const InfoView = () => {
   const [isEdit, toggleIsEdit] = useToggle();
   const auth = useAuth();
 
-  const { data, isLoading, isError } = useQuery("profileInfo", async () => {
-    return (await http.get<any>("/mypage")).data;
+  const { data } = useQuery("profileInfo", async () => {
+    return (
+      await http.get<{
+        email: string;
+        nickname: string;
+        origin: string;
+        success: boolean;
+        user_id: number;
+        username: string;
+      }>("/mypage")
+    ).data;
   });
 
   const handleEdit = () => {
@@ -79,7 +91,7 @@ const InfoView = () => {
                 fontWeight: 500,
               }}
             >
-              gildong@example.com
+              {data?.email || <Skeleton width={100} />}
             </p>
           </div>
           <div>
@@ -120,11 +132,13 @@ const InfoView = () => {
                   rowGap: "4px",
                 }}
               >
-                {[
-                  ["닉네임", auth.username!],
-                  ["소셜 로그인", "Github"],
-                  ["이메일", "gildong@example.com"],
-                ].map((item, index) => (
+                {(
+                  [
+                    ["닉네임", auth.username!],
+                    ["소셜 로그인", data?.origin],
+                    ["이메일", data?.email],
+                  ] as const
+                ).map((item, index) => (
                   <DetailsRow
                     item={item[0]}
                     value={item[1]}

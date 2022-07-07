@@ -1,34 +1,27 @@
 import { css, Global, Theme, ThemeProvider } from "@emotion/react";
-import { Error, DefaultPageLayout } from "components";
+import { DefaultPageLayout, Error } from "components";
 import NextApp, { AppContext } from "next/app";
 import Head from "next/head";
-import {
-  Hydrate,
-  QueryClient,
-  QueryClientProvider,
-  setLogger,
-} from "react-query";
+import { Hydrate, QueryClientProvider, setLogger } from "react-query";
 
-import "common/styles/reset.css";
 import "common/styles/globals.css";
+import "common/styles/reset.css";
 
 import "swiper/css";
 import "swiper/css/effect-fade";
 
-import { useLayoutEffect, useState } from "react";
-import { useAuth } from "lib/hooks";
-import { ThemeProvider as NextThemeProvider } from "next-themes";
-import { http } from "common/services";
-import React from "react";
 import { Provider } from "jotai";
+import { useAuth } from "lib/hooks";
+import { createQueryClient, http } from "lib/services";
 import {
   breakpoints,
   isDevEnv,
   MediaContextProvider,
   WithAuth,
 } from "lib/utils";
+import { ThemeProvider as NextThemeProvider } from "next-themes";
+import React, { useLayoutEffect, useState } from "react";
 import { CustomAppProps, IAuthData } from "types";
-import axios from "axios";
 
 // suppress react query logging
 if (isDevEnv)
@@ -110,18 +103,7 @@ export default function App({
   pageProps,
   initialAuth,
 }: CustomAppProps & { initialAuth: IAuthData }) {
-  const [queryClient] = useState(
-    () =>
-      new QueryClient({
-        defaultOptions: {
-          queries: {
-            staleTime: Infinity,
-            cacheTime: 5000,
-            ...(isDevEnv && { retry: 0 }),
-          },
-        },
-      })
-  );
+  const [queryClient] = useState(() => createQueryClient());
 
   // load dynamic api baseurl
   useLayoutEffect(() => {
@@ -204,13 +186,8 @@ App.getInitialProps = async (context: AppContext) => {
 
     const cookie = req?.headers.cookie;
 
-    const ssHttp = axios.create({
-      baseURL: process.env.API_URL,
-      headers: { ...(cookie && { cookie }) },
-    });
-
     const initialAuth = (
-      await ssHttp.get("/auth", {
+      await http.get("/auth", {
         headers: { ...(cookie && { cookie }) },
       })
     ).data;

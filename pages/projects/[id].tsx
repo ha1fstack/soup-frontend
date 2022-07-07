@@ -10,7 +10,7 @@ import {
 } from "common/atoms";
 import { createPageLayout, Viewer } from "components";
 import { dehydrate, QueryClient, useQuery, useQueryClient } from "react-query";
-import { http } from "common/services";
+import { http } from "lib/services";
 import { useRouter } from "next/router";
 import {
   MdOutlineDelete,
@@ -24,8 +24,8 @@ import { GetServerSideProps } from "next";
 import { NotFound } from "components/NotFound";
 import styled from "@emotion/styled";
 import { useAuth } from "lib/hooks";
-import { getDisplayColor, getDisplayTag, injectSession } from "lib/utils";
-import { fetchProject } from "lib/queries";
+import { getDisplayColor, getDisplayTag, handleError } from "lib/utils";
+import { projectQueryContext } from "lib/queries";
 import { useSetAtom } from "jotai";
 import { loginPopupState } from "lib/states";
 
@@ -106,7 +106,7 @@ const ArticleHeader = ({ data }: { data: IPostContentData<unknown> }) => {
 
   const handleDelete = async () => {
     if (!window.confirm("정말 삭제하시겠습니까?")) return;
-    deleteProject(undefined, id)
+    deleteProject(id)
       .then(() => router.push("/projects"))
       .catch(() => alert("알 수 없는 오류가 발생했습니다."));
   };
@@ -239,9 +239,7 @@ const Article = () => {
     id: string;
   };
 
-  const { data, isLoading, isError } = useQuery(["project", id], () =>
-    fetchProject(undefined, id)
-  );
+  const { data, isLoading, isError } = useQuery(...projectQueryContext(id));
 
   if (isLoading || isError) return null;
   if (!data) return <NotFound />;
@@ -276,21 +274,19 @@ const Article = () => {
   );
 };
 
-const deleteProject = async (_http = http, id: string) => {
-  const res = await _http.post<IPostData>(`/projects/delete`, { id });
+const deleteProject = async (id: string) => {
+  const res = await http.post<IPostData>(`/projects/delete`, { id });
   return res.data;
 };
 
-export const getServerSideProps: GetServerSideProps = injectSession(
-  async ({ http, context }) => {
+export const getServerSideProps: GetServerSideProps = handleError(
+  async ({ context }) => {
     const queryClient = new QueryClient();
     const { id } = context.query as {
       id: string;
     };
 
-    const res = await queryClient.fetchQuery(["project", id], () =>
-      fetchProject(http, id)
-    );
+    const res = await queryClient.fetchQuery(...projectQueryContext(id));
 
     if (!res)
       return {

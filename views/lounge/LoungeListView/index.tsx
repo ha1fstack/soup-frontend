@@ -1,12 +1,11 @@
 import { Box, Hr } from "common/atoms";
-import { fetchLounge } from "lib/queries";
+import { loungeQueryContext } from "lib/queries";
 import { Fragment } from "react";
 import { useQuery } from "react-query";
-import { ILoungePost } from "types";
 import LoungeItem from "./LoungeItem";
 
 const LoungeListView = () => {
-  let { data } = useQuery<ILoungePost[]>("lounge", () => fetchLounge());
+  let { data } = useQuery(...loungeQueryContext());
 
   return (
     <Box as="section" responsive column css={{ gap: "16px", padding: "16px" }}>

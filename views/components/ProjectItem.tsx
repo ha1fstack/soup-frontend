@@ -10,7 +10,7 @@ import { MouseEvent, MouseEventHandler, useMemo } from "react";
 import { IPageable, IPostPreviewContent } from "types";
 import Image from "next/image";
 import { MdOutlineStar, MdOutlineStarBorder } from "react-icons/md";
-import { http } from "common/services";
+import { http } from "lib/services";
 import { useAuth } from "lib/hooks";
 import { useSetAtom } from "jotai";
 import { loginPopupState } from "lib/states";
