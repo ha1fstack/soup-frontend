@@ -48,8 +48,8 @@ const style = {
     "& > *": {
       [breakpoints.greaterThan("sm")]: { overflow: "hidden" },
     },
-    "& > *:nth-child(1)": { flex: "3 1 480px" },
-    "& > *:nth-child(2)": { flex: "2 1 320px" },
+    "& > *:nth-of-type(1)": { flex: "3 1 480px" },
+    "& > *:nth-of-type(2)": { flex: "2 1 320px" },
   }),
 };
 

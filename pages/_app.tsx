@@ -56,6 +56,9 @@ const GlobalStyle = css`
     --primary: #ff8a05;
     --primarylight: #ffeeda;
     --primarylight2: #fff8f1;
+
+    .react-loading-skeleton {
+    }
   }
 
   [data-theme="dark"] {
@@ -73,11 +76,11 @@ const GlobalStyle = css`
     --primary: #ff8a05;
     --primarylight: #1e2124;
     --primarylight2: #212428;
+  }
 
-    .react-loading-skeleton {
-      --base-color: #202020;
-      --highlight-color: #444;
-    }
+  .react-loading-skeleton {
+    --base-color: var(--background);
+    --highlight-color: var(--positive1);
   }
 
   :root {

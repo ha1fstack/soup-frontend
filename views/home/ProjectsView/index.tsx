@@ -31,7 +31,7 @@ const ProjectsView = ({ className }: { className?: string }) => {
               color: source === currentSource ? undefined : "var(--disabled)",
               fontWeight: source === currentSource ? undefined : 500,
               cursor: "pointer",
-              marginRight: "8px",
+              marginRight: "10px",
             }}
           >
             {SourceDictionary[currentSource]}
