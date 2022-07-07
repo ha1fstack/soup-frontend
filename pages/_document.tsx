@@ -16,6 +16,19 @@ export default function Document() {
           type="text/css"
           dangerouslySetInnerHTML={{ __html: mediaStyles }}
         />
+        <meta name="title" content="SouP" />
+        <meta name="description" content="한눈에 보는 스터디와 프로젝트" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="SouP" />
+        <meta
+          property="og:description"
+          content="한눈에 보는 스터디와 프로젝트"
+        />
+        <meta
+          property="og:image"
+          content="https://soup.pw/opengraph-image.png"
+        />
+        <meta property="og:url" content="https://soup.pw" />
       </Head>
       <body>
         <div id="portal" />

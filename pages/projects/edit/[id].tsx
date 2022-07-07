@@ -9,10 +9,14 @@ import { useLayoutEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { QueryClient, dehydrate, useQuery, useQueryClient } from "react-query";
 import { CustomNextPage, IArticleData } from "types";
+import Head from "next/head";
 
 const Edit: CustomNextPage = () => {
   return (
     <>
+      <Head>
+        <title>SouP | 글 수정하기</title>
+      </Head>
       <Section>
         <EditForm />
       </Section>

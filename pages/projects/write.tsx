@@ -4,10 +4,14 @@ import { Editor, createPageLayout } from "components";
 import { useRouter } from "next/router";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { CustomNextPage, IArticleData } from "types";
+import Head from "next/head";
 
 const Write: CustomNextPage = () => {
   return (
     <>
+      <Head>
+        <title>SouP | 모집 만들기</title>
+      </Head>
       <Section>
         <WriteForm />
       </Section>

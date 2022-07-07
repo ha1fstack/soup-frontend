@@ -28,6 +28,7 @@ import { getDisplayColor, getDisplayTag, handleError } from "lib/utils";
 import { projectQueryContext } from "lib/queries";
 import { useSetAtom } from "jotai";
 import { loginPopupState } from "lib/states";
+import Head from "next/head";
 
 const Page: CustomNextPage = () => {
   return (
@@ -245,32 +246,37 @@ const Article = () => {
   if (!data) return <NotFound />;
 
   return (
-    <Box
-      responsive
-      column
-      css={{
-        boxSizing: "border-box",
-        padding: "24px",
-        marginBottom: "48px",
-      }}
-    >
-      <ArticleHeader data={data} />
-      <Hr css={{ marginTop: "16px" }} />
-      <Flex
+    <>
+      <Head>
+        <title>SouP | {data.postName}</title>
+      </Head>
+      <Box
+        responsive
+        column
         css={{
-          marginTop: "36px",
-          marginBottom: "12px",
-          lineHeight: 1.5,
-          justifyContent: "center",
+          boxSizing: "border-box",
+          padding: "24px",
+          marginBottom: "48px",
         }}
       >
-        {data.type === "prosemirror" ? (
-          <Viewer content={JSON.parse(data.content as unknown as string)} />
-        ) : (
-          <ArticlePreview data={data} />
-        )}
-      </Flex>
-    </Box>
+        <ArticleHeader data={data} />
+        <Hr css={{ marginTop: "16px" }} />
+        <Flex
+          css={{
+            marginTop: "36px",
+            marginBottom: "12px",
+            lineHeight: 1.5,
+            justifyContent: "center",
+          }}
+        >
+          {data.type === "prosemirror" ? (
+            <Viewer content={JSON.parse(data.content as unknown as string)} />
+          ) : (
+            <ArticlePreview data={data} />
+          )}
+        </Flex>
+      </Box>
+    </>
   );
 };
 

@@ -4,6 +4,7 @@ import { useAuth } from "lib/hooks";
 import { loungeQueryContext } from "lib/queries";
 import { handleError } from "lib/utils";
 import { GetServerSideProps } from "next";
+import Head from "next/head";
 import { dehydrate, QueryClient } from "react-query";
 import { CustomNextPage } from "types";
 import { LoungeEditorView, LoungeListView } from "views/lounge";
@@ -13,6 +14,9 @@ const Lounge: CustomNextPage = () => {
 
   return (
     <>
+      <Head>
+        <title>SouP | 라운지</title>
+      </Head>
       <Section>
         <Flex column gap="24px">
           {auth.success ? <LoungeEditorView /> : <LoungeLoginMessage />}

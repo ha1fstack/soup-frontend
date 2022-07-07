@@ -2,10 +2,14 @@ import { Flex, Section } from "common/atoms";
 import { CustomNextPage } from "types";
 import { createPageLayout } from "components";
 import { InfoView, FavoritePostView } from "views/profile";
+import Head from "next/head";
 
 const Profile: CustomNextPage = () => {
   return (
     <>
+      <Head>
+        <title>SouP | 마이페이지</title>
+      </Head>
       <Section>
         <Flex
           css={{

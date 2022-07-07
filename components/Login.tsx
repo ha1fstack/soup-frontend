@@ -91,7 +91,7 @@ export const Login = () => {
                 <Button
                   onClick={() =>
                     window.open(
-                      "/api/oauth2/authorization/github",
+                      "/api/oauth2/authorization/facebook",
                       undefined,
                       "height=500,width=400,left=100,top=100,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no, status=yes"
                     )
@@ -99,13 +99,13 @@ export const Login = () => {
                   css={{
                     width: "72px",
                     height: "72px",
-                    backgroundColor: "#161b22",
+                    backgroundColor: "#1977f3",
                   }}
                 >
                   <Image
                     height="32"
                     width="32"
-                    src={"/github_login.png"}
+                    src={"/facebook_login.png"}
                     alt="logo"
                   />
                 </Button>
