@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import { CarouselPagination } from "common/components";
+import { CarouselPagination } from "common/atoms";
 import { defaultGridTemplate } from "common/styles";
 import { Banner } from "components/Banner";
 import { useSwiperRef } from "lib/hooks";

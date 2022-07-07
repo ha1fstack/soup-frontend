@@ -1,6 +1,6 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import { Button, Box, Flex, ProfilePlaceholder } from "common/components";
+import { Button, Box, Flex, ProfilePlaceholder } from "common/atoms";
 import Link, { LinkProps } from "next/link";
 import React from "react";
 import {
@@ -124,7 +124,6 @@ const Popup = React.forwardRef<
       await http.get("/logout");
     } catch (e) {}
     queryClient.invalidateQueries();
-    //queryClient.setQueryData(["auth"], () => undefined);
   };
 
   return (

@@ -1,6 +1,6 @@
 import { keyframes, css } from "@emotion/react";
 import styled from "@emotion/styled";
-import { Button } from "common/components";
+import { Button } from "common/atoms";
 import { useSetAtom, useAtom } from "jotai";
 import { useMatch, useAuth } from "lib/hooks";
 import { loginPopupState, sideBarOpenState } from "lib/states";

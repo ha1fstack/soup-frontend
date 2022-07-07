@@ -1,4 +1,4 @@
-import { Button } from "common/components";
+import { Button } from "common/atoms";
 import React from "react";
 import { MdOutlineFavorite, MdOutlineFavoriteBorder } from "react-icons/md";
 

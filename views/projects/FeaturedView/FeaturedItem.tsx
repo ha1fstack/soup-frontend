@@ -1,4 +1,4 @@
-import { Flex, ProfilePlaceholder } from "common/components";
+import { Flex, ProfilePlaceholder } from "common/atoms";
 import Link from "next/link";
 import { ellipsis } from "polished";
 import { IFeaturedItem } from "types";

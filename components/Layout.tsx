@@ -4,7 +4,7 @@ import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 
 import { Header, MobileSideBar, SideBar } from "components";
-import { SectionHeader } from "common/components";
+import { SectionHeader } from "common/atoms";
 import { defaultGridTemplate } from "common/styles";
 import { breakpoints, Media } from "lib/utils";
 

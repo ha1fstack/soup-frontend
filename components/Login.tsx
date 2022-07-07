@@ -1,4 +1,4 @@
-import { Flex, Button } from "common/components";
+import { Flex, Button } from "common/atoms";
 import { Dimmer } from "components";
 import { useCallback, useEffect } from "react";
 import { useQueryClient } from "react-query";
@@ -16,7 +16,6 @@ export const Login = () => {
     const auth = await fetchAuth();
     if (!auth.success) return;
     queryClient.invalidateQueries();
-    queryClient.setQueryData(["auth"], auth);
     setLoginPopup(false);
   }, [queryClient, setLoginPopup]);
 

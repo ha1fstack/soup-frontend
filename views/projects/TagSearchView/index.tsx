@@ -1,4 +1,4 @@
-import { Flex, Box } from "common/components";
+import { Flex, Box } from "common/atoms";
 import { useToggle } from "lib/hooks";
 import TagFinder from "./TagFinder";
 import TagSlider from "./TagSlider";

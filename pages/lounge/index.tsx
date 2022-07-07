@@ -1,4 +1,4 @@
-import { Flex, Box, Section } from "common/components";
+import { Flex, Box, Section } from "common/atoms";
 import { createPageLayout } from "components";
 import { useAuth } from "lib/hooks";
 import { fetchLounge } from "lib/queries";

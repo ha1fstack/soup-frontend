@@ -1,4 +1,4 @@
-import { Flex } from "common/components";
+import { Flex } from "common/atoms";
 import { fetchFrontFeatured } from "lib/queries";
 import { useQuery } from "react-query";
 import NewItem from "./NewItem";

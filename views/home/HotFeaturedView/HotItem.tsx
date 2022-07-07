@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import { Flex } from "common/components";
+import { Flex } from "common/atoms";
 import Link from "next/link";
 import { ellipsis } from "polished";
 import { IPostPreviewContent } from "types";

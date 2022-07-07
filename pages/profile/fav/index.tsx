@@ -1,4 +1,4 @@
-import { Section } from "common/components";
+import { Section } from "common/atoms";
 import { CustomNextPage } from "types";
 import { createPageLayout } from "components";
 import FavListView from "views/profile.fav/FavListView";

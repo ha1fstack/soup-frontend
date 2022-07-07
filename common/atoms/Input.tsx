@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 import TextareaAutosize from "react-textarea-autosize";
-import { LabelVariant } from "common/components";
+import { LabelVariant } from "common/atoms";
 
 const SizeVariant = () => ({
   smaller: css`

@@ -1,4 +1,4 @@
-import { Flex } from "common/components";
+import { Flex } from "common/atoms";
 
 const FeaturedHeader = ({ content }: { content: string }) => (
   <Flex

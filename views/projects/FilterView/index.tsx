@@ -1,4 +1,4 @@
-import { Flex, Label, Button } from "common/components";
+import { Flex, Label, Button } from "common/atoms";
 import { getDisplayTag } from "lib/utils";
 import { MdOutlineLabel, MdOutlineClose } from "react-icons/md";
 import useFilter from "../useFilter";

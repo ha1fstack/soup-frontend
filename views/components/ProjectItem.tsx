@@ -1,4 +1,4 @@
-import { Box, Flex, ProfilePlaceholder, Label } from "common/components";
+import { Box, Flex, ProfilePlaceholder, Label } from "common/atoms";
 import {
   timeDiffString,
   SourceDictionary,

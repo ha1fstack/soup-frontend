@@ -1,5 +1,5 @@
 import { keyframes } from "@emotion/react";
-import { Button } from "common/components";
+import { Button } from "common/atoms";
 import { useClientRender } from "lib/hooks";
 import { TagList, getDisplayTag } from "lib/utils";
 import React, { useMemo } from "react";

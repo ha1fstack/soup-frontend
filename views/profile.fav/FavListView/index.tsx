@@ -1,4 +1,4 @@
-import { Box, Flex } from "common/components";
+import { Box, Flex } from "common/atoms";
 import { http } from "common/services";
 import produce from "immer";
 import { useQuery, useQueryClient } from "react-query";

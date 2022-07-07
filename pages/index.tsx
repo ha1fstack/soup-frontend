@@ -1,4 +1,4 @@
-import { Flex, Section } from "common/components";
+import { Flex, Section } from "common/atoms";
 import { GetServerSideProps } from "next";
 import { dehydrate, QueryClient } from "react-query";
 import { createPageLayout } from "components";

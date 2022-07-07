@@ -1,6 +1,6 @@
-import { Flex, Button } from "common/components";
+import { Flex, Button } from "common/atoms";
 import { useHorizontalScroll } from "lib/hooks/useHorizontalScroll";
-import { hideScrollbar } from "lib/styles";
+import { hideScrollbar } from "common/styles";
 import { useCallback, useState } from "react";
 import { MdOutlineSearch } from "react-icons/md";
 import Slider from "./Slider";

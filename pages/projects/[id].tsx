@@ -7,7 +7,7 @@ import {
   ProfilePlaceholder,
   Label,
   Hr,
-} from "common/components";
+} from "common/atoms";
 import { createPageLayout, Viewer } from "components";
 import { dehydrate, QueryClient, useQuery, useQueryClient } from "react-query";
 import { http } from "common/services";

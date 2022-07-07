@@ -1,4 +1,4 @@
-import { Box, Hr } from "common/components";
+import { Box, Hr } from "common/atoms";
 import { fetchLounge } from "lib/queries";
 import { Fragment } from "react";
 import { useQuery } from "react-query";

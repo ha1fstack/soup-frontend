@@ -1,4 +1,4 @@
-import { Section } from "common/components";
+import { Section } from "common/atoms";
 import Link from "next/link";
 
 const STATUS = {

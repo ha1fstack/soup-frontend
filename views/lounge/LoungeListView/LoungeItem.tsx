@@ -1,4 +1,4 @@
-import { Flex, ProfilePlaceholder } from "common/components";
+import { Flex, ProfilePlaceholder } from "common/atoms";
 import { http } from "common/services";
 import { useAuth } from "lib/hooks";
 import { timeDiffString } from "lib/utils";

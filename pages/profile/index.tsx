@@ -1,4 +1,4 @@
-import { Flex, Section } from "common/components";
+import { Flex, Section } from "common/atoms";
 import { CustomNextPage } from "types";
 import { createPageLayout } from "components";
 import { InfoView, FavoritePostView } from "views/profile";

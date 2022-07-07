@@ -8,7 +8,7 @@ import {
 } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
-import { Flex } from "common/components";
+import { Flex } from "common/atoms";
 import {
   MdOutlineCode,
   MdOutlineFormatBold,

@@ -1,4 +1,4 @@
-import { Pagination } from "common/components";
+import { Pagination } from "common/atoms";
 import { useRouter } from "next/router";
 
 const ProjectPagination = ({

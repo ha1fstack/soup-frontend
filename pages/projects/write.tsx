@@ -1,4 +1,4 @@
-import { Box, Flex, Input, Button, Section } from "common/components";
+import { Box, Flex, Input, Button, Section } from "common/atoms";
 import { http } from "common/services";
 import { Editor, createPageLayout } from "components";
 import { useRouter } from "next/router";

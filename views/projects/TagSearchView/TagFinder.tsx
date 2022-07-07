@@ -1,6 +1,6 @@
-import { Flex, Button } from "common/components";
+import { Flex, Button } from "common/atoms";
 import { useHorizontalScroll } from "lib/hooks/useHorizontalScroll";
-import { hideScrollbar } from "lib/styles";
+import { hideScrollbar } from "common/styles";
 import { TagGroup, getDisplayTag, ITagCategory } from "lib/utils";
 import { useState, useMemo } from "react";
 import { MdOutlineCheck } from "react-icons/md";
@@ -83,5 +83,5 @@ const useSearchMenu = (initial: ITagCategory) => {
     [state]
   );
 
-  return [currentMenu, setState] as [typeof currentMenu, typeof setState];
+  return [currentMenu, setState] as const;
 };

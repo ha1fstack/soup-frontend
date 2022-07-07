@@ -1,4 +1,4 @@
-import { Flex, CarouselPagination } from "common/components";
+import { Flex, CarouselPagination } from "common/atoms";
 import { useSwiperRef } from "lib/hooks";
 import { fetchFrontFeatured } from "lib/queries";
 import { toMatrix, breakpoints } from "lib/utils";

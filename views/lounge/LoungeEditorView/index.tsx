@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Box, Button, Flex, ProfilePlaceholder } from "common/components";
+import { Box, Button, Flex, ProfilePlaceholder } from "common/atoms";
 import { http } from "common/services";
 import { useAuth } from "lib/hooks";
 import { useEffect } from "react";

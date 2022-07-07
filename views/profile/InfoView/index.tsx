@@ -1,11 +1,4 @@
-import {
-  Flex,
-  Button,
-  Hr,
-  Input,
-  Box,
-  ProfilePlaceholder,
-} from "common/components";
+import { Flex, Button, Hr, Input, Box, ProfilePlaceholder } from "common/atoms";
 import { http } from "common/services";
 import { useToggle, useAuth } from "lib/hooks";
 import { MdOutlineEdit } from "react-icons/md";

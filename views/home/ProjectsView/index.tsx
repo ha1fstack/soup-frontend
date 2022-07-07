@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import { Flex, Box, Hr } from "common/components";
+import { Flex, Box, Hr } from "common/atoms";
 import { fetchFrontProjects } from "lib/queries";
 import { SourceList, SourceDictionary, ISource } from "lib/utils";
 import { Dispatch, Fragment, SetStateAction, useState } from "react";
@@ -8,7 +8,7 @@ import { ProjectPreviewItem } from "views/components";
 
 const useSource = (initialSource: ISource) => {
   const [source, setSource] = useState<ISource>(initialSource);
-  return [source, setSource] as [ISource, Dispatch<SetStateAction<ISource>>];
+  return [source, setSource] as const;
 };
 
 const ProjectsView = ({ className }: { className?: string }) => {

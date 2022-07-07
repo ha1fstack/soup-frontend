@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { css } from "@emotion/react";
-import { Label, Flex } from "common/components";
+import { Label, Flex } from "common/atoms";
 import { breakpoints } from "lib/utils";
 import React from "react";
 import { defaultGridTemplate } from "common/styles";

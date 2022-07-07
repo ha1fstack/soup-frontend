@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Hr } from "common/components";
+import { Box, Button, Flex, Hr } from "common/atoms";
 import { http } from "common/services";
 import { useRouter } from "next/router";
 import { Fragment } from "react";

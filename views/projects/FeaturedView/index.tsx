@@ -1,4 +1,4 @@
-import { Flex, Box } from "common/components";
+import { Flex, Box } from "common/atoms";
 import { http } from "common/services";
 import { useQuery } from "react-query";
 import { IFeaturedItem } from "types";

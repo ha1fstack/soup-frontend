@@ -1,4 +1,4 @@
-import { Flex, ProfilePlaceholder, Label } from "common/components";
+import { Flex, ProfilePlaceholder, Label } from "common/atoms";
 import { getDisplayTag } from "lib/utils";
 import Link from "next/link";
 import { ellipsis } from "polished";

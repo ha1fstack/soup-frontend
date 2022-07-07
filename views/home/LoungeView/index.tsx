@@ -1,5 +1,5 @@
 import { css } from "@emotion/react";
-import { Flex, Box, Hr } from "common/components";
+import { Flex, Box, Hr } from "common/atoms";
 import { fetchLounge } from "lib/queries";
 import Link from "next/link";
 import { Fragment } from "react";
