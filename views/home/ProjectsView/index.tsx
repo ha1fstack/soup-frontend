@@ -4,7 +4,10 @@ import { frontProjectsQueryContext } from "lib/queries";
 import { SourceList, SourceDictionary, ISource } from "lib/utils";
 import { Dispatch, Fragment, SetStateAction, useState } from "react";
 import { useQuery } from "react-query";
-import { ProjectPreviewItem } from "views/components";
+import {
+  ProjectPreviewItem,
+  ProjectPreviewItemSkeleton,
+} from "views/components";
 
 const useSource = (initialSource: ISource) => {
   const [source, setSource] = useState<ISource>(initialSource);
@@ -16,9 +19,6 @@ const ProjectsView = ({ className }: { className?: string }) => {
   const [source, setSource] = useSource(
     SourceList[(Math.random() * SourceList.length) | 0]
   );
-
-  if (!data || isLoading || isError)
-    return <Flex column css={{ flex: "3 1 480px" }} />;
 
   return (
     <Flex column className={className} css={{ width: "100%" }}>
@@ -38,13 +38,24 @@ const ProjectsView = ({ className }: { className?: string }) => {
           </span>
         ))}
       </Box.Header>
+
       <Box responsive column css={{ gap: "16px", padding: "16px 12px" }}>
-        {data[source].map((post, i) => (
-          <Fragment key={post.id}>
-            {i !== 0 && <Hr />}
-            <ProjectPreviewItem post={post} />
-          </Fragment>
-        ))}
+        {data ? (
+          data[source].map((post, i) => (
+            <Fragment key={post.id}>
+              {i !== 0 && <Hr />}
+              <ProjectPreviewItem post={post} />
+            </Fragment>
+          ))
+        ) : (
+          <>
+            <ProjectPreviewItemSkeleton />
+            <ProjectPreviewItemSkeleton />
+            <ProjectPreviewItemSkeleton />
+            <ProjectPreviewItemSkeleton />
+            <ProjectPreviewItemSkeleton />
+          </>
+        )}
       </Box>
     </Flex>
   );

@@ -4,6 +4,7 @@ import { loungeQueryContext } from "lib/queries";
 import Link from "next/link";
 import { Fragment } from "react";
 import { useQuery } from "react-query";
+import { ProjectPreviewItemSkeleton } from "views/components";
 import LoungeItem from "./LoungeItem";
 
 const LoungeView = ({ className }: { className?: string }) => {
@@ -22,8 +23,6 @@ const LoungeView = ({ className }: { className?: string }) => {
 
   const { data, isLoading, isError } = useQuery(...loungeQueryContext());
 
-  if (!data || isLoading || isError) return null;
-
   return (
     <Flex column css={className}>
       <Box.Header>
@@ -31,12 +30,22 @@ const LoungeView = ({ className }: { className?: string }) => {
       </Box.Header>
       <Link passHref href="/lounge">
         <Box as="a" responsive column css={styles.ContentWrapper}>
-          {data.map((post, i) => (
-            <Fragment key={post.lounge_id}>
-              {i !== 0 && <Hr />}
-              <LoungeItem post={post} />
-            </Fragment>
-          ))}
+          {data ? (
+            data.map((post, i) => (
+              <Fragment key={post.lounge_id}>
+                {i !== 0 && <Hr />}
+                <LoungeItem post={post} />
+              </Fragment>
+            ))
+          ) : (
+            <>
+              <ProjectPreviewItemSkeleton />
+              <ProjectPreviewItemSkeleton />
+              <ProjectPreviewItemSkeleton />
+              <ProjectPreviewItemSkeleton />
+              <ProjectPreviewItemSkeleton />
+            </>
+          )}
         </Box>
       </Link>
     </Flex>
