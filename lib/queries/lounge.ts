@@ -3,7 +3,7 @@ import { ILoungePost } from "types";
 
 type IQueryReturnType = ILoungePost[];
 
-type IQueryParams = [];
+type IQueryParams = void;
 
 export const [loungeQueryKey, fetchLounge, loungeQueryContext] =
   createHttpQuerySlice<IQueryParams, IQueryReturnType>(() => ["/lounge"]);

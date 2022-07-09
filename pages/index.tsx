@@ -57,7 +57,7 @@ export const getServerSideProps: GetServerSideProps = handleError(async () => {
   const queryClient = new QueryClient();
 
   await Promise.all([
-    queryClient.prefetchQuery(...frontFeaturedQueryContext()),
+    queryClient.prefetchQuery(...frontFeaturedQueryContext(undefined)),
     // queryClient.prefetchQuery("front/projects", fetchFrontProjects),
   ]);
 

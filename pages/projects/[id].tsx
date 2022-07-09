@@ -240,7 +240,7 @@ const Article = () => {
     id: string;
   };
 
-  const { data, isLoading, isError } = useQuery(...projectQueryContext(id));
+  const { data, isLoading, isError } = useQuery(...projectQueryContext({ id }));
 
   if (isLoading || isError) return null;
   if (!data) return <NotFound />;
@@ -292,7 +292,7 @@ export const getServerSideProps: GetServerSideProps = handleError(
       id: string;
     };
 
-    const res = await queryClient.fetchQuery(...projectQueryContext(id));
+    const res = await queryClient.fetchQuery(...projectQueryContext({ id }));
 
     if (!res)
       return {

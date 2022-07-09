@@ -4,6 +4,8 @@ import { useToggle, useAuth } from "lib/hooks";
 import { MdOutlineEdit } from "react-icons/md";
 import { useQuery } from "react-query";
 import Skeleton from "react-loading-skeleton";
+import { useForm } from "react-hook-form";
+import { MouseEventHandler, MutableRefObject, useEffect, useRef } from "react";
 
 const DetailsRow = ({
   item,
@@ -22,7 +24,36 @@ const DetailsRow = ({
   </>
 );
 
-const InfoEdit = () => {
+const InfoEdit = ({
+  handleSubmitRef,
+  data,
+}: {
+  handleSubmitRef: MutableRefObject<
+    ((e?: React.BaseSyntheticEvent) => Promise<void> | undefined) | undefined
+  >;
+  data: {
+    email: string;
+    nickname: string;
+    origin: string;
+    success: boolean;
+    user_id: number;
+    username: string;
+  };
+}) => {
+  const { register, handleSubmit } = useForm<{
+    nickname: string;
+  }>();
+
+  useEffect(() => {
+    handleSubmitRef.current = handleSubmit(({ nickname }) => {
+      if (nickname)
+        http.post("/nickname", {
+          mode: true,
+          nickname,
+        });
+    });
+  }, [handleSubmit, handleSubmitRef]);
+
   return (
     <Flex
       column
@@ -40,7 +71,7 @@ const InfoEdit = () => {
     >
       <div>
         <label>닉네임</label>
-        <Input placeholder="닉네임"></Input>
+        <Input placeholder={data.nickname} {...register("nickname")}></Input>
       </div>
     </Flex>
   );
@@ -49,6 +80,8 @@ const InfoEdit = () => {
 const InfoView = () => {
   const [isEdit, toggleIsEdit] = useToggle();
   const auth = useAuth();
+  const handleSubmit =
+    useRef<(e?: React.BaseSyntheticEvent) => Promise<void> | undefined>();
 
   const { data } = useQuery("profileInfo", async () => {
     return (
@@ -63,10 +96,10 @@ const InfoView = () => {
     ).data;
   });
 
-  const handleEdit = () => {
+  const handleEdit: MouseEventHandler<HTMLButtonElement> = (e) => {
     toggleIsEdit();
     if (isEdit) {
-      alert("saved");
+      if (handleSubmit.current) handleSubmit.current();
     }
   };
 
@@ -122,7 +155,7 @@ const InfoView = () => {
               </Flex> */}
           <Flex column>
             {isEdit ? (
-              <InfoEdit />
+              <InfoEdit data={data} handleSubmitRef={handleSubmit} />
             ) : (
               <Flex
                 css={{

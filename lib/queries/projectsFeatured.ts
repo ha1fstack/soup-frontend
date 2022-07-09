@@ -6,7 +6,7 @@ type IQueryReturnType = {
   HOT: IFeaturedItem[];
 };
 
-type IQueryParams = [];
+type IQueryParams = void;
 
 export const [
   projectsFeaturedQueryKey,

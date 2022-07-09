@@ -13,20 +13,16 @@ const cleanse = (obj: any) => {
   return obj;
 };
 
-export type IHttpQueryParams = [
-  string,
-  AxiosRequestConfig?,
-  AxiosRequestConfig?
-];
+export type IQueryParams = [string, AxiosRequestConfig?, AxiosRequestConfig?];
 
-export const httpQueryKey = (...[scope, dependency]: IHttpQueryParams) => {
+export const httpQueryKey = (...[scope, dependency]: IQueryParams) => {
   if (!dependency) return [scope] as const;
   const cleanDependency = cleanse(dependency);
   return [scope, cleanDependency] as const;
 };
 
 export const httpQueryFunction = <T = any>(
-  ...[scope, dependency, config]: IHttpQueryParams
+  ...[scope, dependency, config]: IQueryParams
 ) => {
   const httpConfig = Object.assign(dependency || {}, config);
   return async () =>
@@ -38,14 +34,21 @@ export const httpQueryFunction = <T = any>(
     ).data;
 };
 
-export const createHttpQuerySlice = <T extends Array<any>, U>(
-  queryContextParams: (...params: T) => IHttpQueryParams
+export const createHttpQuerySlice = <T extends Record<string, any> | void, U>(
+  queryContextParams: (params: T) => IQueryParams
 ) => {
-  const queryKey = (...params: T) =>
-    httpQueryKey(...queryContextParams(...params));
-  const queryFunction = (...params: T) =>
-    httpQueryFunction<U>(...queryContextParams(...params));
-  const queryContext = (...params: T) =>
-    [queryKey(...params), queryFunction(...params)] as const;
+  const queryKey = (params: T) => httpQueryKey(...queryContextParams(params));
+
+  const queryFunction = (params: T, injectedConfig?: any) => {
+    const [scope, dependency, config] = queryContextParams(params);
+    return httpQueryFunction<U>(
+      scope,
+      dependency,
+      Object.assign(config || {}, injectedConfig)
+    );
+  };
+
+  const queryContext = (params: T, injectedConfig?: IQueryParams[2]) =>
+    [queryKey(params), queryFunction(params, injectedConfig)] as const;
   return [queryKey, queryFunction, queryContext] as const;
 };

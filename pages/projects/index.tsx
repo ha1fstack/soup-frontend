@@ -42,19 +42,22 @@ Project.getLayout = createPageLayout({
 export default Project;
 
 export const getServerSideProps: GetServerSideProps = handleError(
-  async ({ context }) => {
+  async ({ context, session }) => {
     const queryClient = new QueryClient();
 
     const currentPage = parseInt(context.query.page as string) || 1;
 
     await queryClient.prefetchQuery(
       ...projectsQueryContext(
-        currentPage,
-        context.query.stacks
-          ? ((Array.isArray(context.query.stacks)
-              ? context.query.stacks
-              : context.query.stacks.split(",")) as ITag[])
-          : undefined
+        {
+          page: currentPage,
+          stacks: context.query.stacks
+            ? ((Array.isArray(context.query.stacks)
+                ? context.query.stacks
+                : context.query.stacks.split(",")) as ITag[])
+            : undefined,
+        },
+        session
       )
     );
 

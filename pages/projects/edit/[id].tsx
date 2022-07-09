@@ -50,7 +50,7 @@ const EditForm = () => {
     mode: "all",
   });
 
-  const { data, isLoading, isError } = useQuery(...projectQueryContext(id));
+  const { data, isLoading, isError } = useQuery(...projectQueryContext({ id }));
 
   useLayoutEffect(() => {
     if (data?.postName) setValue("title", data.postName);
@@ -112,7 +112,7 @@ export const getServerSideProps: GetServerSideProps = handleError(
       id: string;
     };
 
-    await queryClient.prefetchQuery(...projectQueryContext(id));
+    await queryClient.prefetchQuery(...projectQueryContext({ id }));
 
     return {
       props: {

@@ -9,7 +9,7 @@ type IQueryReturnType = {
   HOLA: IPostPreviewContent[];
 };
 
-type IQueryParams = [];
+type IQueryParams = void;
 
 export const [
   frontProjectsQueryKey,

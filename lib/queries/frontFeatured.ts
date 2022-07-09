@@ -6,12 +6,12 @@ type IQueryReturnType = {
   HOT: IPostPreviewContent[];
 };
 
-type IQueryParams = [];
+type IQueryParams = undefined;
 
 export const [
   frontFeaturedQueryKey,
   fetchFrontFeatured,
   frontFeaturedQueryContext,
-] = createHttpQuerySlice<IQueryParams, IQueryReturnType>((...params) => [
+] = createHttpQuerySlice<IQueryParams, IQueryReturnType>(() => [
   "/front/featured",
 ]);

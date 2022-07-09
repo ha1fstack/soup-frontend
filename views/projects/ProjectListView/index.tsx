@@ -27,7 +27,10 @@ const ProjectListView = () => {
     : undefined;
 
   const { data, isLoading, isError } = useQuery(
-    ...projectsQueryContext(currentPage, stacks)
+    ...projectsQueryContext({
+      page: currentPage,
+      stacks,
+    })
   );
 
   if (!data || isLoading || isError) return null;
@@ -54,7 +57,10 @@ const ProjectListView = () => {
 
     if (res.success)
       queryClient.setQueryData<IPageable<IPostPreviewContent[]> | undefined>(
-        projectsQueryKey(currentPage, stacks),
+        projectsQueryKey({
+          page: currentPage,
+          stacks,
+        }),
         (projects) =>
           projects &&
           produce(projects, (draft) => {
