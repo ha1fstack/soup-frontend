@@ -15,12 +15,12 @@ const LoungeItem = ({ post }: { post: ILoungePost }) => {
           flex: "0 0 auto",
         }}
       >
-        <ProfilePlaceholder value={post.username} size={32} />
+        <ProfilePlaceholder value={post.userName} size={32} />
       </Flex>
       <Flex column css={{ gap: "4px", flex: "1 1 auto" }}>
         <Flex css={{ justifyContent: "space-between", alignItems: "center" }}>
           <p css={{ fontSize: "1.4rem" }}>
-            <b>{post.username}</b> · {timeDiffString(post.date)}
+            <b>{post.userName}</b> · {timeDiffString(post.date)}
           </p>
         </Flex>
         <div

@@ -158,11 +158,11 @@ export const Login = () => {
                   <Button onClick={checkLogin}>manual login refresh</Button>
                   <Button
                     onClick={() => {
-                      queryClient.setQueryData("auth", () => ({
+                      queryClient.setQueryData(["auth"], () => ({
                         success: true,
                         user_id: 1,
                         profileImage: "https://via.placeholder.com/64x64",
-                        username: "Test",
+                        userName: "Test",
                       }));
                     }}
                   >

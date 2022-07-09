@@ -76,7 +76,7 @@ export type IAuthData =
       success: true;
       user_id: number;
       profileImage: string;
-      username: string;
+      userName: string;
     }
   | {
       success: false;
@@ -96,7 +96,7 @@ export interface ILoungePost {
   isfav: boolean;
   picture: string;
   content: string;
-  username: string;
+  userName: string;
 }
 
 export interface IArticleData {

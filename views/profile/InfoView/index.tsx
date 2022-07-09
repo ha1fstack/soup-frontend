@@ -2,10 +2,11 @@ import { Flex, Button, Hr, Input, Box, ProfilePlaceholder } from "common/atoms";
 import { http } from "lib/services";
 import { useToggle, useAuth } from "lib/hooks";
 import { MdOutlineEdit } from "react-icons/md";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import Skeleton from "react-loading-skeleton";
 import { useForm } from "react-hook-form";
 import { MouseEventHandler, MutableRefObject, useEffect, useRef } from "react";
+import { AxiosResponse } from "axios";
 
 const DetailsRow = ({
   item,
@@ -29,28 +30,32 @@ const InfoEdit = ({
   data,
 }: {
   handleSubmitRef: MutableRefObject<
-    ((e?: React.BaseSyntheticEvent) => Promise<void> | undefined) | undefined
+    ((e?: React.BaseSyntheticEvent) => Promise<void>) | undefined
   >;
   data: {
     email: string;
-    nickname: string;
     origin: string;
     success: boolean;
     user_id: number;
-    username: string;
+    userName: string;
   };
 }) => {
   const { register, handleSubmit } = useForm<{
-    nickname: string;
+    userName: string;
   }>();
-
+  const queryClient = useQueryClient();
   useEffect(() => {
-    handleSubmitRef.current = handleSubmit(({ nickname }) => {
-      if (nickname)
-        http.post("/nickname", {
-          mode: true,
-          nickname,
+    handleSubmitRef.current = handleSubmit(async ({ userName }) => {
+      const res = await http.post("/nickname", {
+        mode: true,
+        userName: userName,
+      });
+      if (res?.data?.success) {
+        queryClient.setQueryData(["auth"], {
+          ...queryClient.getQueryData(["auth"]),
+          userName,
         });
+      }
     });
   }, [handleSubmit, handleSubmitRef]);
 
@@ -71,7 +76,7 @@ const InfoEdit = ({
     >
       <div>
         <label>닉네임</label>
-        <Input placeholder={data.nickname} {...register("nickname")}></Input>
+        <Input placeholder={data.userName} {...register("userName")}></Input>
       </div>
     </Flex>
   );
@@ -81,17 +86,16 @@ const InfoView = () => {
   const [isEdit, toggleIsEdit] = useToggle();
   const auth = useAuth();
   const handleSubmit =
-    useRef<(e?: React.BaseSyntheticEvent) => Promise<void> | undefined>();
+    useRef<(e?: React.BaseSyntheticEvent) => Promise<void>>();
 
   const { data } = useQuery("profileInfo", async () => {
     return (
       await http.get<{
         email: string;
-        nickname: string;
         origin: string;
         success: boolean;
         user_id: number;
-        username: string;
+        userName: string;
       }>("/mypage")
     ).data;
   });
@@ -115,9 +119,9 @@ const InfoView = () => {
             marginBottom: "12px",
           }}
         >
-          <ProfilePlaceholder size={64} value={auth.username} />
+          <ProfilePlaceholder size={64} value={auth.userName} />
           <div css={{ marginLeft: "16px", flex: "1" }}>
-            <p css={{ fontSize: "1.8rem", fontWeight: 700 }}>{auth.username}</p>
+            <p css={{ fontSize: "1.8rem", fontWeight: 700 }}>{auth.userName}</p>
             <p
               css={{
                 fontSize: "1.4rem",
@@ -154,7 +158,7 @@ const InfoView = () => {
                 </p>
               </Flex> */}
           <Flex column>
-            {isEdit ? (
+            {isEdit && data ? (
               <InfoEdit data={data} handleSubmitRef={handleSubmit} />
             ) : (
               <Flex
@@ -167,7 +171,7 @@ const InfoView = () => {
               >
                 {(
                   [
-                    ["닉네임", auth.username!],
+                    ["닉네임", auth.userName!],
                     ["소셜 로그인", data?.origin],
                     ["이메일", data?.email],
                   ] as const

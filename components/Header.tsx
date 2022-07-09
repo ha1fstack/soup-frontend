@@ -183,6 +183,8 @@ export const Header = React.memo(() => {
 
   const messageRef = useOuterClick<HTMLDivElement>(() => toggleMessagePopup());
 
+  console.log(auth);
+
   return (
     <>
       <HeaderBackground />
@@ -260,7 +262,7 @@ export const Header = React.memo(() => {
                   position: "relative",
                 }}
               >
-                <span>{auth.username}</span>
+                <span>{auth.userName}</span>
                 <span
                   css={{
                     width: "32px",
@@ -269,7 +271,7 @@ export const Header = React.memo(() => {
                     overflow: "hidden",
                   }}
                 >
-                  <ProfilePlaceholder size={32} value={auth.username} />
+                  <ProfilePlaceholder size={32} value={auth.userName} />
                 </span>
                 {messagePopup && (
                   <Popup ref={messageRef} toggle={toggleMessagePopup} />

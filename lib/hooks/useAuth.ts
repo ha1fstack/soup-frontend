@@ -6,7 +6,9 @@ export const fetchAuth = async (cookie?: any) => {
   const res = await http.get<IAuthData>("/auth", {
     ...(cookie && { headers: { cookie } }),
   });
-  return res.data;
+  return {
+    ...res.data,
+  };
 };
 
 export function useAuth(data?: {

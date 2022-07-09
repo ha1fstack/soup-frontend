@@ -286,13 +286,15 @@ const deleteProject = async (id: string) => {
 };
 
 export const getServerSideProps: GetServerSideProps = handleError(
-  async ({ context }) => {
+  async ({ context, session }) => {
     const queryClient = new QueryClient();
     const { id } = context.query as {
       id: string;
     };
 
-    const res = await queryClient.fetchQuery(...projectQueryContext({ id }));
+    const res = await queryClient.fetchQuery(
+      ...projectQueryContext({ id }, session)
+    );
 
     if (!res)
       return {

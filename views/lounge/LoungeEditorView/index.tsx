@@ -45,7 +45,7 @@ const LoungeEditor = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Flex column css={{ gap: "0px" }}>
           <Flex css={{ gap: "18px" }}>
-            <ProfilePlaceholder size={48} value={auth.username} />
+            <ProfilePlaceholder size={48} value={auth.userName} />
             <LoungeEditorTextArea register={register} />
           </Flex>
           <LoungeEditorDialog>
