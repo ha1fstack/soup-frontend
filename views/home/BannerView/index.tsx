@@ -18,7 +18,7 @@ const BannerView = () => {
         onSwiper={onSwiper}
         loop={isClientRender}
         autoplay={{
-          delay: 5000,
+          delay: 8000,
           disableOnInteraction: false,
         }}
         effect={"fade"}
@@ -46,6 +46,7 @@ const bannerItems: React.ComponentProps<typeof Banner>[] = [
   {
     color: "#fff",
     backgroundColor: "#111",
+    badgeColor: "#ff8a05",
     label: "안내사항",
     title: (
       <>
@@ -57,7 +58,8 @@ const bannerItems: React.ComponentProps<typeof Banner>[] = [
   },
   {
     color: "#111",
-    backgroundColor: "#ffd3cc",
+    backgroundColor: "#00c471",
+    badgeColor: "#002a18",
     label: "프로모션",
     title: (
       <>

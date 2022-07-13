@@ -9,12 +9,14 @@ export const Banner = React.memo(
   ({
     color,
     backgroundColor,
+    badgeColor,
     label,
     title,
     description,
   }: {
     color: string;
     backgroundColor: string;
+    badgeColor: string;
     label: string;
     title: React.ReactNode;
     description?: React.ReactNode;
@@ -60,6 +62,7 @@ export const Banner = React.memo(
       `,
       BannerBadge: css`
         color: ${backgroundColor};
+        background-color: ${badgeColor};
         font-weight: 700;
         font-size: var(--banner-description);
         padding: 0.5em 0.65em;
@@ -89,7 +92,7 @@ export const Banner = React.memo(
     };
 
     const BannerLabel = () => (
-      <Label variant="primary" size="freeform" css={styles.BannerBadge}>
+      <Label size="freeform" css={styles.BannerBadge}>
         {label}
       </Label>
     );
@@ -97,8 +100,8 @@ export const Banner = React.memo(
       <Image
         alt="front-banner"
         src="https://i.imgur.com/7FfQL9b.png"
-        width="240"
-        height="240"
+        width="600"
+        height="600"
       />
     );
 

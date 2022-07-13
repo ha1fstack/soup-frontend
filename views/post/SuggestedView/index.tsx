@@ -30,13 +30,13 @@ const SuggestedView = () => {
       column
     >
       <Box css={{ padding: "14px 12px" }} column>
-        <FeaturedHeader content="관련된 프로젝트를 모아봤어요" />
+        <FeaturedHeader content="관련된 프로젝트를 모아봤어요!" />
         <Flex column css={{ gap: "20px" }}>
           {data ? (
-            data.map(({ content, userName, id }) => (
+            data.map(({ postName, userName, id }) => (
               <FeaturedItem
                 key={id}
-                content={content}
+                content={postName}
                 userName={userName}
                 id={id}
               />

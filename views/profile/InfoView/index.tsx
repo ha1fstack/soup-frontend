@@ -6,7 +6,6 @@ import { useQuery, useQueryClient } from "react-query";
 import Skeleton from "react-loading-skeleton";
 import { useForm } from "react-hook-form";
 import { MouseEventHandler, MutableRefObject, useEffect, useRef } from "react";
-import { AxiosResponse } from "axios";
 
 const DetailsRow = ({
   item,
@@ -44,17 +43,20 @@ const InfoEdit = ({
     userName: string;
   }>();
   const queryClient = useQueryClient();
+
   useEffect(() => {
     handleSubmitRef.current = handleSubmit(async ({ userName }) => {
+      const _userName = userName || data.userName;
       const res = await http.post("/nickname", {
         mode: true,
-        userName: userName,
+        userName: _userName,
       });
       if (res?.data?.success) {
         queryClient.setQueryData(["auth"], {
           ...queryClient.getQueryData(["auth"]),
-          userName,
+          userName: _userName,
         });
+        queryClient.invalidateQueries(["profileInfo"]);
       }
     });
   }, [handleSubmit, handleSubmitRef]);

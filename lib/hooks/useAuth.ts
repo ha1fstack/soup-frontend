@@ -15,7 +15,7 @@ export function useAuth(data?: {
   initialData?: IAuthData;
   cookie?: any;
 }): IAuthData {
-  const { data: auth } = useQuery("auth", () => fetchAuth(data?.cookie), {
+  const { data: auth } = useQuery(["auth"], () => fetchAuth(data?.cookie), {
     staleTime: Infinity,
     ...(data?.initialData && { initialData: data.initialData }),
   });
