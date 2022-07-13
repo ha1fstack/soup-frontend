@@ -86,7 +86,7 @@ const SideBarContainer = ({
           }}
         >
           
-          <a href={process.env.FOOTER_ABOUT_URL} target="_blank">SouP 소개</a><br />
+          <a href={process.env.NEXT_PUBLIC_FOOTER_ABOUT_URL} target="_blank">SouP 소개</a><br />
           <Link href="/support/service-terms">
             <a>이용약관</a>
           </Link>{' · '}
