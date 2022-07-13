@@ -24,6 +24,7 @@ import {
 import { ThemeProvider as NextThemeProvider } from "next-themes";
 import React, { useLayoutEffect, useState } from "react";
 import { CustomAppProps, IAuthData } from "types";
+import Script from "next/script";
 
 // suppress react query logging
 if (isDevEnv)
@@ -176,6 +177,23 @@ export default function App({
           </Hydrate>
         </QueryClientProvider>
       </Provider>
+      {!isDevEnv && (
+        <>
+          <Script
+            src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_GA_MEASUREMENT_ID}`}
+            strategy="afterInteractive"
+          />
+          <Script id="google-analytics" strategy="afterInteractive">
+            {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){window.dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', '${process.env.NEXT_GA_MEASUREMENT_ID}');
+          `}
+          </Script>
+        </>
+      )}
     </>
   );
 }

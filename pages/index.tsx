@@ -43,7 +43,7 @@ export default Home;
 const style = {
   flexWrapper: css({
     columnGap: "64px",
-    rowGap: "36px",
+    rowGap: "32px",
     flexWrap: "wrap",
     "& > *": {
       [breakpoints.greaterThan("sm")]: { overflow: "hidden" },

@@ -18,7 +18,7 @@ import { http } from "lib/services";
 import { useAtom, useSetAtom } from "jotai";
 import { useAuth, useToggle, useOuterClick } from "lib/hooks";
 import { sideBarOpenState, loginPopupState } from "lib/states";
-import { breakpoints, Media, WithThemeToggle } from "lib/utils";
+import { breakpoints, isDevEnv, Media, WithThemeToggle } from "lib/utils";
 
 const HeaderContainer = styled.div`
   grid-area: header;
@@ -219,6 +219,7 @@ export const Header = React.memo(() => {
               alt="logo"
             />
           </Logo>
+          {isDevEnv && "dev"}
         </Flex>
         <HeaderMenuContainer>
           <Media css={{ display: "flex", gap: "12px" }} greaterThan="sm">

@@ -7,7 +7,6 @@ import { useQuery } from "react-query";
 import PostHeader from "./PostHeader";
 import PostPreview from "./PostPreview";
 
-
 const PostView = () => {
   const { query } = useRouter();
   const { id } = query as {
@@ -23,6 +22,7 @@ const PostView = () => {
     <>
       <Head>
         <title>SouP | {data.postName}</title>
+        <meta name="description" content={data.postName} />
       </Head>
       <Box
         responsive
