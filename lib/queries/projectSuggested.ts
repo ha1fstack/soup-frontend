@@ -1,7 +1,7 @@
 import { createHttpQuerySlice } from "lib/utils";
 import { IPostPreviewContent } from "types";
 
-type IResponseData = IPostPreviewContent[]
+type IResponseData = IPostPreviewContent;
 
 type IQueryReturnType = IResponseData[];
 
@@ -11,6 +11,6 @@ export const [
   projectSuggestedQueryKey,
   fetchProjectSuggested,
   projectSuggestedQueryContext,
-] = createHttpQuerySlice<IProjectSuggestedQueryParams, IQueryReturnType>(({ id }) => [
-  `/projects/${id}/suggest`,
-]);
+] = createHttpQuerySlice<IProjectSuggestedQueryParams, IQueryReturnType>(
+  ({ id }) => [`/projects/${id}/suggest`]
+);
