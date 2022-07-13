@@ -85,7 +85,10 @@ const SideBarContainer = ({
             color: "var(--negative2)",
           }}
         >
-          개인정보처리방침 <br /> © 2022 SouP
+          <a href={process.env.FOOTER_ABOUT_URL} target="_blank">SouP 소개</a><br />
+          <a href={process.env.FOOTER_PRIVACY_POLICY_URL} target="_blank">이용약관</a>{' · '}
+          <a href={process.env.FOOTER_SERVICE_TERMS_URL} target="_blank">개인정보처리방침</a><br /><br />
+          © 2022 SouP
         </div>
       </footer>
     </SideBarContainerWrapper>
