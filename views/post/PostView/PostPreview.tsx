@@ -1,4 +1,5 @@
 import { Box, Flex, ButtonLink } from "common/atoms";
+import { SourceDictionary } from "lib/utils";
 import { MdOutlineOpenInNew } from "react-icons/md";
 import { IPostContentData } from "types";
 
@@ -30,7 +31,7 @@ const PostPreview = ({
             marginRight: "8px",
           }}
         />
-        <b>{data.source}</b>
+        <b>{SourceDictionary[data.source]}</b>
         에서 가져옴
       </Flex>
       <p>{data.content}...</p>

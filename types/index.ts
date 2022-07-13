@@ -1,7 +1,7 @@
 import { JSONContent } from "@tiptap/react";
 import { NextPage } from "next";
 import { AppProps } from "next/app";
-import { ITag } from "lib/utils";
+import { ISource, ITag } from "lib/utils";
 
 export interface IPageable<T> {
   content: T;
@@ -34,7 +34,7 @@ export interface IPostContentData<T> {
   stacks: ITag[];
   views: number;
   talk: string;
-  source: string;
+  source: ISource;
   fav: number;
   isfav: boolean;
   userId: null | number;
@@ -57,7 +57,7 @@ export interface IPostPreviewContent {
   stacks: ITag[];
   views: number;
   talk: string;
-  source: "SOUP" | "INFLEARN" | "OKKY" | "CAMPICK" | "HOLA";
+  source: ISource;
   fav: number;
   isfav: boolean;
 }
