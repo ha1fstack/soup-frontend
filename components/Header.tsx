@@ -183,8 +183,6 @@ export const Header = React.memo(() => {
 
   const messageRef = useOuterClick<HTMLDivElement>(() => toggleMessagePopup());
 
-  console.log(auth);
-
   return (
     <>
       <HeaderBackground />

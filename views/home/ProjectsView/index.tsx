@@ -1,24 +1,17 @@
-import { css } from "@emotion/react";
 import { Flex, Box, Hr } from "common/atoms";
 import { frontProjectsQueryContext } from "lib/queries";
 import { SourceList, SourceDictionary, ISource } from "lib/utils";
-import { Dispatch, Fragment, SetStateAction, useState } from "react";
+import { Fragment, useLayoutEffect, useState } from "react";
 import { useQuery } from "react-query";
-import {
-  ProjectPreviewItem,
-  ProjectItemSkeleton,
-} from "views/components";
-
-const useSource = (initialSource: ISource) => {
-  const [source, setSource] = useState<ISource>(initialSource);
-  return [source, setSource] as const;
-};
+import { ProjectPreviewItem, ProjectItemSkeleton } from "views/components";
 
 const ProjectsView = ({ className }: { className?: string }) => {
-  const { data, isLoading, isError } = useQuery(...frontProjectsQueryContext());
-  const [source, setSource] = useSource(
-    SourceList[(Math.random() * SourceList.length) | 0]
-  );
+  const { data } = useQuery(...frontProjectsQueryContext());
+  const [source, setSource] = useState<ISource | null>(null);
+
+  useLayoutEffect(() => {
+    setSource(SourceList[(Math.random() * SourceList.length) | 0]);
+  }, []);
 
   return (
     <Flex column className={className} css={{ width: "100%" }}>
@@ -40,7 +33,7 @@ const ProjectsView = ({ className }: { className?: string }) => {
       </Box.Header>
 
       <Box responsive column css={{ gap: "16px", padding: "16px 12px" }}>
-        {data ? (
+        {data && source ? (
           data[source].map((post, i) => (
             <Fragment key={post.id}>
               {i !== 0 && <Hr />}
