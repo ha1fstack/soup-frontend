@@ -27,7 +27,7 @@ const Edit: CustomNextPage = () => {
 Edit.getLayout = createPageLayout({
   width: 960,
   title: "프로젝트/스터디 수정",
-  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+  // description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
 });
 
 Edit.authorized = true;

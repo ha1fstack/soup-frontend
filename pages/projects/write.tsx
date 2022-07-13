@@ -22,7 +22,7 @@ const Write: CustomNextPage = () => {
 Write.getLayout = createPageLayout({
   width: 960,
   title: "모집 만들기",
-  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+  // description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
 });
 
 Write.authorized = true;

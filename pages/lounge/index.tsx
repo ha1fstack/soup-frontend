@@ -30,7 +30,7 @@ const Lounge: CustomNextPage = () => {
 Lounge.getLayout = createPageLayout({
   width: 840,
   title: "라운지",
-  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+  // description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
 });
 
 export default Lounge;

@@ -22,7 +22,7 @@ const Page: CustomNextPage = () => {
 
 Page.getLayout = createPageLayout({
   title: "프로젝트/스터디 찾기",
-  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+  // description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
 });
 
 export default Page;
