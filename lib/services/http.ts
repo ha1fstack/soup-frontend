@@ -4,7 +4,7 @@ import { isServerEnv } from "lib/utils";
 const createHttp = (baseURL: string) => {
   const http = axios.create({
     baseURL,
-    validateStatus: (status) => status >= 200 && status < 500,
+    // validateStatus: (status) => status >= 200 && status < 500,
   });
   return http;
 };

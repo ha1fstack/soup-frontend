@@ -1,6 +1,12 @@
 import { Flex } from "common/atoms";
 
-const FeaturedHeader = ({ content }: { content: string }) => (
+const FeaturedHeader = ({
+  content,
+  className,
+}: {
+  content: string;
+  className?: string;
+}) => (
   <Flex
     css={{
       alignItems: "center",
@@ -9,6 +15,7 @@ const FeaturedHeader = ({ content }: { content: string }) => (
       lineHeight: "initial",
       marginBottom: "24px",
     }}
+    className={className}
   >
     <span
       css={{

@@ -1,8 +1,4 @@
-import {
-  Flex,
-  Box,
-  Section,
-} from "common/atoms";
+import { Flex, Box, Section } from "common/atoms";
 import { createPageLayout } from "components";
 import { dehydrate, QueryClient } from "react-query";
 import { CustomNextPage } from "types";
@@ -30,10 +26,6 @@ Page.getLayout = createPageLayout({
 });
 
 export default Page;
-
-/* -------------------------------------------------------------------------- */
-/*                                 components                                 */
-/* -------------------------------------------------------------------------- */
 
 export const getServerSideProps: GetServerSideProps = handleError(
   async ({ context, session }) => {

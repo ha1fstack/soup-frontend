@@ -2,14 +2,19 @@ import styled from "@emotion/styled";
 import { Button, Flex, Label, ProfilePlaceholder } from "common/atoms";
 import { useSetAtom } from "jotai";
 import { useAuth } from "lib/hooks";
+import { projectQueryKey } from "lib/queries";
 import { http } from "lib/services";
 import { loginPopupState } from "lib/states";
 import { getDisplayColor, getDisplayTag } from "lib/utils";
 import { useRouter } from "next/router";
-import { MdOutlineEdit, MdOutlineDelete, MdOutlineStar, MdOutlineStarBorder } from "react-icons/md";
+import {
+  MdOutlineEdit,
+  MdOutlineDelete,
+  MdOutlineStar,
+  MdOutlineStarBorder,
+} from "react-icons/md";
 import { useQueryClient } from "react-query";
 import { IPostContentData, IPostData } from "types";
-
 
 const PostHeader = ({ data }: { data: IPostContentData<unknown> }) => {
   const auth = useAuth();
@@ -46,7 +51,7 @@ const PostHeader = ({ data }: { data: IPostContentData<unknown> }) => {
 
     if (res.success)
       queryClient.setQueryData<IPostData | undefined>(
-        ["project", id],
+        projectQueryKey({ id }),
         (post) =>
           post && {
             ...post,

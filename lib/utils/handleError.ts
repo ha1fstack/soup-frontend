@@ -32,7 +32,7 @@ export const handleError =
     } catch (e: unknown) {
       if (e instanceof AxiosError) {
         return {
-          props: { error: e.response?.status },
+          props: { error: e.status || 500 },
         };
       }
       return {

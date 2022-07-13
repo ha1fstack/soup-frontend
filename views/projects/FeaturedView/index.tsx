@@ -1,21 +1,22 @@
 import { Box, Flex } from "common/atoms";
 import { projectsFeaturedQueryContext } from "lib/queries/projectsFeatured";
 import { useQuery } from "react-query";
-import { FeaturedHeader, FeaturedItem, FeaturedItemSkeleton } from "views/components";
+import {
+  FeaturedHeader,
+  FeaturedItem,
+  FeaturedItemSkeleton,
+} from "views/components";
 
 const FeaturedView = () => {
-  const { data } = useQuery(
-    ...projectsFeaturedQueryContext(),
-    {
-      staleTime: 5000,
-    }
-  );
+  const { data } = useQuery(...projectsFeaturedQueryContext(), {
+    staleTime: 5000,
+  });
 
   return (
     <Flex
       css={{
         marginTop: "56px",
-        flex: "1 0 300px",
+        flex: "1 1 300px",
         gap: "12px",
         alignSelf: "flex-start",
         position: "sticky",
