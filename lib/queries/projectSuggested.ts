@@ -1,7 +1,11 @@
 import { createHttpQuerySlice } from "lib/utils";
 import { IPostPreviewContent } from "types";
 
-type IResponseData = IPostPreviewContent;
+type IResponseData = {
+  id: number;
+  title: string;
+  userName: string;
+};
 
 type IQueryReturnType = IResponseData[];
 
