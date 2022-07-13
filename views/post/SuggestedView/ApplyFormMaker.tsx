@@ -1,7 +1,10 @@
 import { AxiosError } from "axios";
 import { Button, Flex, TextArea } from "common/atoms";
 import copy from "copy-to-clipboard";
+import { useSetAtom } from "jotai";
+import { useAuth } from "lib/hooks";
 import { http } from "lib/services";
+import { loginPopupState } from "lib/states";
 import { useRef } from "react";
 import { useMutation } from "react-query";
 
@@ -17,6 +20,9 @@ const ApplyFormMaker = ({ id }: { id: string }) => {
     return res.data.form;
   });
 
+  const auth = useAuth();
+  const setLoginPopup = useSetAtom(loginPopupState);
+
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
   if (!data)
@@ -24,7 +30,7 @@ const ApplyFormMaker = ({ id }: { id: string }) => {
       <Button
         size="small"
         disabled={isLoading || isError}
-        onClick={() => mutate({ id })}
+        onClick={() => (auth.success ? mutate({ id }) : setLoginPopup(true))}
       >
         만들기
       </Button>
