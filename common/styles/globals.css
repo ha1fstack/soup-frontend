@@ -8,9 +8,11 @@ body {
   -webkit-tap-highlight-color: transparent;
   word-break: break-all;
 }
+
 html {
   font-size: 62.5%;
 }
+
 body {
   font-size: 1.6rem;
 }
@@ -34,4 +36,11 @@ a {
 .swiper {
   width: 100%;
   height: 100%;
+}
+
+.swiper-slide > * {
+  padding-left: 1px;
+  padding-right: 1px;
+  margin-left: -1px;
+  margin-right: -1px;
 }
