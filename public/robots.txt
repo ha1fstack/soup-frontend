@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://soup.pw
+
+# Sitemaps
+Sitemap: https://soup.pw/sitemap.xml
