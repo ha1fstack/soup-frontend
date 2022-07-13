@@ -105,7 +105,7 @@ export interface IArticleData {
 }
 
 export interface IFeaturedItem {
-  title: string;
+  content: string;
   userName: string;
   id: number;
 }

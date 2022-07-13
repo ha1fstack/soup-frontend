@@ -1,17 +1,16 @@
-import { Box, Button, Flex, Hr } from "common/atoms";
+import { Box, Button, Hr } from "common/atoms";
 import { http } from "lib/services";
 import { useRouter } from "next/router";
 import { Fragment } from "react";
-import Skeleton from "react-loading-skeleton";
 import { useQuery } from "react-query";
 import { IPostPreviewContent } from "types";
 import {
   ProjectPreviewItem,
-  ProjectPreviewItemSkeleton,
+  ProjectItemSkeleton,
 } from "views/components";
 
 const FavoritePostView = () => {
-  const { data, isLoading, isError } = useQuery<IPostPreviewContent[]>(
+  const { data } = useQuery<IPostPreviewContent[]>(
     "favoritePosts",
     async () => {
       return (await http.get<any>("/myfav")).data;
@@ -44,9 +43,9 @@ const FavoritePostView = () => {
     }
     return (
       <Box responsive column css={{ gap: "24px" }}>
-        <ProjectPreviewItemSkeleton />
-        <ProjectPreviewItemSkeleton />
-        <ProjectPreviewItemSkeleton />
+        <ProjectItemSkeleton />
+        <ProjectItemSkeleton />
+        <ProjectItemSkeleton />
       </Box>
     );
   })();

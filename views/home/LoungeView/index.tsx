@@ -4,7 +4,7 @@ import { loungeQueryContext } from "lib/queries";
 import Link from "next/link";
 import { Fragment } from "react";
 import { useQuery } from "react-query";
-import { ProjectPreviewItemSkeleton } from "views/components";
+import { ProjectItemSkeleton } from "views/components";
 import LoungeItem from "./LoungeItem";
 
 const LoungeView = ({ className }: { className?: string }) => {
@@ -39,11 +39,11 @@ const LoungeView = ({ className }: { className?: string }) => {
             ))
           ) : (
             <>
-              <ProjectPreviewItemSkeleton />
-              <ProjectPreviewItemSkeleton />
-              <ProjectPreviewItemSkeleton />
-              <ProjectPreviewItemSkeleton />
-              <ProjectPreviewItemSkeleton />
+              <ProjectItemSkeleton />
+              <ProjectItemSkeleton />
+              <ProjectItemSkeleton />
+              <ProjectItemSkeleton />
+              <ProjectItemSkeleton />
             </>
           )}
         </Box>

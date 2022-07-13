@@ -47,6 +47,7 @@ export const Flex = styled.div<{
 `;
 
 const fullspanStyle = css`
+
   border-radius: 0;
   border-left: 0px;
   border-right: 0px;

@@ -153,7 +153,7 @@ const ProjectItem = ({
           >
             {SourceDictionary[post.source]}
           </Label>
-          {post.stacks.map((stack) => (
+          { post.stacks.map((stack) => (
             <Label
               key={stack}
               css={{ backgroundColor: "var(--positive1)" }}

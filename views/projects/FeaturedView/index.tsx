@@ -1,11 +1,10 @@
 import { Box, Flex } from "common/atoms";
 import { projectsFeaturedQueryContext } from "lib/queries/projectsFeatured";
 import { useQuery } from "react-query";
-import FeaturedHeader from "./FeaturedHeader";
-import { FeaturedItem, FeaturedItemSkeleton } from "./FeaturedItem";
+import { FeaturedHeader, FeaturedItem, FeaturedItemSkeleton } from "views/components";
 
 const FeaturedView = () => {
-  const { data, isLoading, isError } = useQuery(
+  const { data } = useQuery(
     ...projectsFeaturedQueryContext(),
     {
       staleTime: 5000,
@@ -31,7 +30,7 @@ const FeaturedView = () => {
             data.RECOMMEND.map(({ title, userName, id }) => (
               <FeaturedItem
                 key={id}
-                title={title}
+                content={title}
                 userName={userName}
                 id={id}
               />
@@ -52,7 +51,7 @@ const FeaturedView = () => {
             data.HOT.map(({ title, userName, id }) => (
               <FeaturedItem
                 key={id}
-                title={title}
+                content={title}
                 userName={userName}
                 id={id}
               />

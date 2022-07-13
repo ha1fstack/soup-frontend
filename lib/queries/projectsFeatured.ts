@@ -1,9 +1,15 @@
 import { createHttpQuerySlice } from "lib/utils";
 import { IFeaturedItem } from "types";
 
+type IResponseData = {
+  title: string;
+  userName: string;
+  id: number;
+}
+
 type IQueryReturnType = {
-  RECOMMEND: IFeaturedItem[];
-  HOT: IFeaturedItem[];
+  RECOMMEND: IResponseData[];
+  HOT: IResponseData[];
 };
 
 type IQueryParams = void;

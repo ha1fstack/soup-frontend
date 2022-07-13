@@ -6,7 +6,7 @@ import { Dispatch, Fragment, SetStateAction, useState } from "react";
 import { useQuery } from "react-query";
 import {
   ProjectPreviewItem,
-  ProjectPreviewItemSkeleton,
+  ProjectItemSkeleton,
 } from "views/components";
 
 const useSource = (initialSource: ISource) => {
@@ -49,11 +49,11 @@ const ProjectsView = ({ className }: { className?: string }) => {
           ))
         ) : (
           <>
-            <ProjectPreviewItemSkeleton />
-            <ProjectPreviewItemSkeleton />
-            <ProjectPreviewItemSkeleton />
-            <ProjectPreviewItemSkeleton />
-            <ProjectPreviewItemSkeleton />
+            <ProjectItemSkeleton />
+            <ProjectItemSkeleton />
+            <ProjectItemSkeleton />
+            <ProjectItemSkeleton />
+            <ProjectItemSkeleton />
           </>
         )}
       </Box>

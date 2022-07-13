@@ -37,20 +37,20 @@ export const ProjectPreviewItem = ({ post }: { post: IPostPreviewContent }) => {
         <Flex column css={style.contentWrapper}>
           <p css={style.postName}>{post.postName}</p>
           <p css={style.content}>{post.content}</p>
-          <Flex css={style.labelWrapper}>
+          { !!post.stacks.length && <Flex css={style.labelWrapper}>
             {post.stacks.map((stack) => (
               <Label size="smaller" key={stack}>
                 {getDisplayTag(stack)}
               </Label>
             ))}
-          </Flex>
+          </Flex>}
         </Flex>
       </Flex>
     </Link>
   );
 };
 
-export const ProjectPreviewItemSkeleton = () => (
+export const ProjectItemSkeleton = () => (
   <Flex css={style.postWrapper}>
     <Skeleton circle width={32} height={32} />
     <Flex column css={style.contentWrapper}>

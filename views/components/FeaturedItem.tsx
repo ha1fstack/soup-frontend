@@ -13,14 +13,14 @@ const style = {
     gap: "8px",
   }),
   userName: css({ lineHeight: "initial" }),
-  title: css({
+  content: css({
     fontSize: "1.4rem",
     fontWeight: "600",
     ...ellipsis(undefined, 2),
   }),
 };
 
-export const FeaturedItem = ({ userName, title, id }: IFeaturedItem) => {
+export const FeaturedItem = ({ userName, content, id }: IFeaturedItem) => {
   return (
     <Link passHref href={`/projects/${id}`}>
       <Flex as="a" column css={style.bodyWrapper}>
@@ -28,7 +28,7 @@ export const FeaturedItem = ({ userName, title, id }: IFeaturedItem) => {
           <ProfilePlaceholder size={20} value={userName} />
           <span css={style.userName}>{userName}</span>
         </Flex>
-        <p css={style.title}>{title}</p>
+        <p css={style.content}>{content}</p>
       </Flex>
     </Link>
   );
@@ -42,7 +42,7 @@ export const FeaturedItemSkeleton = () => (
         <Skeleton width={64} />
       </span>
     </Flex>
-    <p css={style.title}>
+    <p css={style.content}>
       <Skeleton count={2} />
     </p>
   </Flex>
