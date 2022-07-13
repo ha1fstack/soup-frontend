@@ -6,7 +6,7 @@ type IQueryReturnType = {
   HOT: IPostPreviewContent[];
 };
 
-type IQueryParams = undefined;
+type IQueryParams = void;
 
 export const [
   frontFeaturedQueryKey,
