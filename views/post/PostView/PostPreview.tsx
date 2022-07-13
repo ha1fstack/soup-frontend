@@ -2,7 +2,6 @@ import { Box, Flex, ButtonLink } from "common/atoms";
 import { MdOutlineOpenInNew } from "react-icons/md";
 import { IPostContentData } from "types";
 
-
 const PostPreview = ({
   data,
 }: {
@@ -35,7 +34,12 @@ const PostPreview = ({
         에서 가져옴
       </Flex>
       <p>{data.content}...</p>
-      <ButtonLink href={data.link} target="_blank" variant="primary-outlined">
+      <ButtonLink
+        href={data.link}
+        target="_blank"
+        rel="noopener noreferrer"
+        variant="primary-outlined"
+      >
         <MdOutlineOpenInNew css={{ fontSize: "1.6rem" }} />
         원문 보기
       </ButtonLink>

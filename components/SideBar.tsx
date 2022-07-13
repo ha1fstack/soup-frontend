@@ -85,15 +85,23 @@ const SideBarContainer = ({
             color: "var(--negative2)",
           }}
         >
-          
-          <a href={process.env.NEXT_PUBLIC_FOOTER_ABOUT_URL} target="_blank">SouP 소개</a><br />
+          <a
+            href={process.env.NEXT_PUBLIC_FOOTER_ABOUT_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            SouP 소개
+          </a>
+          <br />
           <Link href="/support/service-terms">
             <a>이용약관</a>
-          </Link>{' · '}
+          </Link>
+          {" · "}
           <Link href="/support/privacy-policy">
             <a>개인정보처리방침</a>
-          </Link><br /><br />
-          © 2022 SouP
+          </Link>
+          <br />
+          <br />© 2022 SouP
         </div>
       </footer>
     </SideBarContainerWrapper>

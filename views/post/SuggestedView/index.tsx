@@ -1,22 +1,22 @@
 import { Box, Flex } from "common/atoms";
-import { projectQueryContext, projectSuggestedQueryContext } from "lib/queries";
+import { projectSuggestedQueryContext } from "lib/queries";
 import { useRouter } from "next/router";
 import { useQuery } from "react-query";
-import { FeaturedHeader, FeaturedItem, FeaturedItemSkeleton } from "views/components";
+import {
+  FeaturedHeader,
+  FeaturedItem,
+  FeaturedItemSkeleton,
+} from "views/components";
 
 const SuggestedView = () => {
-
   const { query } = useRouter();
   const { id } = query as {
     id: string;
   };
-  
-  const { data } = useQuery(
-    ...projectSuggestedQueryContext({ id }),
-    {
-      staleTime: 5000,
-    }
-  );
+
+  const { data } = useQuery(...projectSuggestedQueryContext({ id }), {
+    staleTime: 5000,
+  });
 
   return (
     <Flex

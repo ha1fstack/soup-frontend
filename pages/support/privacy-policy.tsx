@@ -3,7 +3,6 @@ import Head from "next/head";
 import { CustomNextPage } from "types";
 
 const Terms: CustomNextPage = () => {
-
   return (
     <>
       <Head>
@@ -14,4 +13,4 @@ const Terms: CustomNextPage = () => {
   );
 };
 
-export default Terms
+export default Terms;
