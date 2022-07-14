@@ -33,7 +33,7 @@ const SuggestedView = () => {
     >
       <Box css={{ padding: "14px 12px" }} column>
         <FeaturedHeader
-          content="신청 양식 복사하기"
+          content="맞춤형 지원양식"
           css={{ marginBottom: "12px" }}
         />
         <ApplyFormMaker id={id} />

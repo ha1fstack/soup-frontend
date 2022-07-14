@@ -38,6 +38,27 @@ export const Button = styled.button<{
   ${({ size }) => (size ? LabelSize()[size] : LabelSize()["default"])}
   ${({ variant, theme }) =>
     variant ? LabelVariant(theme)[variant] : LabelVariant(theme)["default"]}
+  ${({ message }) =>
+    message &&
+    css({
+      ":focus:after": {
+        animation: `${keyframesBubble} 1s ease-in-out`,
+        padding: "6px 8px",
+        borderRadius: "8px",
+        backgroundColor: "var(--background)",
+        position: `absolute`,
+        content: `"${message}"`,
+        display: `block`,
+        opacity: 0,
+        zIndex: 9999,
+        fontSize: "1.2rem",
+      },
+      ":active": {
+        ":after": {
+          animation: "none",
+        },
+      },
+    })}
 `;
 
 export const ButtonLink = Button.withComponent("a");
