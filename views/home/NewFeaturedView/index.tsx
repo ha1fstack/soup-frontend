@@ -29,8 +29,8 @@ const NewFeatured = ({ className }: { className?: string }) => {
         New 스터디/프로젝트 ✨
       </p>
       <Flex column css={{ gap: "24px" }}>
-        {data.NEW.slice(0, 3).map((post) => (
-          <NewItem key={post.id} post={post} />
+        {data.NEW.slice(0, 3).map((post, i) => (
+          <NewItem index={i + 9} key={post.id} post={post} />
         ))}
       </Flex>
     </Flex>

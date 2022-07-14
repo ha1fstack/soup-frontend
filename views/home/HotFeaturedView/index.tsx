@@ -61,8 +61,8 @@ const HotFeatured = ({ className }: { className?: string }) => {
                 },
               }}
             >
-              {content.map((post) => (
-                <HotItem key={post.id} post={post} />
+              {content.map((post, j) => (
+                <HotItem index={i * 2 + j + 1} key={post.id} post={post} />
               ))}
             </Flex>
           </SwiperSlide>

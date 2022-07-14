@@ -4,14 +4,20 @@ import { ellipsis } from "polished";
 import { IPostPreviewContent } from "types";
 import Image from "next/image";
 
-const NewItem = ({ post }: { post: IPostPreviewContent }) => {
+const NewItem = ({
+  post,
+  index,
+}: {
+  post: IPostPreviewContent;
+  index: number;
+}) => {
   return (
     <Link passHref href={`/projects/${post.id}`}>
       <Flex as="a" css={{ gap: "16px", cursor: "pointer" }}>
         <span css={{ flex: "0 0 auto", height: "75px" }}>
           <Image
-            alt="hot1"
-            src="https://i.imgur.com/oEdONmz.jpeg"
+            alt="new"
+            src={`/thumb/${index}.jpg`}
             width={100}
             height={75}
           />

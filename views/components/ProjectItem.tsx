@@ -6,17 +6,10 @@ import {
   getDisplayTag,
 } from "lib/utils";
 import Link from "next/link";
-import { MouseEvent, MouseEventHandler, useMemo } from "react";
-import { IPageable, IPostPreviewContent } from "types";
+import { useMemo } from "react";
+import { IPostPreviewContent } from "types";
 import Image from "next/image";
 import { MdOutlineStar, MdOutlineStarBorder } from "react-icons/md";
-import { http } from "lib/services";
-import { useAuth } from "lib/hooks";
-import { useSetAtom } from "jotai";
-import { loginPopupState } from "lib/states";
-import { useQueryClient } from "react-query";
-import { useRouter } from "next/router";
-import produce from "immer";
 import { ellipsis } from "polished";
 
 const ProjectItem = ({
@@ -105,29 +98,6 @@ const ProjectItem = ({
             </a>
           </Link>
         </div>
-        {image ? (
-          <div
-            css={{
-              boxSizing: "border-box",
-              marginLeft: "16px",
-              borderRadius: "4px",
-              overflow: "hidden",
-              position: "relative",
-              flex: "0 0 auto",
-              background: "var(--outline)",
-              width: "120px",
-            }}
-          >
-            <Image
-              css={{ objectFit: "cover" }}
-              src="https://i.imgur.com/tvzwhsF.png"
-              alt="thumb"
-              layout="fill"
-            />
-          </div>
-        ) : (
-          <></>
-        )}
       </div>
       <div
         css={{
@@ -153,7 +123,7 @@ const ProjectItem = ({
           >
             {SourceDictionary[post.source]}
           </Label>
-          { post.stacks.map((stack) => (
+          {post.stacks.map((stack) => (
             <Label
               key={stack}
               css={{ backgroundColor: "var(--positive1)" }}

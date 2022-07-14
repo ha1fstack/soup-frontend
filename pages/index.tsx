@@ -22,20 +22,7 @@ const Home: CustomNextPage = () => {
       <BannerView />
       <Section bleed css={{ borderTop: "0px" }}>
         <Media at="sm">
-          <Link passHref href="/projects">
-            <Button
-              variant="primary-outlined"
-              as="a"
-              css={{
-                marginBottom: "24px",
-                justifyContent: "space-between",
-                marginTop: "-8px",
-              }}
-            >
-              <span css={{ fontSize: "1.4rem" }}>프로젝트 찾아보기</span>
-              <MdOutlineSearch />
-            </Button>
-          </Link>
+          <SearchButton />
         </Media>
         <Flex css={style.flexWrapper}>
           <HotFeaturedView />
@@ -70,6 +57,23 @@ const style = {
     "& > *:nth-of-type(2)": { flex: "2 1 320px" },
   }),
 };
+
+const SearchButton = () => (
+  <Link passHref href="/projects">
+    <Button
+      variant="primary-outlined"
+      as="a"
+      css={{
+        marginBottom: "24px",
+        justifyContent: "space-between",
+        marginTop: "-8px",
+      }}
+    >
+      <span css={{ fontSize: "1.4rem" }}>프로젝트 찾아보기</span>
+      <MdOutlineSearch />
+    </Button>
+  </Link>
+);
 
 export const getServerSideProps: GetServerSideProps = handleError(async () => {
   const queryClient = new QueryClient();

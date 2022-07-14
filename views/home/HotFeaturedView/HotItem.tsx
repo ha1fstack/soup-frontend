@@ -5,7 +5,13 @@ import { ellipsis } from "polished";
 import { IPostPreviewContent } from "types";
 import Image from "next/image";
 
-const HotItem = ({ post }: { post: IPostPreviewContent }) => {
+const HotItem = ({
+  post,
+  index,
+}: {
+  post: IPostPreviewContent;
+  index: number;
+}) => {
   const styles = {
     Wrapper: css`
       gap: 16px;
@@ -27,12 +33,7 @@ const HotItem = ({ post }: { post: IPostPreviewContent }) => {
   return (
     <Link passHref href={`/projects/${post.id}`}>
       <Flex as="a" column css={styles.Wrapper}>
-        <Image
-          alt="hot1"
-          src="https://i.imgur.com/hVe2ScX.png"
-          width={320}
-          height={180}
-        />
+        <Image alt="hot" src={`/thumb/${index}.jpg`} width={320} height={180} />
         <Flex column css={{ gap: "8px" }}>
           <p css={styles.PostName}>{post.postName}</p>
           <p css={styles.PostContent}>{post.content}</p>
