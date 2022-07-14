@@ -5,4 +5,4 @@ const config = {
   generateIndexSitemap: false,
 };
 
-export default config;
+module.exports = config;
