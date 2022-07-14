@@ -40,6 +40,7 @@ const useFilter = () => {
   useLayoutEffect(() => {
     let stacks = router.query["stacks"];
     if (!stacks) return;
+    if (!stacks) stacks = [];
     if (Array.isArray(stacks)) stacks = stacks.join(",");
     setFilter(stacks.split(",").filter((stack) => isValidTag(stack)) as ITag[]);
   }, [router.query, setFilter]);
