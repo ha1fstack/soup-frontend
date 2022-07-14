@@ -1,15 +1,25 @@
-import { css, Theme } from "@emotion/react";
+import { css, keyframes } from "@emotion/react";
 import styled from "@emotion/styled";
-import { LabelVariant, LabelSize } from "./Label";
+import { LabelVariant, LabelSize, LabelStyle } from "./Label";
+
+const keyframesBubble = keyframes`
+  0% {
+    transform: translateY(calc(-100% + -4px));
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(calc(-100% + -32px));
+    opacity: 0;
+  }
+`;
 
 const ButtonStyle = css`
-  line-height: normal;
+  ${LabelStyle}
   color: inherit;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
   &:hover {
     filter: brightness(0.98);
   }
@@ -22,12 +32,12 @@ export const Button = styled.button<{
   variant?: keyof ReturnType<typeof LabelVariant>;
   size?: keyof ReturnType<typeof LabelSize>;
   icon?: boolean;
+  message?: string;
 }>`
   ${ButtonStyle}
   ${({ size }) => (size ? LabelSize()[size] : LabelSize()["default"])}
   ${({ variant, theme }) =>
     variant ? LabelVariant(theme)[variant] : LabelVariant(theme)["default"]}
-  ${({ icon }) => icon || css``}
 `;
 
 export const ButtonLink = Button.withComponent("a");

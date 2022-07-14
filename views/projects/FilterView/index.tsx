@@ -16,12 +16,8 @@ const FilterView = () => {
         }}
       >
         <Label css={{ padding: "0px 8px" }}>
-          <MdOutlineLabel css={{ fontSize: "1.8rem" }} />
-          {!filter.length && (
-            <span css={{ marginLeft: "4px" }}>
-              태그를 3개까지 추가해 검색해보세요...
-            </span>
-          )}
+          <MdOutlineLabel />
+          {!filter.length && <span>태그를 3개까지 추가해 검색해보세요...</span>}
         </Label>
         {filter.map((stack, i) => (
           <Label css={{ border: 0, fontSize: "1.6rem" }} key={stack}>

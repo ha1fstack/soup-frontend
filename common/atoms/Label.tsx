@@ -32,19 +32,16 @@ export const LabelVariant = (theme: Theme) => ({
 export const LabelSize = () => ({
   default: css`
     height: 36px;
-    padding: 0px 1.2rem;
     border-radius: 8px;
   `,
   smaller: css`
-    min-height: 22px;
-    padding: 0px 0.8rem;
-    font-size: 1.1rem;
+    height: 24px;
+    font-size: 1.3rem;
     border-radius: 4px;
   `,
   small: css`
-    min-height: 28px;
-    padding: 0px 1rem;
-    font-size: 1.2rem;
+    height: 30px;
+    font-size: 1.4rem;
     border-radius: 6px;
   `,
   freeform: css`
@@ -52,15 +49,29 @@ export const LabelSize = () => ({
   `,
 });
 
-export const Label = styled.div<{
-  variant?: keyof ReturnType<typeof LabelVariant>;
-  size?: keyof ReturnType<typeof LabelSize>;
-}>`
+export const LabelStyle = css`
+  padding: 0px 0.8em;
   line-height: normal;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 600;
+  svg {
+    font-size: 1.1em;
+  }
+  svg:first-child:not(*:only-child) {
+    margin-right: 0.25em;
+  }
+  svg:last-child:not(*:only-child) {
+    margin-left: 0.25em;
+  }
+`;
+
+export const Label = styled.div<{
+  variant?: keyof ReturnType<typeof LabelVariant>;
+  size?: keyof ReturnType<typeof LabelSize>;
+}>`
+  ${LabelStyle}
   ${({ size }) => (size ? LabelSize()[size] : LabelSize()["default"])}
   ${({ variant, theme }) =>
     variant ? LabelVariant(theme)[variant] : LabelVariant(theme)["default"]}

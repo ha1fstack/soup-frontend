@@ -43,7 +43,7 @@ const HeaderMenuContainer = styled.header`
   display: flex;
   flex-direction: row;
   align-items: center;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   color: var(--negative2);
   & > :not(:last-child) {
     margin-right: 12px;
@@ -226,7 +226,7 @@ export const Header = React.memo(() => {
             <Link passHref href="/projects">
               <SearchButton as="a">
                 <MdOutlineSearch />
-                프로젝트 찾아보기
+                <span css={{ fontSize: "1.4rem" }}>프로젝트 찾아보기</span>
               </SearchButton>
             </Link>
             <div css={{ position: "relative" }}>

@@ -135,8 +135,8 @@ const InfoView = () => {
           </div>
           <div>
             <Button onClick={handleEdit} variant="primary-outlined">
-              <MdOutlineEdit css={{ fontSize: "1.8rem" }} />
-              {isEdit ? "저장" : "수정"}
+              <MdOutlineEdit />
+              <span>{isEdit ? "저장" : "수정"}</span>
             </Button>
           </div>
         </Flex>

@@ -142,11 +142,15 @@ const PostHeader = ({ data }: { data: IPostContentData<unknown> }) => {
           ) : (
             <>
               <HeaderButton
-                css={{ width: "initial", padding: "0px 12px", gap: "4px" }}
+                css={{
+                  width: "initial",
+                  padding: "0px 12px",
+                  fontSize: "1.4rem",
+                }}
                 onClick={handleFav}
               >
                 {data.isfav ? <MdOutlineStar /> : <MdOutlineStarBorder />}
-                <span css={{ fontSize: "1.4rem" }}>{data.fav}</span>
+                <span>{data.fav}</span>
               </HeaderButton>
             </>
           )}

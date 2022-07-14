@@ -66,7 +66,7 @@ const GlobalStyle = css`
     --negative: #e7ebf0;
     --negative2: #b1b5b9;
 
-    --disabled: #ced3d7;
+    --disabled: #434a50;
 
     --positive: #23272b;
     --positive1: #2b3035;

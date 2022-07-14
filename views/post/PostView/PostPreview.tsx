@@ -41,8 +41,8 @@ const PostPreview = ({
         rel="noopener noreferrer"
         variant="primary-outlined"
       >
-        <MdOutlineOpenInNew css={{ fontSize: "1.6rem" }} />
-        원문 보기
+        <MdOutlineOpenInNew />
+        <span>원문 보기</span>
       </ButtonLink>
     </Box>
   );
