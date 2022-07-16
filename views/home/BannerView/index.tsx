@@ -65,7 +65,7 @@ const bannerItems: React.ComponentProps<typeof Banner>[] = [
     title: (
       <>
         홍보 라운지에서 <br />
-        자신의 프로젝트를 자랑해 보세요 😍
+        자신의 프로젝트를 자랑해 보세요 📢
       </>
     ),
     image: "/banner/2.png",
@@ -77,8 +77,8 @@ const bannerItems: React.ComponentProps<typeof Banner>[] = [
     label: "안내사항",
     title: (
       <>
-        관련있는 프로젝트를 모아보고 <br />
-        맞춤형 양식으로 편리하게 지원하세요 🥰
+        관련있는 프로젝트를 모아 보고 <br />
+        맞춤형 양식으로 편리하게 지원하세요 🚀
       </>
     ),
     image: "/banner/3.png",
