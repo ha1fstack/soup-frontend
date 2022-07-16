@@ -44,7 +44,7 @@ const HotFeatured = ({ className }: { className?: string }) => {
         onSwiper={onSwiper}
         loop={isClientRender}
         autoplay={{
-          delay: 5000,
+          delay: 7000,
           disableOnInteraction: false,
         }}
         modules={[Autoplay]}

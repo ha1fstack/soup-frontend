@@ -71,9 +71,9 @@ const PageContainer = styled.div<IPageContainerProps>`
   ${({ ignoreDefaultTopPadding }) =>
     ignoreDefaultTopPadding ||
     css`
-      padding-top: 36px;
+      padding-top: 32px;
       ${breakpoints.at("sm")} {
-        padding-top: 24px;
+        padding-top: 16px;
       }
     `}
 `;

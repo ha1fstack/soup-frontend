@@ -281,7 +281,7 @@ export const Header = React.memo(() => {
             <Button
               onClick={() => setLoginPopup(true)}
               variant="primary"
-              css={{ fontWeight: "bold" }}
+              css={{ fontWeight: "bold", fontSize: "1.4rem" }}
             >
               로그인
             </Button>

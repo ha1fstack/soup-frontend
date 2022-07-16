@@ -66,7 +66,7 @@ const SearchButton = () => (
       css={{
         marginBottom: "24px",
         justifyContent: "space-between",
-        marginTop: "-8px",
+        marginTop: "-4px",
       }}
     >
       <span css={{ fontSize: "1.4rem" }}>프로젝트 찾아보기</span>

@@ -13,6 +13,7 @@ export const Banner = React.memo(
     label,
     title,
     description,
+    image,
   }: {
     color: string;
     backgroundColor: string;
@@ -20,13 +21,14 @@ export const Banner = React.memo(
     label: string;
     title: React.ReactNode;
     description?: React.ReactNode;
+    image?: string;
   }) => {
     const styles = {
       Wrapper: css`
         ${defaultGridTemplate}
         background-color: ${backgroundColor};
         color: ${color};
-        height: 300px;
+        height: 280px;
         ${breakpoints.at("sm")} {
           height: 200px;
         }
@@ -50,8 +52,9 @@ export const Banner = React.memo(
         position: relative;
       `,
       BannerContentWrapper: css`
-        padding-top: 48px;
-        padding-bottom: 48px;
+        z-index: 2;
+        padding-top: 36px;
+        padding-bottom: 36px;
         ${breakpoints.at("sm")} {
           padding-top: 24px;
           padding-bottom: 24px;
@@ -76,17 +79,36 @@ export const Banner = React.memo(
       `,
       BannerImage: css`
         position: absolute;
-        right: 0;
-        z-index: 1;
+        right: calc(10% - 36px);
+        z-index: 0;
         height: 100%;
-        width: 100%;
         & > * {
-          width: 100% !important;
           height: 100% !important;
           img {
+            min-width: 2560px !important;
             object-fit: contain;
             object-position: right;
           }
+        }
+      `,
+      BannerShadow: css`
+        position: absolute;
+        z-index: 1;
+        height: 100%;
+        width: 100%;
+        opacity: 0.7;
+        background: linear-gradient(
+          90deg,
+          ${backgroundColor} 360px,
+          transparent 640px
+        );
+        ${breakpoints.at("sm")} {
+          opacity: 0.85;
+          background: linear-gradient(
+            0deg,
+            ${backgroundColor} 30%,
+            transparent 70%
+          );
         }
       `,
     };
@@ -96,17 +118,16 @@ export const Banner = React.memo(
         {label}
       </Label>
     );
-    const BannerImage = () => (
-      <Image
-        alt="front-banner"
-        src="https://i.imgur.com/7FfQL9b.png"
-        width="600"
-        height="600"
-      />
-    );
+    const BannerImage = () =>
+      image ? (
+        <Image alt="front-banner" src={image} width="560" height="560" />
+      ) : (
+        <></>
+      );
 
     return (
       <div css={styles.Wrapper}>
+        <div css={styles.BannerShadow} />
         <Flex css={styles.InnerWrapper}>
           <Flex column css={styles.BannerContentWrapper}>
             <BannerLabel />

@@ -18,7 +18,7 @@ const BannerView = () => {
         onSwiper={onSwiper}
         loop={isClientRender}
         autoplay={{
-          delay: 8000,
+          delay: 12000,
           disableOnInteraction: false,
         }}
         effect={"fade"}
@@ -45,29 +45,43 @@ export default BannerView;
 const bannerItems: React.ComponentProps<typeof Banner>[] = [
   {
     color: "#fff",
-    backgroundColor: "#111",
+    backgroundColor: "#050c14",
     badgeColor: "#ff8a05",
     label: "안내사항",
     title: (
       <>
         흩어져 있는 스터디와 프로젝트 모집,
         <br />
-        이젠 SouP에서 편하게 모아보세요
+        이젠 SouP에서 편하게 모아보세요 ✨
       </>
     ),
+    image: "/banner/1.png",
   },
   {
-    color: "#111",
-    backgroundColor: "#00c471",
-    badgeColor: "#002a18",
-    label: "프로모션",
+    color: "#1d1d3d",
+    backgroundColor: "#ecefff",
+    badgeColor: "#1d1d3d",
+    label: "안내사항",
     title: (
       <>
-        프론트엔드 BEST 강의
-        <br />
-        SouP에서만 30% 할인중👌
+        홍보 라운지에서 <br />
+        자신의 프로젝트를 자랑해 보세요 😍
       </>
     ),
+    image: "/banner/2.png",
+  },
+  {
+    color: "#130909",
+    backgroundColor: "#fdf0f0",
+    badgeColor: "#130909",
+    label: "안내사항",
+    title: (
+      <>
+        관련있는 프로젝트를 모아보고 <br />
+        맞춤형 양식으로 편리하게 지원하세요 🥰
+      </>
+    ),
+    image: "/banner/3.png",
   },
 ];
 

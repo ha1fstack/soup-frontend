@@ -33,7 +33,7 @@ const HotItem = ({
   return (
     <Link passHref href={`/projects/${post.id}`}>
       <Flex as="a" column css={styles.Wrapper}>
-        <Image alt="hot" src={`/thumb/${index}.jpg`} width={320} height={180} />
+        <Image alt="hot" src={`/thumb/${index}.png`} width={320} height={180} />
         <Flex column css={{ gap: "8px" }}>
           <p css={styles.PostName}>{post.postName}</p>
           <p css={styles.PostContent}>{post.content}</p>

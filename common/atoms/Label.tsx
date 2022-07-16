@@ -50,7 +50,7 @@ export const LabelSize = () => ({
 });
 
 export const LabelStyle = css`
-  padding: 0px 0.8em;
+  padding: 0px 0.7em;
   line-height: normal;
   display: flex;
   align-items: center;
@@ -59,10 +59,10 @@ export const LabelStyle = css`
   svg {
     font-size: 1.1em;
   }
-  svg:first-child:not(*:only-child) {
+  svg:first-of-type:not(*:only-child) {
     margin-right: 0.25em;
   }
-  svg:last-child:not(*:only-child) {
+  svg:last-of-type:not(*:only-child) {
     margin-left: 0.25em;
   }
 `;

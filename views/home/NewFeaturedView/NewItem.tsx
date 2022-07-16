@@ -17,7 +17,7 @@ const NewItem = ({
         <span css={{ flex: "0 0 auto", height: "75px" }}>
           <Image
             alt="new"
-            src={`/thumb/${index}.jpg`}
+            src={`/thumb/${index}.png`}
             width={100}
             height={75}
           />
