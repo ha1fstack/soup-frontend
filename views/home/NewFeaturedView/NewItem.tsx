@@ -13,7 +13,14 @@ const NewItem = ({
 }) => {
   return (
     <Link passHref href={`/projects/${post.id}`}>
-      <Flex as="a" css={{ gap: "16px", cursor: "pointer" }}>
+      <Flex
+        as="a"
+        css={{
+          alignItems: "center",
+          gap: "16px",
+          cursor: "pointer",
+        }}
+      >
         <span css={{ flex: "0 0 auto", height: "75px" }}>
           <Image
             alt="new"
@@ -24,7 +31,13 @@ const NewItem = ({
         </span>
         <Flex
           column
-          css={{ flex: "1", width: 0, gap: "4px", overflow: "hidden" }}
+          css={{
+            flex: "1",
+            width: 0,
+            gap: "4px",
+            overflow: "hidden",
+            marginBottom: "4px",
+          }}
         >
           <p
             css={{

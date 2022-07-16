@@ -22,7 +22,7 @@ const HotFeatured = ({ className }: { className?: string }) => {
       column
       className={className}
       css={{
-        gap: "24px",
+        gap: "16px",
         minWidth: 0,
         img: {
           borderRadius: "8px",

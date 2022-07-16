@@ -1,11 +1,15 @@
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
+import { breakpoints } from "lib/utils";
 
 export const SectionHeader = Object.assign(
   styled.div`
     display: flex;
     flex-direction: column;
     margin-bottom: 16px;
+    ${breakpoints.at("sm")} {
+      margin-bottom: 8px;
+    }
     width: 100%;
   `,
   {
