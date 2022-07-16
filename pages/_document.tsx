@@ -26,7 +26,7 @@ export default function Document() {
         />
         <meta
           property="og:image"
-          content={`${process.env.NEXT_PUBLIC_SITE_URL}/opengraph-image.png"`}
+          content={`${process.env.NEXT_PUBLIC_SITE_URL}/opengraph-image.png`}
         />
         <meta property="og:url" content={process.env.NEXT_PUBLIC_SITE_URL} />
       </Head>
