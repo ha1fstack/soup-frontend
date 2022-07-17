@@ -22,7 +22,11 @@ const PostView = () => {
     <>
       <Head>
         <title>SouP | {data.postName}</title>
-        <meta property="og:description" content={data.postName} />
+        <meta
+          property="og:description"
+          key="og:description"
+          content={data.postName}
+        />
       </Head>
       <Box
         responsive

@@ -22,6 +22,7 @@ export default function Document() {
         <meta property="og:title" content="SouP" />
         <meta
           property="og:description"
+          key="og:description"
           content="한눈에 보는 스터디와 프로젝트"
         />
         <meta
@@ -29,6 +30,7 @@ export default function Document() {
           content={`${process.env.NEXT_PUBLIC_SITE_URL}/opengraph-image.png`}
         />
         <meta property="og:url" content={process.env.NEXT_PUBLIC_SITE_URL} />
+        <meta property="og:locale" content="ko_KR" />
       </Head>
       <body>
         <div id="portal" />
