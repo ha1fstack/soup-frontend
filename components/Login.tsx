@@ -152,7 +152,7 @@ export const Login = () => {
                   />
                 </Button>
               </Flex>
-              <p>로 로그인 / 회원가입</p>
+              <p>로그인 / 회원가입</p>
               {isDevEnv && (
                 <>
                   <Button onClick={checkLogin}>manual login refresh</Button>

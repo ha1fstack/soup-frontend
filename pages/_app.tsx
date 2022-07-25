@@ -154,7 +154,7 @@ export default function App({
     <>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>스프</title>
+        <title>스프 | 흩어져 있는 스터디와 프로젝트가 모여있는 곳</title>
       </Head>
       {/* jotai provider */}
       <Provider>
