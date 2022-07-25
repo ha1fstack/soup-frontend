@@ -90,7 +90,7 @@ const SideBarContainer = ({
             target="_blank"
             rel="noopener noreferrer"
           >
-            SouP 소개
+            스프 소개
           </a>
           <br />
           <Link href="/support/service-terms">

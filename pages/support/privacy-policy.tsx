@@ -6,7 +6,7 @@ const Terms: CustomNextPage = () => {
   return (
     <>
       <Head>
-        <title>SouP | 개인정보처리방침</title>
+        <title>스프 | 개인정보처리방침</title>
       </Head>
       <Iframe src={process.env.NEXT_PUBLIC_IFRAME_PRIVACY_POLICY_URL} />
     </>

@@ -10,7 +10,7 @@ const Write: CustomNextPage = () => {
   return (
     <>
       <Head>
-        <title>SouP | 모집 만들기</title>
+        <title>스프 | 모집 만들기</title>
       </Head>
       <Section>
         <WriteForm />

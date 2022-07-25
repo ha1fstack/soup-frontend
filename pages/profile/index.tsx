@@ -8,7 +8,7 @@ const Profile: CustomNextPage = () => {
   return (
     <>
       <Head>
-        <title>SouP | 마이페이지</title>
+        <title>스프 | 마이페이지</title>
       </Head>
       <Section>
         <Flex

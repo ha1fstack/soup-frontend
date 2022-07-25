@@ -52,7 +52,7 @@ const bannerItems: React.ComponentProps<typeof Banner>[] = [
       <>
         흩어져 있는 스터디와 프로젝트 모집,
         <br />
-        이젠 SouP에서 편하게 모아보세요 ✨
+        이젠 스프에서 편하게 모아보세요 ✨
       </>
     ),
     image: "/banner/1.png",

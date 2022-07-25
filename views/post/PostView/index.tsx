@@ -21,7 +21,7 @@ const PostView = () => {
   return (
     <>
       <Head>
-        <title>SouP | {data.postName}</title>
+        <title>스프 | {data.postName}</title>
         <meta
           property="og:description"
           key="og:description"

@@ -18,7 +18,7 @@ const Project: CustomNextPage = () => {
   return (
     <>
       <Head>
-        <title>SouP | 프로젝트/스터디 찾기</title>
+        <title>스프 | 프로젝트/스터디 찾기</title>
       </Head>
       <Section bleed css={{ paddingTop: "12px", paddingBottom: "12px" }}>
         <FilterView />

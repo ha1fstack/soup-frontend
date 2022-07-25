@@ -15,7 +15,7 @@ const Lounge: CustomNextPage = () => {
   return (
     <>
       <Head>
-        <title>SouP | 라운지</title>
+        <title>스프 | 라운지</title>
       </Head>
       <Section>
         <Flex column gap="24px">

@@ -15,7 +15,7 @@ const Edit: CustomNextPage = () => {
   return (
     <>
       <Head>
-        <title>SouP | 글 수정하기</title>
+        <title>스프 | 글 수정하기</title>
       </Head>
       <Section>
         <EditForm />

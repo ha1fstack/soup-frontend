@@ -21,11 +21,7 @@ const Home: CustomNextPage = () => {
   return (
     <>
       <Head>
-        <meta name="title" content="SouP | 한눈에 보는 스터디와 프로젝트" />
-        <meta
-          name="description"
-          content="흩어져 있는 스터디와 프로젝트 모집, 이젠 SouP에서 편하게 모아보세요. 관심 있는 프로젝트를 쉽게 찾고 간편하게 지원할 수 있어요."
-        />
+      
       </Head>
       <BannerView />
       <Section bleed css={{ borderTop: "0px" }}>
