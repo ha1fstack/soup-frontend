@@ -22,7 +22,6 @@ const Home: CustomNextPage = () => {
     <>
       <Head>
           <link rel="canonical" href="https://soup.pw"></link>
-          <link rel="shortcut icon" href="../public/favicon.ico"></link>
       </Head>
       <BannerView />
       <Section bleed css={{ borderTop: "0px" }}>
