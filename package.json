@@ -34,7 +34,7 @@
     "swiper": "^8.3.0"
   },
   "devDependencies": {
-    "@types/node": "18.0.4",
+    "@types/node": "18.7.5",
     "@types/react": "^17.0.44",
     "@types/react-dom": "^17.0.15",
     "cross-env": "^7.0.3",
