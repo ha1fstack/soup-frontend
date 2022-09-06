@@ -82,6 +82,7 @@ const EditForm = () => {
         <Flex
           css={{
             justifyContent: "space-between",
+            gap: "12px",
           }}
         >
           <Input
@@ -93,7 +94,7 @@ const EditForm = () => {
             작성
           </Button>
         </Flex>
-        <Box responsive column>
+        <Box responsive column css={{ padding: 0 }}>
           <Editor
             initialContent={JSON.parse(data.content as string)}
             setValue={setValue}

@@ -7,11 +7,7 @@ import { ProjectPreviewItem, ProjectItemSkeleton } from "views/components";
 
 const ProjectsView = ({ className }: { className?: string }) => {
   const { data } = useQuery(...frontProjectsQueryContext());
-  const [source, setSource] = useState<ISource | null>(null);
-
-  useLayoutEffect(() => {
-    setSource(SourceList[(Math.random() * SourceList.length) | 0]);
-  }, []);
+  const [source, setSource] = useState<ISource | null>(SourceList[0]);
 
   return (
     <Flex column className={className} css={{ width: "100%" }}>

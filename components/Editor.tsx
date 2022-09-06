@@ -8,7 +8,7 @@ import {
 } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
-import { Flex } from "common/atoms";
+import { Box, Button, ButtonLink, Flex, Input } from "common/atoms";
 import {
   MdOutlineCode,
   MdOutlineFormatBold,
@@ -28,9 +28,12 @@ import {
   MdOutlineUndo,
 } from "react-icons/md";
 import { Youtube } from "lib/tiptap";
-import { UseFormSetValue } from "react-hook-form";
-import { useEffect } from "react";
+import { useForm, UseFormSetValue } from "react-hook-form";
+import { useEffect, useState, useLayoutEffect } from "react";
 import { IArticleData } from "types";
+import { breakpoints, tiptapStyleConfig } from "lib/utils";
+import Portal from "./Portal";
+import Link from "@tiptap/extension-link";
 
 const ButtonElem = styled.button<{
   active?: boolean;
@@ -56,7 +59,7 @@ const ButtonGroup = styled(Flex)`
   // border: 1px solid var(--outline);
 `;
 
-const Button = ({
+const EditorButton = ({
   onMouseDown,
   ...props
 }: React.ComponentProps<typeof ButtonElem>) => {
@@ -73,16 +76,14 @@ const Button = ({
 };
 
 const MenuBar = ({ editor }: { editor: TipTapEditor | null }) => {
+  const [showImagePopupState, setShowImagePopupState] = useState(false);
+
   if (!editor) {
     return null;
   }
 
   const addImage = () => {
-    const url = window.prompt("URL");
-
-    if (url) {
-      editor.chain().focus().setImage({ src: url }).run();
-    }
+    setShowImagePopupState(true);
   };
 
   const addYoutube = () => {
@@ -107,69 +108,147 @@ const MenuBar = ({ editor }: { editor: TipTapEditor | null }) => {
     }
   };
 
+  const UploadImage = ({}) => {
+    const {
+      register,
+      getValues,
+      trigger,
+      formState: { errors },
+    } = useForm<{
+      url: string;
+    }>({
+      mode: "all",
+    });
+
+    useEffect(() => {
+      trigger();
+    }, [trigger]);
+
+    const submit = () => {
+      const url = getValues("url");
+      editor.chain().focus().setImage({ src: url }).run();
+      setShowImagePopupState(false);
+    };
+
+    return (
+      <Portal at="#editor">
+        <div
+          css={{
+            position: "absolute",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1,
+            width: "100%",
+            height: "100%",
+          }}
+        >
+          <Box column css={{ gap: "12px", width: "300px" }}>
+            <p>이미지 첨부</p>
+            <ButtonLink href={"https://imgur.com/upload"} target="_blank">
+              Imgur에 업로드하기
+            </ButtonLink>
+            <Input
+              {...register("url", {
+                validate: (value) => value.startsWith("https://i.imgur.com/"),
+              })}
+              placeholder="Imgur 이미지 URL 입력..."
+            />
+            <p css={{ fontSize: "1.2rem", color: "var(--negative2)" }}>
+              * https://i.imgur.com/~ 형식으로 입력해 주세요 <br />* 모바일
+              환경에서는 Imgur을 데스크탑 버전으로 이용해 주세요
+            </p>
+            <Button
+              disabled={!!errors.url}
+              variant="primary-outlined"
+              onClick={submit}
+            >
+              확인
+            </Button>
+          </Box>
+          <div
+            css={{
+              position: "absolute",
+              backdropFilter: "blur(8px)",
+              borderRadius: "8px",
+              width: "100%",
+              height: "100%",
+              zIndex: -1,
+            }}
+            onClick={() => setShowImagePopupState(false)}
+          ></div>
+        </div>
+      </Portal>
+    );
+  };
+
   return (
-    <Flex
-      css={{
-        flexWrap: "wrap",
-        rowGap: "8px",
-        "& > *:not(:last-child)": {
-          marginRight: "12px",
-        },
-        " & > * > *:not(:last-child)": {
-          marginRight: "4px",
-        },
-      }}
-    >
-      <ButtonGroup>
-        <Button onClick={addImage}>
-          <MdOutlineImage />
-        </Button>
-        <Button onClick={addYoutube}>
-          <MdOutlineSmartDisplay />
-        </Button>
-      </ButtonGroup>
-      <ButtonGroup>
-        <Button
-          onClick={() => editor.chain().focus().toggleBold().run()}
-          active={editor.isActive("bold")}
-        >
-          <MdOutlineFormatBold />
-        </Button>
-        <Button
-          onClick={() => editor.chain().focus().toggleItalic().run()}
-          active={editor.isActive("italic")}
-        >
-          <MdOutlineFormatItalic />
-        </Button>
-        <Button
-          onClick={() => editor.chain().focus().toggleStrike().run()}
-          active={editor.isActive("strike")}
-        >
-          <MdOutlineFormatStrikethrough />
-        </Button>
-        <Button onClick={() => editor.chain().focus().unsetAllMarks().run()}>
-          <MdOutlineFormatClear />
-        </Button>
-      </ButtonGroup>
-      <ButtonGroup>
-        <Button
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 1 }).run()
-          }
-          active={editor.isActive("heading", { level: 1 })}
-        >
-          <MdOutlineLooksOne />
-        </Button>
-        <Button
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 2 }).run()
-          }
-          active={editor.isActive("heading", { level: 2 })}
-        >
-          <MdOutlineLooksTwo />
-        </Button>
-      </ButtonGroup>
-      {/*     
+    <>
+      {showImagePopupState && <UploadImage />}
+      <Flex
+        css={{
+          flexWrap: "wrap",
+          rowGap: "8px",
+          "& > *:not(:last-child)": {
+            marginRight: "12px",
+          },
+          " & > * > *:not(:last-child)": {
+            marginRight: "4px",
+          },
+        }}
+      >
+        <ButtonGroup>
+          <EditorButton onClick={addImage}>
+            <MdOutlineImage />
+          </EditorButton>
+          <EditorButton onClick={addYoutube}>
+            <MdOutlineSmartDisplay />
+          </EditorButton>
+        </ButtonGroup>
+        <ButtonGroup>
+          <EditorButton
+            onClick={() => editor.chain().focus().toggleBold().run()}
+            active={editor.isActive("bold")}
+          >
+            <MdOutlineFormatBold />
+          </EditorButton>
+          <EditorButton
+            onClick={() => editor.chain().focus().toggleItalic().run()}
+            active={editor.isActive("italic")}
+          >
+            <MdOutlineFormatItalic />
+          </EditorButton>
+          <EditorButton
+            onClick={() => editor.chain().focus().toggleStrike().run()}
+            active={editor.isActive("strike")}
+          >
+            <MdOutlineFormatStrikethrough />
+          </EditorButton>
+          <EditorButton
+            onClick={() => editor.chain().focus().unsetAllMarks().run()}
+          >
+            <MdOutlineFormatClear />
+          </EditorButton>
+        </ButtonGroup>
+        <ButtonGroup>
+          <EditorButton
+            onClick={() =>
+              editor.chain().focus().toggleHeading({ level: 1 }).run()
+            }
+            active={editor.isActive("heading", { level: 1 })}
+          >
+            <MdOutlineLooksOne />
+          </EditorButton>
+          <EditorButton
+            onClick={() =>
+              editor.chain().focus().toggleHeading({ level: 2 }).run()
+            }
+            active={editor.isActive("heading", { level: 2 })}
+          >
+            <MdOutlineLooksTwo />
+          </EditorButton>
+        </ButtonGroup>
+        {/*     
       <Button
         onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
         active={editor.isActive("heading", { level: 3 })}
@@ -208,55 +287,58 @@ const MenuBar = ({ editor }: { editor: TipTapEditor | null }) => {
       >
         h6
       </Button> */}
-      <ButtonGroup>
-        <Button
-          onClick={() => editor.chain().focus().toggleBulletList().run()}
-          active={editor.isActive("bulletList")}
-        >
-          <MdOutlineFormatListBulleted />
-        </Button>
-        <Button
-          onClick={() => editor.chain().focus().toggleOrderedList().run()}
-          active={editor.isActive("orderedList")}
-        >
-          <MdOutlineFormatListNumbered />
-        </Button>
-        <Button
-          onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-          active={editor.isActive("codeBlock")}
-        >
-          <MdOutlineCode />
-        </Button>
-        <Button
-          onClick={() => editor.chain().focus().toggleBlockquote().run()}
-          active={editor.isActive("blockquote")}
-        >
-          <MdOutlineFormatQuote />
-        </Button>
-        <Button
-          onClick={() => editor.chain().focus().setHorizontalRule().run()}
-        >
-          <MdOutlineHorizontalRule />
-        </Button>
-      </ButtonGroup>
-      <ButtonGroup>
-        <Button onClick={() => editor.chain().focus().setHardBreak().run()}>
-          <MdOutlineSplitscreen />
-        </Button>
-        <Button
-          onClick={() => editor.chain().focus().undo().run()}
-          disabled={!editor.can().undo()}
-        >
-          <MdOutlineUndo />
-        </Button>
-        <Button
-          onClick={() => editor.chain().focus().redo().run()}
-          disabled={!editor.can().redo()}
-        >
-          <MdOutlineRedo />
-        </Button>
-      </ButtonGroup>
-    </Flex>
+        <ButtonGroup>
+          <EditorButton
+            onClick={() => editor.chain().focus().toggleBulletList().run()}
+            active={editor.isActive("bulletList")}
+          >
+            <MdOutlineFormatListBulleted />
+          </EditorButton>
+          <EditorButton
+            onClick={() => editor.chain().focus().toggleOrderedList().run()}
+            active={editor.isActive("orderedList")}
+          >
+            <MdOutlineFormatListNumbered />
+          </EditorButton>
+          <EditorButton
+            onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+            active={editor.isActive("codeBlock")}
+          >
+            <MdOutlineCode />
+          </EditorButton>
+          <EditorButton
+            onClick={() => editor.chain().focus().toggleBlockquote().run()}
+            active={editor.isActive("blockquote")}
+          >
+            <MdOutlineFormatQuote />
+          </EditorButton>
+          <EditorButton
+            onClick={() => editor.chain().focus().setHorizontalRule().run()}
+          >
+            <MdOutlineHorizontalRule />
+          </EditorButton>
+        </ButtonGroup>
+        <ButtonGroup>
+          <EditorButton
+            onClick={() => editor.chain().focus().setHardBreak().run()}
+          >
+            <MdOutlineSplitscreen />
+          </EditorButton>
+          <EditorButton
+            onClick={() => editor.chain().focus().undo().run()}
+            disabled={!editor.can().undo()}
+          >
+            <MdOutlineUndo />
+          </EditorButton>
+          <EditorButton
+            onClick={() => editor.chain().focus().redo().run()}
+            disabled={!editor.can().redo()}
+          >
+            <MdOutlineRedo />
+          </EditorButton>
+        </ButtonGroup>
+      </Flex>
+    </>
   );
 };
 
@@ -271,7 +353,18 @@ export const Editor = ({
     onBlur({ editor }) {
       setValue("content", editor?.getJSON());
     },
-    extensions: [StarterKit, Image, Youtube],
+    // onUpdate({ editor }) {
+    //   setValue("content", editor?.getJSON());
+    // },
+    extensions: [
+      StarterKit,
+      Image,
+      Youtube,
+      Link.configure({
+        autolink: true,
+        openOnClick: false,
+      }),
+    ],
     parseOptions: {
       preserveWhitespace: "full",
     },
@@ -286,83 +379,51 @@ export const Editor = ({
     },
   });
 
-  useEffect(() => {
-    if (editor) setValue("content", editor?.getJSON());
-  }, [setValue, editor]);
-
   return (
     <>
       <Flex
+        id="editor"
         column
         css={{
-          ".ProseMirror": {
-            minHeight: "600px",
-            ":focus": {
-              outline: "none",
-            },
-            "& > *": {
-              whiteSpace: "break-spaces",
-            },
-            lineHeight: 1.5,
-            p: {
-              marginBlockEnd: "6px",
-            },
-            h1: {
-              fontSize: "2.4rem",
-              fontWeight: "600",
-              lineHeight: 2,
-            },
-            h2: {
-              fontSize: "1.8rem",
-              fontWeight: "600",
-              lineHeight: 2,
-            },
-            pre: {
-              padding: "8px",
-              backgroundColor: "var(--background)",
-              border: "1px solid var(--outline)",
-              marginBlockStart: "12px",
-              marginBlockEnd: "12px",
-              borderRadius: "4px",
-            },
-            iframe: {
-              marginBlockStart: "18px",
-              marginBlockEnd: "18px",
-              borderRadius: "8px",
-              backgroundColor: "var(--outline)",
-              width: "100%",
-              maxWidth: "560px",
-              height: "50vw",
-              maxHeight: "315px",
-            },
-          },
+          position: "relative",
+          ".ProseMirror": css(tiptapStyleConfig, { minHeight: "600px" }),
         }}
       >
         <div
           css={{
-            position: "sticky",
-            top: "59px",
-            zIndex: 1,
-            borderBottom: "1px solid var(--outline)",
-            padding: "12px 0px",
-            marginTop: "-12px",
-            marginBottom: "12px",
+            padding: "12px",
+            [breakpoints.at("sm")]: { padding: "12px 0px" },
           }}
         >
           <div
             css={{
+              position: "sticky",
+              top: "59px",
+              [breakpoints.at("sm")]: {
+                top: "54px",
+              },
+              zIndex: 1,
+              borderBottom: "1px solid var(--outline)",
+              padding: "12px 0px",
               marginTop: "-12px",
-              position: "absolute",
-              backgroundColor: "var(--positive)",
-              width: "100%",
-              height: "50px",
-              opacity: 0.95,
-              zIndex: -1,
+              marginBottom: "12px",
             }}
-          />
-          <MenuBar editor={editor} />
+          >
+            <div
+              css={{
+                marginTop: "-12px",
+                position: "absolute",
+                backgroundColor: "var(--positive)",
+                width: "100%",
+                height: "100%",
+                opacity: 0.95,
+                zIndex: -1,
+              }}
+            />
+            <MenuBar editor={editor} />
+          </div>
+          <EditorContent css={{ padding: "0px 4px" }} editor={editor} />
         </div>
-        <EditorContent css={{ padding: "0px 4px" }} editor={editor} />
       </Flex>
       {/* <div css={{ whiteSpace: "break-spaces" }}>
         {JSON.stringify(editor?.getText())}

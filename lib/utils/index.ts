@@ -9,3 +9,4 @@ export * from "./media";
 export * from "./renderProps";
 export * from "./tagDictionary";
 export * from "./timeDiffString";
+export * from "./tiptapConfig";

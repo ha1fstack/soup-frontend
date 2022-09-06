@@ -1,6 +1,6 @@
 export const SourceDictionary = {
+  SOUP: "스프",
   INFLEARN: "인프런",
-  SOUP: "스  프",
   OKKY: "OKKY",
   CAMPICK: "캠퍼스픽",
   HOLA: "Hola",

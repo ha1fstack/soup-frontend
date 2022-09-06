@@ -59,6 +59,7 @@ export const Button = styled.button<{
         },
       },
     })}
+  ${({ icon }) => !icon && css({ svg: { marginLeft: "0px !important" } })}
 `;
 
 export const ButtonLink = Button.withComponent("a");

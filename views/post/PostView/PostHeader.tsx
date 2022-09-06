@@ -63,7 +63,6 @@ const PostHeader = ({ data }: { data: IPostContentData<unknown> }) => {
 
   const HeaderButton = styled(Button)`
     padding: 0;
-    width: 36px;
   `;
 
   return (
@@ -150,7 +149,7 @@ const PostHeader = ({ data }: { data: IPostContentData<unknown> }) => {
                 onClick={handleFav}
               >
                 {data.isfav ? <MdOutlineStar /> : <MdOutlineStarBorder />}
-                <span>{data.fav}</span>
+                <span> 스크랩 {data.fav}</span>
               </HeaderButton>
             </>
           )}

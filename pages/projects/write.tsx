@@ -5,6 +5,8 @@ import { useRouter } from "next/router";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { CustomNextPage, IArticleData } from "types";
 import Head from "next/head";
+import useFormPersist from "react-hook-form-persist";
+import { useEffect, useMemo, useState } from "react";
 
 const Write: CustomNextPage = () => {
   return (
@@ -44,7 +46,6 @@ const WriteForm = () => {
   });
 
   const router = useRouter();
-
   const onSubmit: SubmitHandler<IArticleData> = async (data) => {
     const res = await http.post<{ success: boolean }>("/projects/build", data);
     if (res.data.success) {
@@ -66,6 +67,7 @@ const WriteForm = () => {
         <Flex
           css={{
             justifyContent: "space-between",
+            gap: "12px",
           }}
         >
           <Input
@@ -77,8 +79,8 @@ const WriteForm = () => {
             작성
           </Button>
         </Flex>
-        <Box responsive column>
-          <Editor initialContent={mock} setValue={setValue} />
+        <Box responsive column css={{ padding: 0 }}>
+          <Editor setValue={setValue} />
         </Box>
       </Box>
     </form>
