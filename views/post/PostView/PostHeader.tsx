@@ -62,6 +62,7 @@ const PostHeader = ({ data }: { data: IPostContentData<unknown> }) => {
   };
 
   const HeaderButton = styled(Button)`
+    min-width: 36px;
     padding: 0;
   `;
 
@@ -131,10 +132,10 @@ const PostHeader = ({ data }: { data: IPostContentData<unknown> }) => {
         >
           {ownership ? (
             <>
-              <HeaderButton onClick={handleEdit}>
+              <HeaderButton icon onClick={handleEdit}>
                 <MdOutlineEdit />
               </HeaderButton>
-              <HeaderButton onClick={handleDelete}>
+              <HeaderButton icon onClick={handleDelete}>
                 <MdOutlineDelete />
               </HeaderButton>
             </>
