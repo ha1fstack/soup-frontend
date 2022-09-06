@@ -5,8 +5,6 @@ import { useRouter } from "next/router";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { CustomNextPage, IArticleData } from "types";
 import Head from "next/head";
-import useFormPersist from "react-hook-form-persist";
-import { useEffect, useMemo, useState } from "react";
 
 const Write: CustomNextPage = () => {
   return (
