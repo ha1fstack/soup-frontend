@@ -1,6 +1,5 @@
 import { Flex, ProfilePlaceholder } from "common/atoms";
 import { timeDiffString } from "lib/utils";
-import Image from "next/image";
 import { ellipsis } from "polished";
 import { ILoungePost } from "types";
 

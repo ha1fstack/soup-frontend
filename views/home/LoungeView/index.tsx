@@ -21,17 +21,19 @@ const LoungeView = ({ className }: { className?: string }) => {
     }),
   };
 
-  const { data, isLoading, isError } = useQuery(...loungeQueryContext());
+  const { data } = useQuery(...loungeQueryContext());
 
   return (
     <Flex column css={className}>
-      <Box.Header>
-        <span>라운지</span>
-      </Box.Header>
+      <Link passHref href="/lounge">
+        <Box.Header as="a">
+          <span>라운지</span>
+        </Box.Header>
+      </Link>
       <Link passHref href="/lounge">
         <Box as="a" responsive column css={styles.ContentWrapper}>
           {data ? (
-            data.map((post, i) => (
+            data.slice(0, 10).map((post, i) => (
               <Fragment key={post.lounge_id}>
                 {i !== 0 && <Hr />}
                 <LoungeItem post={post} />

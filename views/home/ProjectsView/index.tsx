@@ -1,9 +1,9 @@
-import { Flex, Box, Hr } from "common/atoms";
+import { Box, Flex, Hr } from "common/atoms";
 import { frontProjectsQueryContext } from "lib/queries";
-import { SourceList, SourceDictionary, ISource } from "lib/utils";
-import { Fragment, useLayoutEffect, useState } from "react";
+import { ISource, SourceDictionary, SourceList } from "lib/utils";
+import { Fragment, useState } from "react";
 import { useQuery } from "react-query";
-import { ProjectPreviewItem, ProjectItemSkeleton } from "views/components";
+import { ProjectItemSkeleton, ProjectPreviewItem } from "views/components";
 
 const ProjectsView = ({ className }: { className?: string }) => {
   const { data } = useQuery(...frontProjectsQueryContext());
